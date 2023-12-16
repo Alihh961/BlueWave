@@ -19,15 +19,28 @@ class HomeController extends AbstractController
             'api-token' => $token,
 
         ];
-        $response = $httpClient->request("GET" ,"https://api.flashvision.co/client/api/products" , ["headers" => $headers]);
+        $response = $httpClient->request("GET", "https://api.flashvision.co/client/api/products", ["headers" => $headers]);
 
         $data = $response->getContent();
 
-        $productsArray = $response->toArray();
+
+        // convert into array and delete the product that exists more than one time
+        $dataArray = $response->toArray();
+
+        $categoryNames = [];
+
+        foreach ($dataArray as $item){
+            if(!in_array($item["category_name"],$categoryNames)){
+                $categoryNames[] =$item["category_name"];
+            }
+        }
+
+//        dd($categoryNames);
+
 
 
         return $this->render('home/index.html.twig', [
-            "products" => $productsArray
+            "categoryNames" => $categoryNames
         ]);
     }
 }

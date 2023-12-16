@@ -3,6 +3,38 @@
 
 {% block body %}
 
+    <style>
+        .products{
+            display: flex;
+            width: 96%;
+            flex-wrap: wrap;
+            margin: auto;
+            gap: 5px;
+            justify-content: center;
+        }
+        .product{
+            flex: 0 0 200px;
+            background-color: red;
+            max-height: fit-content;
+
+        }
+
+        .product h6 {
+            margin: 0 auto;
+        }
+    </style>
+    <section class="products">
+
+        {% for categoryName in categoryNames %}
 
 
+            <div class="product">
+
+                <img alt="{{ categoryName }}">
+                <h6>{{ categoryName }}</h6>
+
+            </div>
+        {% endfor %}
+
+    </section>
 {% endblock %}
