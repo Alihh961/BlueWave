@@ -13,13 +13,14 @@ class HomeController extends AbstractController
     public function index(HttpClientInterface $httpClient): Response
     {
         $token = $_ENV['TOKEN_API_FLASH'];
+        $apiExt =  $_ENV['API_EXTERNAL_URL'];
 
 
         $headers = [
             'api-token' => $token,
 
         ];
-        $response = $httpClient->request("GET", "https://api.flashvision.co/client/api/products", ["headers" => $headers]);
+        $response = $httpClient->request("GET", $apiExt . "/products", ["headers" => $headers]);
 
         $data = $response->getContent();
 
@@ -27,20 +28,23 @@ class HomeController extends AbstractController
         // convert into array and delete the product that exists more than one time
         $dataArray = $response->toArray();
 
-        $categoryNames = [];
+        $items = [];
+        $categoryNames = array_column($items, 'category_name');
 
-        foreach ($dataArray as $item){
-            if(!in_array($item["category_name"],$categoryNames)){
-                $categoryNames[] =$item["category_name"];
+        foreach ($dataArray as $item) {
+            // Check if the category name is not in the $items array
+            if (!in_array($item['category_name'], $categoryNames)) {
+                $items[] = $item;
+                $categoryNames[] = $item['category_name'];
             }
         }
 
-//        dd($categoryNames);
-
+//        dd($items);
 
 
         return $this->render('home/index.html.twig', [
-            "categoryNames" => $categoryNames
+            "items" => $items,
+            "apiExt" => $apiExt
         ]);
     }
 }

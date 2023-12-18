@@ -20,7 +20,6 @@
             overflow: hidden;
             color: white;
 
-
         }
 
         .product-container:hover {
@@ -56,20 +55,35 @@
     </style>
     <section class="products">
 
-    {% for item in items %}
+        {% for item in items %}
 
-        <a class="product-container" href="view-product?c={{ item["category_name"] }}">
+            {% if not item['available'] %}
 
-            <div class="product">
+                <a class="product-container pointerEventsNone" href="checkout?i={{ item["id"] }}">
 
-                <img class="" src="{{ asset('images/test.png') }}"
-                     alt="{{ item["category_name"] }}">
-                <h6>{{ item["category_name"] }}</h6>
+                    <div class="product">
 
-            </div>
-        </a>
+                        <img class="unAvailableItem" src="{{ asset('images/test.png') }}"
+                             alt="{{ item["category_name"] }}">
+                        <h6>{{ item["name"] }} - {{ item["price"] }}$</h6>
 
-    {% endfor %}
+                    </div>
+                </a>
+            {% else %}
+                <a class="product-container" href="checkout?i={{ item["id"] }}">
+
+                    <div class="product">
+
+                        <img class="" src="{{ asset('images/test.png') }}"
+                             alt="{{ item["category_name"] }}">
+                        <h6>{{ item["name"] }} - {{ item["price"] }}$</h6>
+
+
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
 
     </section>
 {% endblock %}
+

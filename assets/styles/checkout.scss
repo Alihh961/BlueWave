@@ -1,0 +1,45 @@
+.checkout-section {
+  width: 50%;
+  background-color: red;
+  margin: auto;
+
+  h3 {
+    width: fit-content;
+    margin: 10px auto;
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 25px 0px;
+    div>div{
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    button.buy{
+      width: 50%;
+      margin: auto;
+      cursor: pointer;
+
+    }
+
+    a.back{
+      width: 25%;
+      margin: auto;
+      display: inline-block;
+      padding: 5px 10px;
+      color: black;
+      text-align: center;
+      text-decoration: none;
+      background-color: #c47107;
+      border-radius: 5px;
+
+    }
+  }
+
+}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    {% if item.product_type == "package" %}
+
+        <section class="checkout-section">
+            <h3>{{ item.name }}</h3>
+
+            {{ form_start(form ,{
+                "attr" : {"class" : "package-checkout-form"}
+            }) }}
+            <div>
+                <div>
+
+                    {{ form_label(form.id) }}
+                    {{ form_widget(form.id) }}
+
+                    {{ form_label(form.quantity) }}
+                    {{ form_widget(form.quantity) }}
+
+                    {% if range.min and range.max %}
+                        <div>
+                           <b>Min</b> :{{ range.min }}
+                            <b>Max</b>: {{ range.max }}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <button type="submit" class="buy">Buy
+
+            </button>
+
+            <a class="back" href="/view-product?c={{ item.category_name }}">Back</a>
+
+            {{ form_end(form) }}
+        </section>
+
+    {% endif %}
+
+{% endblock %}
