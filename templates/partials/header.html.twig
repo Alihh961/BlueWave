@@ -23,8 +23,23 @@
         </nav>
 
         {% if app.user %}
-            <a href="/profile"><span>{{ app.user.currentBalance }}$</span> {{ app.user.firstName }} {{ app.user.lastName }}
-            </a>
+            {#            <a href="/profile"><span>{{ app.user.currentBalance }}$</span> {{ app.user.firstName }} {{ app.user.lastName }} #}
+            {#            </a> #}
+
+
+            <div class="sec-center">
+                <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
+                <label class="for-dropdown" for="dropdown">Dropdown Menu <i class="uil uil-arrow-down"></i></label>
+                <div class="section-dropdown">
+                    <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+                    <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                    <label class="for-dropdown-sub" for="dropdown-sub">Dropdown Sub </label>
+                    <div class="section-dropdown-sub">
+                        <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+
+                    </div>
+                </div>
+            </div>
 
         {% else %}
             <a href="{{ path(app_login) }}">Login</a>
