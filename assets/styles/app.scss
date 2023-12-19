@@ -1,1 +1,21 @@
 @import "checkout";
+@import "partials/header";
+
+body{
+  background-color: #173e43!important;
+}
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-10 {
+  gap: 10px;
+}

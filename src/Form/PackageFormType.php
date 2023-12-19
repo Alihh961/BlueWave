@@ -18,6 +18,7 @@ class PackageFormType extends AbstractType
         $min = $options['min'];
         $max = $options['max'];
         $categoryName = $options['categoryName'];
+        $unitPrice = $options['unitPrice'];
 
 
         $builder
@@ -53,12 +54,24 @@ class PackageFormType extends AbstractType
                     handleInput(event);
                         function handleInput(event){
                         let input = document.querySelector('#package_form_quantity');
-                        
-                            let value = event.target.value;
-                            
+                        let value = event.target.value;
+                        let price = input.value * $unitPrice;
+
+                        let priceSpan = document.querySelector('.price');
                             if(value.includes('.')){
                                 input.value = 0;
+                                
                             }
+                            
+                            if(value >= $min && value <= $max){
+                                priceSpan.innerHTML = price +'$';
+                            
+                            }else{
+                                priceSpan.innerHTML = 'Range is ' + $min + ' - ' + $max;
+                            }
+                            
+
+                        
                         };
                     "
                 ]
@@ -71,7 +84,8 @@ class PackageFormType extends AbstractType
         $resolver->setDefaults([
             "min" => null ,
             "max" => null,
-            "categoryName" => null
+            "categoryName" => null,
+            "unitPrice" => null
         ]);
     }
 }

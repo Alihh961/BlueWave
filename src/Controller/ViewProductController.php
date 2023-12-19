@@ -29,7 +29,6 @@ class ViewProductController extends AbstractController
         $response = $httpClient->request("GET", $apiExt . "/products", ["headers" => $headers]);
 
 
-
         // convert into array and delete the product that exists more than one time
         $dataArray = $response->toArray();
 
@@ -37,10 +36,14 @@ class ViewProductController extends AbstractController
 
         foreach ($dataArray as $item) {
             if ($item["category_name"] == $categoryName) {
+                $min = $item['qty_values']['min'];
+
+                $item['price'] = $item['price'] * $min + 0.3;
+                $item['price'] = $item['price']/$min;
+
                 $items[] = $item;
             }
         }
-//        dd($items);
 
         return $this->render("view-products/index.html.twig", [
             "items" => $items

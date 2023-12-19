@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    {% if item.product_type == "package" %}
+    {% if item.product_type %}
 
         <section class="checkout-section">
             <h3>{{ item.name }}</h3>
@@ -11,33 +11,37 @@
             {{ form_start(form ,{
                 "attr" : {"class" : "package-checkout-form"}
             }) }}
-            <div>
-                <div>
 
-                    {{ form_label(form.id) }}
-                    {{ form_widget(form.id) }}
+            <div class="inputs-div">
 
-                    {{ form_label(form.quantity) }}
-                    {{ form_widget(form.quantity) }}
+                {{ form_row(form.id , {
+                    "attr" : {
+                        "class" : ""
+                    }
+                }) }}
 
-                    {% if range.min and range.max %}
-                        <div>
-                           <b>Min</b> :{{ range.min }}
-                            <b>Max</b>: {{ range.max }}
-                        </div>
-                    {% endif %}
-                </div>
+
+                {{ form_row(form.quantity) }}
+
 
             </div>
 
-            <button type="submit" class="buy">Buy
+            {% if range.min and range.max %}
+                <div class="range">
+                    <b>Min</b> :{{ range.min }}
+                    <b>Max</b>: {{ range.max }}
+                </div>
+            {% endif %}
 
-            </button>
+            <div class=" bottom d-flex flex-column gap-5">
+                <h5><span class="price">{{ item.price * range.min }}$</span></h5>
+                <button type="submit" class="buy">Buy</button>
 
-            <a class="back" href="/view-product?c={{ item.category_name }}">Back</a>
-
+                <a class="back" href="/view-product?c={{ item.category_name }}">Back</a>
+            </div>
             {{ form_end(form) }}
         </section>
+
 
     {% endif %}
 

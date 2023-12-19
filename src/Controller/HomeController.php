@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     public function index(HttpClientInterface $httpClient): Response
     {
         $token = $_ENV['TOKEN_API_FLASH'];
-        $apiExt =  $_ENV['API_EXTERNAL_URL'];
+        $apiExt = $_ENV['API_EXTERNAL_URL'];
 
 
         $headers = [
@@ -47,4 +47,14 @@ class HomeController extends AbstractController
             "apiExt" => $apiExt
         ]);
     }
+
+    #[Route('/test', name: 'app_test')]
+    public function test(HttpClientInterface $httpClient): Response
+    {
+        return $this->render('home/test.html.twig', [
+
+        ]);
+
+    }
+
 }

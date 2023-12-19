@@ -52,14 +52,20 @@ class CheckoutController extends AbstractController
             $min = $max = null;
 
             if ($range != null) {
+
+
                 $min = $range['min'];
                 $max = $range['max'];
+
+                $item['price'] = $item['price'] * $min + 0.3;
+                $item['price'] = $item['price']/$min;
             }
 
             $form = $this->createForm(PackageFormType::class, null, [
                 'min' => $min,
                 'max' => $max,
-                'categoryName' => $item["category_name"]
+                'categoryName' => $item["category_name"],
+                'unitPrice' => $item['price']
             ]);
 
             $form->handleRequest($request);
@@ -69,10 +75,14 @@ class CheckoutController extends AbstractController
 
                 $quantity = $data['quantity'];
                 $playerId = $data['id'];
+                $productId = $item["id"];
 
                 $namespace = Uuid::v4();
                 $uuid = Uuid::v5($namespace, $item['category_name']);
                 $orderNumber = $uuid->toRfc4122();
+
+                $toto = [$quantity , $playerId , $orderNumber, $productId];
+                dd($toto);
 
 
             };
