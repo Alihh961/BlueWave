@@ -7,6 +7,9 @@ body{
 .d-flex {
   display: flex;
 }
+.d-none{
+  display: none!important;
+}
 
 .flex-column {
   flex-direction: column;

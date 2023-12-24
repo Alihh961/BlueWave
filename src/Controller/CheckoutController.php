@@ -3,11 +3,17 @@
 namespace App\Controller;
 
 
+use App\Entity\Order;
+use App\Entity\OrderStatusHistory;
+use App\Entity\Status;
 use App\Form\PackageFormType;
+use App\Repository\OrderStatusHistoryRepository;
+use App\Repository\StatusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\Timezone;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -16,7 +22,8 @@ class CheckoutController extends AbstractController
 
 
     #[Route("checkout")]
-    public function index(Request $request, HttpClientInterface $httpClient)
+    public function index(Request $request, HttpClientInterface $httpClient ,
+                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository)
     {
 
         $id = $request->query->get('i');
@@ -58,7 +65,9 @@ class CheckoutController extends AbstractController
                 $max = $range['max'];
 
                 $item['price'] = $item['price'] * $min + 0.3;
-                $item['price'] = $item['price']/$min;
+                $item['price'] = $item['price'] / $min;
+            } else {
+                $item['price'] += 0.3;
             }
 
             $form = $this->createForm(PackageFormType::class, null, [
@@ -68,20 +77,55 @@ class CheckoutController extends AbstractController
                 'unitPrice' => $item['price']
             ]);
 
+
+
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
 
-                $quantity = $data['quantity'];
+                $data = $form->getData();
+                $productType = $item['product_type'];
+                if ($productType == 'package') {
+                    $quantity = 1;
+
+                } else {
+                    $quantity = $data['quantity'];
+
+                }
+
                 $playerId = $data['id'];
+                $price = $item['price'];
                 $productId = $item["id"];
+
+                $user = $this->getUser();
+
+                $beirutTimeZone = new \DateTimeZone("Asia/Beirut");
+                $dateTimeInBeirut = new \DateTime("now",$beirutTimeZone);
+
+                $currentStatus = $statusRepository->findOneBy(['name' =>'pending']);
+
 
                 $namespace = Uuid::v4();
                 $uuid = Uuid::v5($namespace, $item['category_name']);
                 $orderNumber = $uuid->toRfc4122();
 
-                $toto = [$quantity , $playerId , $orderNumber, $productId];
+                $toto = [$quantity, $playerId, $orderNumber, $productId];
+
+                $order = new Order();
+                $order->setOrderReference($orderNumber);
+                $order->setPrice($price);
+                $order->setUser($user);
+                $order->setCreatedAt($dateTimeInBeirut);
+
+                $orderStatusHistory = new OrderStatusHistory();
+                $orderStatusHistory->setOrder($order);
+                $orderStatusHistory->setStatus($currentStatus);
+                $orderStatusHistory->setStatusUpdateDate($dateTimeInBeirut);
+
+                $order->addOrderStatusHistory($orderStatusHistory);
+
+                dd($order);
+
                 dd($toto);
 
 

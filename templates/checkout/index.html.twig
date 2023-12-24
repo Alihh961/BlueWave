@@ -21,20 +21,40 @@
                 }) }}
 
 
-                {{ form_row(form.quantity) }}
+                {% if item.product_type == "package" %}
+
+                    {{ form_row(form.quantity, {
+                        'label': false,
+                        'attr': {
+                            'class': 'd-none',
+                            "value" : 1
+                        }
+                    }) }}
+
+                {% else %}
+
+                    {{ form_row(form.quantity) }}
+
+                {% endif %}
 
 
             </div>
 
-            {% if range.min and range.max %}
+            {% if range and  range.min and range.max %}
                 <div class="range">
-                    <b>Min</b> :{{ range.min }}
+                    <b>Min</b> :{{ range.min }} <span>&#8594;</span>
                     <b>Max</b>: {{ range.max }}
                 </div>
             {% endif %}
 
             <div class=" bottom d-flex flex-column gap-5">
-                <h5><span class="price">{{ item.price * range.min }}$</span></h5>
+                {% if range %}
+                    <h5><span class="price">{{ item.price * range.min }}$</span></h5>
+                {% else %}
+                    <h5><span class="price">{{ item.price }}$</span></h5>
+
+                {% endif %}
+
                 <button type="submit" class="buy">Buy</button>
 
                 <a class="back" href="/view-product?c={{ item.category_name }}">Back</a>

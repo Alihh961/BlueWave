@@ -35,11 +35,16 @@ class ViewProductController extends AbstractController
         $items = [];
 
         foreach ($dataArray as $item) {
-            if ($item["category_name"] == $categoryName) {
-                $min = $item['qty_values']['min'];
+            if ($item["category_name"] == $categoryName ) {
 
-                $item['price'] = $item['price'] * $min + 0.3;
-                $item['price'] = $item['price']/$min;
+                if(isset($item['qty_values']['min'])){
+                    $min = ($item['qty_values']['min']);
+
+                    $item['price'] = $item['price'] * $min + 0.3;
+                    $item['price'] = $item['price'] / $min;
+
+                }
+
 
                 $items[] = $item;
             }

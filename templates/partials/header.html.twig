@@ -1,6 +1,7 @@
 {% block body %}
 
 
+
     <div class="header-container">
         <img src="" alt="logo">
         <nav>
@@ -17,34 +18,34 @@
                     <a href="/admin">Administration</a>
                 {% endif %}
 
+                <div class="container">
+                    <div class="drop">
+                        <input id="toggle" type="checkbox" checked>
+                        <h5 class="toto"><span class="currentBalance">{{ app.user.currentBalance }}$</span> <span class="userName">{{ app.user.firstName }} {{ app.user.lastName }}</span><span class="arrow"></span></h5>
+                        <ul id="dropList">
+                            <li><a href="/admin">Profile</a></li>
+                            <li><a href="{{ path('app_logout') }}">logout</a></li>
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+
             {% endif %}
 
 
         </nav>
 
-        {% if app.user %}
-            {#            <a href="/profile"><span>{{ app.user.currentBalance }}$</span> {{ app.user.firstName }} {{ app.user.lastName }} #}
-            {#            </a> #}
-
-
-            <div class="sec-center">
-                <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
-                <label class="for-dropdown" for="dropdown">Dropdown Menu <i class="uil uil-arrow-down"></i></label>
-                <div class="section-dropdown">
-                    <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
-                    <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
-                    <label class="for-dropdown-sub" for="dropdown-sub">Dropdown Sub </label>
-                    <div class="section-dropdown-sub">
-                        <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
-
-                    </div>
-                </div>
-            </div>
-
-        {% else %}
+        {% if not app.user %}
+{#                        <a href="/profile"><span>{{ app.user.currentBalance }}$</span> {{ app.user.firstName }} {{ app.user.lastName }}#}
+{#                        </a>#}
             <a href="{{ path(app_login) }}">Login</a>
             <a href="{{ path(app_register) }}">Register</a>
 
         {% endif %}
     </div>
+
+
 {% endblock %}

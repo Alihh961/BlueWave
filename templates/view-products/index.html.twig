@@ -57,26 +57,31 @@
 
         {% for item in items %}
 
+
             {% if not item['available'] %}
 
                 <a class="product-container pointerEventsNone" href="checkout?i={{ item["id"] }}">
 
                     <div class="product">
+                        <h6>{{ item["name"] }} </h6>
 
                         <img class="unAvailableItem" src="{{ asset('images/test.png') }}"
                              alt="{{ item["category_name"] }}">
-                        <h6>{{ item["name"] }} - {{ item["price"] }}$</h6>
+                        <h6>{{ item["price"] }}$</h6>
 
                     </div>
                 </a>
             {% else %}
+
                 <a class="product-container" href="checkout?i={{ item["id"] }}">
 
                     <div class="product">
+                        <h6>{{ item["name"] }} </h6>
+
 
                         <img class="" src="{{ asset('images/test.png') }}"
                              alt="{{ item["category_name"] }}">
-                        <h6>{{ item["name"] }} - {{ item["price"] }}$</h6>
+                        <h6>{{ item["price"] }}$</h6>
 
 
                     </div>
