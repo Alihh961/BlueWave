@@ -2,8 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Attributes;
+use App\Entity\Category;
+use App\Entity\Item;
+use App\Entity\ItemType;
 use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
+use App\Entity\Params;
 use App\Entity\Status;
 use App\Entity\Transaction;
 use App\Entity\User;
@@ -54,6 +59,42 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud("All users", "fa fa-eye", User::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
+
+        yield MenuItem::subMenu("Items", 'fa fa-user')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create an item", "fa fa-plus", Item::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All items", "fa fa-eye", Item::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
+        yield MenuItem::subMenu("Items Type", 'fa fa-user')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create a type", "fa fa-plus", ItemType::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All types", "fa fa-eye", ItemType::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
+        yield MenuItem::subMenu("Category", 'fa fa-user')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create a category", "fa fa-plus", Category::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All categories", "fa fa-eye", Category::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
+        yield MenuItem::subMenu("Params", 'fa fa-user')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create a param", "fa fa-plus", Params::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All params", "fa fa-eye", Params::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
+        yield MenuItem::subMenu("Attributes", 'fa fa-user')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create an attribute", "fa fa-plus", Attributes::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All attributes", "fa fa-eye", Attributes::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
 
         yield MenuItem::subMenu("Status", 'fa fa-code-compare')
             ->setSubItems([

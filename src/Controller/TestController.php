@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
+use App\Repository\ItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("test" , name: "app_test")]
+#[Route("testddd" , name: "app_test")]
 class TestController extends AbstractController {
 
-    public function toto(){
+    public function toto(ItemRepository $itemRepository , CategoryRepository $categoryRepository , EntityManagerInterface $entityManager){
         $dataArray =
             [
                 [
@@ -2810,36 +2814,42 @@ class TestController extends AbstractController {
                 ]
             ]
 ;
-
+dd("toto");
         $newArraydata = [];
+        $categories = [];
         foreach ($dataArray as $data ){
-            $price = $data['price'];
-            $min = $data['qty_values']['min'];
+            $category = $data['category_name'];
+            $categoryEntity = $categoryRepository->findOneBy(['name' => $category]);
 
-            if($min){
-                if($price < 2){
 
-                    $newPrice = ($min * $price) + 0.1 ;
-                    $newPrice = $newPrice / $min;
 
-                }else if($price >= 2) {
-                    $newPrice = ($min * $price) + 0.3 ;
-                    $newPrice = $newPrice / $min;
-                }
-            }else{
-                if($price < 2){
-
-                    $newPrice = $price+ 0.1 ;
-
-                }else if($price >= 2) {
-                    $newPrice = $price + 0.3 ;
-                }
-            }
-
-            $data['price'] = $newPrice;
-            $newArraydata [] = $data;
-
-            dd($newPrice);
+//            $price = $data['price'];
+//            $min = $data['qty_values']['min'];
+//
+//            if($min){
+//                if($price < 2){
+//
+//                    $newPrice = ($min * $price) + 0.1 ;
+//                    $newPrice = $newPrice / $min;
+//
+//                }else if($price >= 2) {
+//                    $newPrice = ($min * $price) + 0.3 ;
+//                    $newPrice = $newPrice / $min;
+//                }
+//            }else{
+//                if($price < 2){
+//
+//                    $newPrice = $price+ 0.1 ;
+//
+//                }else if($price >= 2) {
+//                    $newPrice = $price + 0.3 ;
+//                }
+//            }
+//
+//            $data['price'] = $newPrice;
+//            $newArraydata [] = $data;
+//
+//            dd($newPrice);
 
         }
 

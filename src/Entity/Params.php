@@ -18,6 +18,9 @@ class Params
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'params')]
     private Collection $items;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -51,6 +54,18 @@ class Params
         if ($this->items->removeElement($item)) {
             $item->removeParam($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

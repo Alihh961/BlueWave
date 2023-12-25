@@ -16,14 +16,14 @@ class Attributes
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::ARRAY , nullable: true)]
     private array $value_ = [];
 
     #[ORM\OneToMany(mappedBy: 'attributes', targetEntity: Item::class)]
     private Collection $items;
+
+    #[ORM\Column(type: Types::ARRAY , nullable: true)]
+    private array $minAndMax = [];
 
     public function __construct()
     {
@@ -35,17 +35,8 @@ class Attributes
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
-    public function setName(string $name): static
-    {
-        $this->name = $name;
 
-        return $this;
-    }
 
     public function getValue(): array
     {
@@ -85,6 +76,18 @@ class Attributes
                 $item->setAttributes(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMinAndMax(): array
+    {
+        return $this->minAndMax;
+    }
+
+    public function setMinAndMax(array $minAndMax): static
+    {
+        $this->minAndMax = $minAndMax;
 
         return $this;
     }

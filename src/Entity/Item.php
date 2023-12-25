@@ -40,6 +40,9 @@ class Item
     #[ORM\JoinColumn(nullable: false)]
     private ?ItemType $itemType = null;
 
+    #[ORM\Column]
+    private ?int $visionId = null;
+
     public function __construct()
     {
         $this->params = new ArrayCollection();
@@ -142,6 +145,18 @@ class Item
     public function setItemType(?ItemType $itemType): static
     {
         $this->itemType = $itemType;
+
+        return $this;
+    }
+
+    public function getVisionId(): ?int
+    {
+        return $this->visionId;
+    }
+
+    public function setVisionId(int $visionId): static
+    {
+        $this->visionId = $visionId;
 
         return $this;
     }

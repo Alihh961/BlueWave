@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,7 +52,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/test', name: 'app_test')]
-    public function test(HttpClientInterface $httpClient): Response
+    public function test(HttpClientInterface $httpClient , EntityManagerInterface $entityManager , CategoryRepository $categoryRepository): Response
     {
         $dataArray =
             [
@@ -2853,33 +2856,50 @@ class HomeController extends AbstractController
 
         $newItems = [];
 
-
-
         foreach ($dataArray as $item) {
 
-            $price = $item['price'];
-            $qtyValues = $item['qty_values'];
-            $min = 1;
+            $categoryName = $item['category_name'];
 
-            if ($item['product_type'] != 'specificPackage') {
-                if ($qtyValues != null) {
-                    $min = $qtyValues['min'];
+            // Check if the category already exists
+            $existingCategory = $categoryRepository->findOneBy(['name' => $categoryName]);
+
+            if (!$existingCategory) {
+                // Category doesn't exist, create and persist a new one
+                $newCategory = new Category();
+                $newCategory->setName($categoryName);
+
+                try {
+                    $entityManager->persist($newCategory);
+                    $entityManager->flush();
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
                 }
-
-                if ($price < 2) {
-
-                    $newPrice = ($min * $price) + 0.1;
-
-                } else{
-                    $newPrice = ($min * $price) + 0.3;
-                }
-
-                $newPrice = $newPrice / $min;
-
-                $item['price'] = $newPrice;
-                $newItems [] = $item;
-
             }
+//            dd('done');
+//
+//            $price = $item['price'];
+//            $qtyValues = $item['qty_values'];
+//            $min = 1;
+//
+//            if ($item['product_type'] != 'specificPackage') {
+//                if ($qtyValues != null) {
+//                    $min = $qtyValues['min'];
+//                }
+//
+//                if ($price < 2) {
+//
+//                    $newPrice = ($min * $price) + 0.1;
+//
+//                } else{
+//                    $newPrice = ($min * $price) + 0.3;
+//                }
+//
+//                $newPrice = $newPrice / $min;
+//
+//                $item['price'] = $newPrice;
+//                $newItems [] = $item;
+//
+//            }
 
 
 
