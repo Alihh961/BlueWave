@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ItemRepository;
+use App\Repository\VisionItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ItemRepository::class)]
-class Item
+#[ORM\Entity(repositoryClass: VisionItemRepository::class)]
+class VisionItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,7 +32,7 @@ class Item
     #[ORM\ManyToMany(targetEntity: Params::class, inversedBy: 'items')]
     private Collection $params;
 
-    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\ManyToOne(inversedBy: 'items', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Attributes $attributes = null;
 

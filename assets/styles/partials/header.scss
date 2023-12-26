@@ -10,6 +10,8 @@
   justify-content: space-between;
   backdrop-filter: blur(8px) brightness(1.2);
   margin-bottom: 50px;
+  color: black;
+  font-weight: 900;
 
   nav {
 
@@ -71,7 +73,7 @@
 
 // dropdown menu
 
-.container {
+.container-dropDown {
   max-width: 300px;
   color: #36454F;
 
@@ -89,7 +91,7 @@
       height: 40px;
       text-transform: uppercase;
       margin: 0;
-      color: white;
+      color: white!important;
       font-weight: 900;
       display: flex;
       gap: 10px;

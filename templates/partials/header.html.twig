@@ -18,7 +18,7 @@
                     <a href="/admin">Administration</a>
                 {% endif %}
 
-                <div class="container">
+                <div class="container-dropDown">
                     <div class="drop">
                         <input id="toggle" type="checkbox" checked>
                         <h5 class="toto"><span class="currentBalance">{{ app.user.currentBalance }}$</span> <span class="userName">{{ app.user.firstName }} {{ app.user.lastName }}</span><span class="arrow"></span></h5>
@@ -39,8 +39,8 @@
         </nav>
 
         {% if not app.user %}
-{#                        <a href="/profile"><span>{{ app.user.currentBalance }}$</span> {{ app.user.firstName }} {{ app.user.lastName }}#}
-{#                        </a>#}
+                        <a href="/profile"><span>{{ app.user.currentBalance }}$</span> {{ app.user.firstName }} {{ app.user.lastName }}
+                        </a>
             <a href="{{ path(app_login) }}">Login</a>
             <a href="{{ path(app_register) }}">Register</a>
 

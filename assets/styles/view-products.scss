@@ -1,0 +1,47 @@
+.products {
+  display: flex;
+  width: 96%;
+  flex-wrap: wrap;
+  margin: auto;
+  gap: 5px;
+  justify-content: center;
+}
+
+.product-container {
+  display: block;
+  max-width: 200px;
+  border-radius: 5px;
+  overflow: hidden;
+  color: white;
+
+}
+
+.product-container:hover {
+  opacity: 0.5;
+}
+
+.product {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.product img {
+  width: 100%;
+}
+
+.product h6 {
+  text-align: center;
+  margin: 0;
+  padding: 5px 0;
+  background-color: #1c7430;
+}
+
+.unAvailableItem {
+  filter: grayscale(1);
+}
+
+.pointerEventsNone {
+  pointer-events: none;
+}

@@ -3,85 +3,35 @@
 
 {% block body %}
 
-    <style>
-        .products {
-            display: flex;
-            width: 96%;
-            flex-wrap: wrap;
-            margin: auto;
-            gap: 5px;
-            justify-content: center;
-        }
-
-        .product-container {
-            display: block;
-            max-width: 200px;
-            border-radius: 5px;
-            overflow: hidden;
-            color: white;
-
-        }
-
-        .product-container:hover {
-            opacity: 0.5;
-        }
-
-        .product {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-
-        }
-
-        .product img {
-            width: 100%;
-        }
-
-        .product h6 {
-            text-align: center;
-            margin: 0;
-            padding: 5px 0;
-            background-color: #1c7430;
-        }
-
-        .unAvailableItem {
-            filter: grayscale(1);
-        }
-
-        .pointerEventsNone {
-            pointer-events: none;
-        }
-
-    </style>
     <section class="products">
 
         {% for item in items %}
 
 
-            {% if not item['available'] %}
+            {% if not item.available %}
 
-                <a class="product-container pointerEventsNone" href="checkout?i={{ item["id"] }}">
+                <a class="product-container pointerEventsNone" href="checkout?i={{ item.id }}">
 
                     <div class="product">
-                        <h6>{{ item["name"] }} </h6>
+                        <h6>{{ item.name }} </h6>
 
                         <img class="unAvailableItem" src="{{ asset('images/test.png') }}"
-                             alt="{{ item["category_name"] }}">
-                        <h6>{{ item["price"] }}$</h6>
+                             alt="{{ item.category.name }}">
+                        <h6>{{ item.price }}$</h6>
 
                     </div>
                 </a>
             {% else %}
 
-                <a class="product-container" href="checkout?i={{ item["id"] }}">
+                <a class="product-container" href="checkout?i={{ item.id }}">
 
                     <div class="product">
-                        <h6>{{ item["name"] }} </h6>
+                        <h6>{{ item.name }} </h6>
 
 
                         <img class="" src="{{ asset('images/test.png') }}"
-                             alt="{{ item["category_name"] }}">
-                        <h6>{{ item["price"] }}$</h6>
+                             alt="{{ item.category.name }}">
+                        <h6>{{ item.price }}$</h6>
 
 
                     </div>

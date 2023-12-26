@@ -2,23 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\Item;
+use App\Entity\VisionItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Item>
+ * @extends ServiceEntityRepository<VisionItem>
  *
- * @method Item|null find($id, $lockMode = null, $lockVersion = null)
- * @method Item|null findOneBy(array $criteria, array $orderBy = null)
- * @method Item[]    findAll()
- * @method Item[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method VisionItem|null find($id, $lockMode = null, $lockVersion = null)
+ * @method VisionItem|null findOneBy(array $criteria, array $orderBy = null)
+ * @method VisionItem[]    findAll()
+ * @method VisionItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ItemRepository extends ServiceEntityRepository
+class VisionItemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Item::class);
+        parent::__construct($registry, VisionItem::class);
     }
 
 //    /**

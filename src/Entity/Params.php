@@ -15,7 +15,7 @@ class Params
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'params')]
+    #[ORM\ManyToMany(targetEntity: VisionItem::class, mappedBy: 'params')]
     private Collection $items;
 
     #[ORM\Column(length: 255)]
@@ -32,14 +32,14 @@ class Params
     }
 
     /**
-     * @return Collection<int, Item>
+     * @return Collection<int, VisionItem>
      */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
-    public function addItem(Item $item): static
+    public function addItem(VisionItem $item): static
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
@@ -49,7 +49,7 @@ class Params
         return $this;
     }
 
-    public function removeItem(Item $item): static
+    public function removeItem(VisionItem $item): static
     {
         if ($this->items->removeElement($item)) {
             $item->removeParam($this);
@@ -68,6 +68,11 @@ class Params
         $this->name = $name;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
 

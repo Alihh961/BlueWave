@@ -5,10 +5,14 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
+use App\Entity\Params;
 use App\Entity\Status;
 use App\Form\PackageFormType;
 use App\Repository\OrderStatusHistoryRepository;
 use App\Repository\StatusRepository;
+use App\Repository\VisionItemRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,60 +26,52 @@ class CheckoutController extends AbstractController
 
 
     #[Route("checkout")]
-    public function index(Request $request, HttpClientInterface $httpClient ,
-                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository)
+    public function index(Request $request, HttpClientInterface $httpClient,EntityManagerInterface $entityManager,
+                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository, VisionItemRepository $visionItemRepository)
     {
 
-        $id = $request->query->get('i');
+        $itemId = $request->query->get('i');
+        $visionItem = $visionItemRepository->find($itemId);
 
+        if ($visionItem) {
 
-        $apiExt = $_ENV['API_EXTERNAL_URL'];
+            $categoryName = $visionItem->getCategory()->getName();
+            $price = $visionItem->getPrice();
 
-        $token = $_ENV['TOKEN_API_FLASH'];
+            $params = $visionItem->getParams();
 
-
-        $headers = [
-            'api-token' => $token,
-
-        ];
-
-        $response = $httpClient->request("GET", $apiExt . "/products", ["headers" => $headers]);
-
-        $dataArray = $response->toArray();
-
-        $item = [];
-
-        for ($i = 0; $i < count($dataArray); $i++) {
-            if ($dataArray[$i]["id"] == $id) {
-
-                $item = $dataArray[$i];
+            $paramsInput = [];
+            foreach ($params as $param) {
+                $paramsInput [] = $param->getName();
 
             }
-        }
 
-        if ($item) {
+            $minAndMax = $visionItem->getAttributes()->getMinAndMax();
 
-            $range = $item["qty_values"];
-            $min = $max = null;
+            $range = [];
+            if ($minAndMax) {
+                $min = $minAndMax[0];
+                $max = $minAndMax[1];
 
-            if ($range != null) {
+                if (is_array($min) || is_array($max)) {
+                    $min = $min[0];
+                    $max = $max[0];
+                }
 
-
-                $min = $range['min'];
-                $max = $range['max'];
-
-                $item['price'] = $item['price'] * $min + 0.3;
-                $item['price'] = $item['price'] / $min;
             } else {
-                $item['price'] += 0.3;
+                $min = $max = null;
             }
+
 
             $form = $this->createForm(PackageFormType::class, null, [
-                'min' => $min,
-                'max' => $max,
-                'categoryName' => $item["category_name"],
-                'unitPrice' => $item['price']
+                "paramsInput" => $paramsInput,
+                "min" => $min,
+                "max" => $max,
+                "categoryName" => $categoryName,
+                "price" => $price
             ]);
+
+            try{
 
 
 
@@ -84,38 +80,57 @@ class CheckoutController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
 
                 $data = $form->getData();
-                $productType = $item['product_type'];
+                $productType = $visionItem->getItemType()->getName();
+
+                // if the product of type package then set quantity to 1
+                // if the product isn't of type package then get the quantity from the form
                 if ($productType == 'package') {
                     $quantity = 1;
-
                 } else {
                     $quantity = $data['quantity'];
-
+                    if (!$quantity) {
+                        throw new \Exception("Quantity Error");
+                    }
                 }
 
-                $playerId = $data['id'];
-                $price = $item['price'];
-                $productId = $item["id"];
+                $paramsEntered = "";
+                foreach ($paramsInput as $paramInput) {
+                    $paramInput = str_replace(" ", "", $paramInput);
+                    if ($data[$paramInput]) {
+
+                        $paramsEntered .= $paramInput . " => " . $data[$paramInput] . ";";
+
+
+                    } else {
+                        throw new \Exception('Params Error');
+                    }
+                }
+
+
+                $totalPrice = $price * $quantity;
 
                 $user = $this->getUser();
 
                 $beirutTimeZone = new \DateTimeZone("Asia/Beirut");
-                $dateTimeInBeirut = new \DateTime("now",$beirutTimeZone);
+                $dateTimeInBeirut = new \DateTime("now", $beirutTimeZone);
 
-                $currentStatus = $statusRepository->findOneBy(['name' =>'pending']);
+                $currentStatus = $statusRepository->findOneBy(['name' => 'pending']);
 
 
                 $namespace = Uuid::v4();
-                $uuid = Uuid::v5($namespace, $item['category_name']);
+                $uuid = Uuid::v5($namespace, $visionItem->getCategory()->getName());
                 $orderNumber = $uuid->toRfc4122();
 
-                $toto = [$quantity, $playerId, $orderNumber, $productId];
 
                 $order = new Order();
                 $order->setOrderReference($orderNumber);
                 $order->setPrice($price);
+                $order->setTotalPrice($totalPrice);
+                $order->setParamsEntered($paramsEntered);
                 $order->setUser($user);
                 $order->setCreatedAt($dateTimeInBeirut);
+                $order->setItem($visionItem->getName());
+                $order->setQuantity($quantity);
 
                 $orderStatusHistory = new OrderStatusHistory();
                 $orderStatusHistory->setOrder($order);
@@ -124,17 +139,26 @@ class CheckoutController extends AbstractController
 
                 $order->addOrderStatusHistory($orderStatusHistory);
 
-                dd($order);
 
-                dd($toto);
+                $entityManager->persist($order);
+                $entityManager->flush();
+
+                return $this->json("data added with success");
 
 
             };
+            }
+            catch(\Exception $exception){
+                throw new \Exception($exception);
+            }
+
 
             return $this->render("checkout/index.html.twig", [
-                "item" => $item,
+                "item" => $visionItem,
+                "min" => $min,
+                "max" => $max,
                 "form" => $form->createView(),
-                "range" => $range
+                "params" => $params
             ]);
 
 

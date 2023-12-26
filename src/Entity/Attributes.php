@@ -19,7 +19,7 @@ class Attributes
     #[ORM\Column(type: Types::ARRAY , nullable: true)]
     private array $value_ = [];
 
-    #[ORM\OneToMany(mappedBy: 'attributes', targetEntity: Item::class)]
+    #[ORM\OneToMany(mappedBy: 'attributes', targetEntity: VisionItem::class)]
     private Collection $items;
 
     #[ORM\Column(type: Types::ARRAY , nullable: true)]
@@ -51,14 +51,14 @@ class Attributes
     }
 
     /**
-     * @return Collection<int, Item>
+     * @return Collection<int, VisionItem>
      */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
-    public function addItem(Item $item): static
+    public function addItem(VisionItem $item): static
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
@@ -68,7 +68,7 @@ class Attributes
         return $this;
     }
 
-    public function removeItem(Item $item): static
+    public function removeItem(VisionItem $item): static
     {
         if ($this->items->removeElement($item)) {
             // set the owning side to null (unless already changed)

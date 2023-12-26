@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Attributes;
 use App\Entity\Category;
-use App\Entity\Item;
+use App\Entity\VisionItem;
 use App\Entity\ItemType;
 use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
@@ -60,10 +60,10 @@ class DashboardController extends AbstractDashboardController
 
             ]);
 
-        yield MenuItem::subMenu("Items", 'fa fa-user')
+        yield MenuItem::subMenu("Vision Items", 'fa fa-user')
             ->setSubItems([
-                MenuItem::linkToCrud("Create an item", "fa fa-plus", Item::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud("All items", "fa fa-eye", Item::class)->setAction(Crud::PAGE_INDEX)
+                MenuItem::linkToCrud("Create a vision Item", "fa fa-plus", VisionItem::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All vision items", "fa fa-eye", VisionItem::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
 

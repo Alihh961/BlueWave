@@ -2,73 +2,41 @@
 
 
 {% block body %}
+    <div class="m-auto w-fit">
+        {{ form_start(form, {
+            "attr" : {"class" : "searchForm-homePage"}
+        }) }}
 
-    <style>
-        .products {
-            display: flex;
-            width: 90%;
-            flex-wrap: wrap;
-            margin: 50px auto 0 auto;
-            gap: 25px;
-            justify-content: center;
-        }
-
-        .product-container {
-            display: block;
-            max-width: 200px;
-            border-radius: 5px;
-            overflow: hidden;
-            color: white;
-            text-decoration: none;
-
-
-        }
-
-        .product-container:hover {
-            opacity: 0.5;
-        }
-
-        .product {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 25px;
-
-        }
-
-        .product img {
-            width: 100%;
-        }
-
-        .product h6 {
-            text-align: center;
-            margin: 0;
-            padding: 5px 0;
-            background-color: #1c7430;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-            font-size: 13px;
-
-        }
-
-
-    </style>
+        {{ form_label(form.gameName, 'Game Name :', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.gameName , {"attr" : {"class": "form-control"}}) }}
+        <div class="col-12 text-center mt-2">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
     <section class="products">
 
-    {% for item in items %}
 
-        <a class="product-container" href="view-product?c={{ item["category_name"] }}">
+        {% for category in categories %}
 
-            <div class="product">
+            <a class="product-container" href="view-product?c={{ category.id }}">
 
-                <img class="" src="{{ asset('images/test.png') }}"
-                     alt="{{ item["category_name"] }}">
-                <h6>{{ item["category_name"] }}</h6>
+                <div class="product">
 
-            </div>
-        </a>
+                    <img class="" src="{{ asset('images/test.png') }}"
+                         alt="{{ category.name }}">
+                    <h6>{{ category.name }}</h6>
 
-    {% endfor %}
+                </div>
+            </a>
+
+        {% endfor %}
 
     </section>
+
+    <div class="navigation m-auto w-fit">
+        {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+    </div>
+
+
 {% endblock %}

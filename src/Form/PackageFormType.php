@@ -18,44 +18,34 @@ class PackageFormType extends AbstractType
         $min = $options['min'];
         $max = $options['max'];
         $categoryName = $options['categoryName'];
-        $unitPrice = $options['unitPrice'];
+        $params = $options['paramsInput'];
+        $unitPrice = $options['price'];
 
 
-        $builder
-            ->add('id', TextType::class , [
-                "label" => "ID",
-                "attr" => [
-                    "placeholder" => "Your ID in $categoryName app",
+        if ($min && $max && $min != $max && $max != 1) {
 
-                ],
-                "constraints" => [
-                    new NotBlank([
-                        "message"=> "id is required"
-                    ])
-                ]
+            $builder
+                ->add('quantity', IntegerType::class, [
+                    "constraints" => [
+                        new NotBlank([
+                            "message" => "quantity is required"
+                        ])
+                    ]
+                    ,
+                    "attr" => [
+                        "value" => $min,
+                        'min' => $min,
+                        'max' => $max,
+                        'minMessage' => 'The minimium value is ' . $min,
+                        'maxMessage' => 'The max value is ' . $max,
 
-            ] )
-            ->add('quantity' , IntegerType::class , [
-                "constraints" => [
-                    new NotBlank([
-                        "message" => "quantity is required"
-                    ])
-                ]
-                ,
-                "attr"=>[
-                    "value" =>$min,
-                    'min' => $min,
-                    'max' => $max,
-                    'minMessage' => 'The minimium value is ' . $min,
-                    'maxMessage' => 'The max value is ' . $max,
-
-                    'inputmode' => 'numeric',
-                    'oninput' => "
+                        'inputmode' => 'numeric',
+                        'oninput' => "
                     handleInput(event);
                         function handleInput(event){
                         let input = document.querySelector('#package_form_quantity');
                         let value = event.target.value;
-                        let price = input.value * $unitPrice;
+                        let price = Math.floor((input.value * $unitPrice)*100)/100;
 
                         let priceSpan = document.querySelector('.price');
                             if(value.includes('.')){
@@ -74,18 +64,40 @@ class PackageFormType extends AbstractType
                         
                         };
                     "
-                ]
-            ])
-        ;
+                    ]
+                ]);
+        }
+
+
+        for ($i = 0; $i < count($params); $i++) {
+
+            $builder
+                ->add(str_replace(" " , "" ,$params[$i]), TextType::class, [
+                    "label" => ucwords($params[$i]),
+                    "attr" => [
+//                        "placeholder" => ucwords($params[$i]),
+
+                    ],
+                    "constraints" => [
+                        new NotBlank([
+                            "message" => ucfirst($params[$i]) ." is required"
+                        ])
+                    ]
+
+                ]);
+        }
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            "min" => null ,
+            "min" => null,
             "max" => null,
+            "paramsInput" => null,
             "categoryName" => null,
-            "unitPrice" => null
+            "price" => null
         ]);
     }
 }

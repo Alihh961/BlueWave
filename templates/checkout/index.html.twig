@@ -3,65 +3,63 @@
 
 {% block body %}
 
-    {% if item.product_type %}
+    {% if item %}
+        <div class="row">
 
-        <section class="checkout-section">
-            <h3>{{ item.name }}</h3>
+            <section class="checkout-section w-50 p-0">
+                <h3 class="col-12 m-0">{{ item.name }}</h3>
 
-            {{ form_start(form ,{
-                "attr" : {"class" : "package-checkout-form"}
-            }) }}
 
-            <div class="inputs-div">
-
-                {{ form_row(form.id , {
-                    "attr" : {
-                        "class" : ""
-                    }
+                {{ form_start(form ,{
+                    "attr" : {"class" : "package-checkout-form"}
                 }) }}
 
+                {% if min and max %}
 
-                {% if item.product_type == "package" %}
-
-                    {{ form_row(form.quantity, {
-                        'label': false,
-                        'attr': {
-                            'class': 'd-none',
-                            "value" : 1
-                        }
-                    }) }}
-
-                {% else %}
-
-                    {{ form_row(form.quantity) }}
-
+                    {% if max == 1 %}
+                        <div class="range">
+                            Only one item in a time
+                        </div>
+                    {% else %}
+                        <div class="range">
+                            <b>Min</b> :{{ min }} <span>&#8594;</span>
+                            <b>Max</b>: {{ max }}
+                        </div>
+                    {% endif %}
                 {% endif %}
 
+                <div class="inputs-div">
 
-            </div>
+                    {% for param in params %}
+                        {% set paramWithoutSpaces = param.name|replace({' ': ''}) %}
 
-            {% if range and  range.min and range.max %}
-                <div class="range">
-                    <b>Min</b> :{{ range.min }} <span>&#8594;</span>
-                    <b>Max</b>: {{ range.max }}
+                        {{ form_row(form[paramWithoutSpaces]) }}
+
+
+                    {% endfor %}
+
+                    {% if min and max and min != max and max != 1 %}
+                        {{ form_row(form.quantity) }}
+
+
+                    {% endif %}
                 </div>
-            {% endif %}
 
-            <div class=" bottom d-flex flex-column gap-5">
-                {% if range %}
-                    <h5><span class="price">{{ item.price * range.min }}$</span></h5>
-                {% else %}
-                    <h5><span class="price">{{ item.price }}$</span></h5>
+                <div class=" bottom d-flex flex-column">
+                    {% if min and max %}
+                        <h5><span class="price">{{ item.price * min }}$</span></h5>
+                    {% else %}
+                        <h5><span class="price">{{ item.price }}$</span></h5>
 
-                {% endif %}
+                    {% endif %}
 
-                <button type="submit" class="buy">Buy</button>
+                    <button type="submit" class="buy">Buy</button>
 
-                <a class="back" href="/view-product?c={{ item.category_name }}">Back</a>
-            </div>
-            {{ form_end(form) }}
-        </section>
-
+                    <a class="back" href="/view-product?c={{ item.category.id }}">Back</a>
+                </div>
+                {{ form_end(form) }}
+            </section>
+        </div>
 
     {% endif %}
 

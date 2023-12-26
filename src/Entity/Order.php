@@ -32,8 +32,17 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: '_order', targetEntity: OrderStatusHistory::class)]
+    #[ORM\OneToMany(mappedBy: '_order', targetEntity: OrderStatusHistory::class , cascade: ['persist'])]
     private Collection $orderStatusHistory;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $totalPrice = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $paramsEntered = null;
 
     public function __construct()
     {
@@ -132,6 +141,42 @@ class Order
                 $orderStatusHistory->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?string
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(string $totalPrice): static
+    {
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getParamsEntered(): ?string
+    {
+        return $this->paramsEntered;
+    }
+
+    public function setParamsEntered(string $paramsEntered): static
+    {
+        $this->paramsEntered = $paramsEntered;
 
         return $this;
     }

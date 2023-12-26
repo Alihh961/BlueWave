@@ -24,6 +24,11 @@
     padding: 25px 0px;
     width: 100%;
 
+    .range {
+      color: white ;
+      font-weight: 900;
+    }
+
     .inputs-div {
       display: flex;
       justify-content: center;
@@ -41,20 +46,25 @@
           left: 3px;
           background: #023e61;
           height: 13px;
-          color: red;
+          color: black;
+          font-weight: 900;
+
+
+        }
+        input {
+
+          height: 30px;
+          outline: none;
+          border: 0.5px solid black;
+          background: #023e61;
+          min-width: 125px;
+          color: white;
+          padding-left: 5px;
 
         }
       }
 
-      input {
 
-        height: 30px;
-        outline: none;
-        border: 0.5px solid black;
-        background: #023e61;
-        min-width: 125px;
-
-      }
     }
 
 
@@ -71,7 +81,7 @@
 
     button.buy {
       width: 100px;
-      margin: auto;
+      margin: 0 auto 10px auto;
       cursor: pointer;
       background-image: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
       outline: none;

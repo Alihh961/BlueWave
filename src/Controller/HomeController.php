@@ -2,57 +2,71 @@
 
 namespace App\Controller;
 
+use App\Entity\Attributes;
 use App\Entity\Category;
+use App\Entity\Params;
+use App\Entity\VisionItem;
+use App\Form\SearchTypeFormType;
 use App\Repository\CategoryRepository;
+use App\Repository\ItemTypeRepository;
+use App\Repository\ParamsRepository;
+use App\Repository\VisionItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
-    public function index(HttpClientInterface $httpClient): Response
+
+    public function __construct(
+        private PaginatorInterface $paginator
+    )
     {
-        $token = $_ENV['TOKEN_API_FLASH'];
-        $apiExt = $_ENV['API_EXTERNAL_URL'];
-
-
-        $headers = [
-            'api-token' => $token,
-
-        ];
-        $response = $httpClient->request("GET", $apiExt . "/products", ["headers" => $headers]);
-
-        $data = $response->getContent();
-
-
-        // convert into array and delete the product that exists more than one time
-        $dataArray = $response->toArray();
-
-        $items = [];
-        $categoryNames = array_column($items, 'category_name');
-
-        foreach ($dataArray as $item) {
-            // Check if the category name is not in the $items array
-            if (!in_array($item['category_name'], $categoryNames)) {
-                $items[] = $item;
-                $categoryNames[] = $item['category_name'];
-            }
-        }
-
-//        dd($items);
-
-
-        return $this->render('home/index.html.twig', [
-            "items" => $items,
-            "apiExt" => $apiExt
-        ]);
     }
 
-    #[Route('/test', name: 'app_test')]
-    public function test(HttpClientInterface $httpClient , EntityManagerInterface $entityManager , CategoryRepository $categoryRepository): Response
+    #[Route('/', name: 'app_home')]
+    public function index(HttpClientInterface $httpClient , VisionItemRepository $visionItemRepository
+    , CategoryRepository $categoryRepository, Request $request): Response
+    {
+
+        $qb = $categoryRepository->getQbAll();
+
+        $form = $this->createForm(SearchTypeFormType::class);
+        $form->handleRequest($request);
+
+
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $gameName = $data['gameName'];
+
+            $qb->where("c.name LIKE :name")
+                ->setParameter("name" , "%" . $gameName . "%");
+
+        }
+
+        $pagination = $this->paginator->paginate(
+            $qb ,
+            $request->query->get("page" ,1),
+            10
+        );
+
+
+        return $this->render(
+            'home/index.html.twig',[
+                "categories" => $pagination,
+                "form" => $form->createView()
+            ]
+        );
+
+    }
+
+//    #[Route('', name: '')]
+    public function test(HttpClientInterface  $httpClient, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository,
+                         VisionItemRepository $visionItemRepository, ParamsRepository $paramsRepository,ItemTypeRepository $itemTypeRepository): Response
     {
         $dataArray =
             [
@@ -2855,61 +2869,133 @@ class HomeController extends AbstractController
             ];
 
         $newItems = [];
+        $visionItemEntities = [];
 
         foreach ($dataArray as $item) {
 
-            $categoryName = $item['category_name'];
 
-            // Check if the category already exists
-            $existingCategory = $categoryRepository->findOneBy(['name' => $categoryName]);
+            $price = $item['price'];
+            $qtyValues = $item['qty_values'];
+            $min = 1;
 
-            if (!$existingCategory) {
-                // Category doesn't exist, create and persist a new one
-                $newCategory = new Category();
-                $newCategory->setName($categoryName);
+            if ($item['product_type'] != 'specificPackage') {
 
-                try {
-                    $entityManager->persist($newCategory);
-                    $entityManager->flush();
-                } catch (\Exception $e) {
-                    throw new \Exception($e->getMessage());
+                // setting the new price
+                if ($qtyValues != null) {
+                    $min = $qtyValues['min'];
                 }
+
+                //if the price is less than 2€ we add 10 cents
+                if ($price < 2) {
+
+                    $newPrice = ($min * $price) + 0.1;
+
+                    // if the price is equal or larger than 2€ we
+                } else {
+                    $newPrice = ($min * $price) + 0.3;
+                }
+
+                $newPrice = $newPrice / $min;
+
+                $item['price'] = $newPrice;
+
+
+                $visionItem = new VisionItem();
+
+
+                // get item name
+                $itemName = $item['name'];
+
+                // availability is always true for now
+                $availability = true;
+
+                // get category name then select the category entity using its name
+                $category = $item['category_name'];
+                $categoryEntity = $categoryRepository->findOneBy(['name' => $category]);
+
+//                dd($categoryEntity);
+
+                // selecting itemType entity using the item type name
+                $itemTypeEntity = $itemTypeRepository->findOneBy(['name' => $item['product_type']]);
+//                dd($itemTypeEntity);
+
+                // selecting the params of each item and select the params entity using its name
+                $params = $item['params'];
+                for ($i = 0; $i < count($params); $i++) {
+
+
+                    switch ($params[$i]) {
+                        case "playerId" :
+                            $paramsEntity = $paramsRepository->findOneBy(['name' => 'player id']);
+                            break;
+                        case "password" :
+                            $paramsEntity = $paramsRepository->findOneBy(['name' => 'password']);
+                            break;
+                        case "email" :
+                            $paramsEntity = $paramsRepository->findOneBy(['name' => 'email']);
+                            break;
+                        case "contactNumber" :
+                            $paramsEntity = $paramsRepository->findOneBy(['name' => 'phone number']);
+                            break;
+                        case "selectServer":
+                        case "server" :
+                            $paramsEntity = $paramsRepository->findOneBy(['name' => 'server']);
+                            break;
+                        case "playerTag" :
+                            $paramsEntity = $paramsRepository->findOneBy(['name' => 'player tag']);
+                            break;
+
+                        default :
+                            $paramsEntity = null;
+                            break;
+                    }
+
+                    // adding the selected paramsEntity
+                    if ($paramsEntity) {
+                        $visionItem->addParam($paramsEntity);
+
+                    }
+
+
+                }
+
+                // getting the qty_values of each item and set it to the attributes
+                $attributes = $item['qty_values'];
+                $attributeEntity = new Attributes();
+
+                if ($attributes == null) {
+                    $attributeEntity->setMinAndMax([[1] ,[1]]);
+
+                } else {
+                    $attributeEntity->setMinAndMax([$attributes['min'], $attributes['max']]);
+                }
+
+                $visionItem->setAttributes($attributeEntity);
+                $visionItem->setCategory($categoryEntity);
+
+                $visionItem->setItemType($itemTypeEntity);
+                $visionItem->setName($itemName);
+                $visionItem->setPrice($newPrice);
+                $visionItem->setAvailable(true);
+                $visionItem->setVisionId($item['id']);
+
+
+
             }
-//            dd('done');
-//
-//            $price = $item['price'];
-//            $qtyValues = $item['qty_values'];
-//            $min = 1;
-//
-//            if ($item['product_type'] != 'specificPackage') {
-//                if ($qtyValues != null) {
-//                    $min = $qtyValues['min'];
-//                }
-//
-//                if ($price < 2) {
-//
-//                    $newPrice = ($min * $price) + 0.1;
-//
-//                } else{
-//                    $newPrice = ($min * $price) + 0.3;
-//                }
-//
-//                $newPrice = $newPrice / $min;
-//
-//                $item['price'] = $newPrice;
-//                $newItems [] = $item;
-//
-//            }
+            try{
+                $entityManager->persist($visionItem);
+                $entityManager->flush();
 
-
+            }
+            catch(\Exception $exception){
+                throw new \Exception($exception);
+            }
 
 
         }
 
-        $jsonData = json_encode($newItems);
-        echo '<pre>';
-        print_r($jsonData);
-        echo '</pre>';
+//        dd($visionItemEntities);
+        return $this->json('Route logic must be edited');
 
     }
 
