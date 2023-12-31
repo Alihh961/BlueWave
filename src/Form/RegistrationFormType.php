@@ -27,21 +27,29 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add("firstName",TextType::class , [
-                "constraints"=> [
+            ->add("firstName", TextType::class, [
+                "constraints" => [
+                    new Regex ([
+                        'pattern' => '/^[a-zA-Z]+$/',
+                        "message" => "First name: Only letters and no white spaces"
+                    ]),
                     new NotBlank([
-                        "message"=> "First Name required"
+                        "message" => "First Name required"
                     ])
                 ]
             ])
-            ->add("lastName",TextType::class , [
-                "constraints"=> [
+            ->add("lastName", TextType::class, [
+                "constraints" => [
+                    new Regex ([
+                        'pattern' => '/^[a-zA-Z]+$/',
+                        "message" => "Last name: Only letters"
+                    ]),
                     new NotBlank([
-                        "message"=> "Last Name required"
+                        "message" => "Last Name required"
                     ])
                 ]
             ])
-            ->add('email' , EmailType::class , [
+            ->add('email', EmailType::class, [
                 "constraints" => [
                     new Email([
                         "message" => "Invalid email"
@@ -52,37 +60,44 @@ class RegistrationFormType extends AbstractType
                     ])
                 ]
             ])
-            ->add("phoneNumber" , TextType::class, [
+            ->add("phoneNumber", TextType::class, [
 
-                "constraints"=>[
+                "constraints" => [
                     new Regex([
-                        "pattern" => "/^0\d{7}$/",
-                        "message"=> "Number Format Error"
+                        "pattern" => "/^0\d*$/",
+                        "message" => "Number Format Error"
                     ])
                 ]
-                ])
-
-            ->add('plainPassword', RepeatedType::class, [
-                "type"=> PasswordType::class,
-                'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-                "invalid_message" => "passwords dont match",
+            ])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'required' => true,
+                'first_options' => [
+                    'label' => 'Password',
+                    "attr"=> [
+                        'placeholder'=>'Enter your password'
+                    ]
+                ],
+                'second_options' => [
+                    'label' => 'Repeat Password',
+                    "attr"=> [
+                        'placeholder'=>'Retype the password'
+                    ]
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
                     ]),
                     new Regex([
-                        "pattern" => "/^.{6,}$/",
-                        "message" => "At least 6 characters"
+                        "pattern" => "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/",
+                        "message" => "At least 8 characters with at least one uppercase letter, one lowercase letter, one digit and one special character."
                     ])
                 ],
-            ])
 
-            ->add("isVerified" , HiddenType::class , [
-                "mapped"=>false,
-                "label"=> false,
+            ])
+            ->add("isVerified", HiddenType::class, [
+                "mapped" => false,
+                "label" => false,
 
             ])
             ->add('agreeTerms', CheckboxType::class, [
@@ -92,8 +107,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -17,7 +17,7 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255 , unique: true)]
     private ?string $orderReference = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]

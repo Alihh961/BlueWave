@@ -13,7 +13,8 @@ class SearchTypeFormType extends AbstractType
     {
         $builder
             ->add('gameName', TextType::class , [
-                "label" => "Game Name :"
+                "label" => "Game Name :",
+                "required"=> false
             ])
         ;
     }

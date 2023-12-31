@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+
+
+    {{ form_start(form , { "attr" : {"class" : "w-fit m-auto text-center"}}) }}
+
+    {{ form_label(form.user) }}
+    <br>
+    {{ form_widget(form.user) }}
+    <br>
+
+    {{ form_label(form.numberOfOrders) }}
+    <br>
+    {{ form_widget(form.numberOfOrders) }}
+    <br>
+
+    <button type="submit" class="btn btn-success w-fit mx-auto my-2">Search</button>
+    {{ form_end(form) }}
+
+    {% if user is defined and not null %}
+
+        {% if numberOfOrders == 10 %}
+            {% set ordersToDisplay = user.orders|reverse|slice(0, 10) %}
+        {% else %}
+            {% set ordersToDisplay = user.orders|reverse %}
+        {% endif %}
+
+        {% for order in ordersToDisplay %}
+
+            <table class="col-7 mb-3">
+
+                <tr>
+                    <th>Order Ref:</th>
+                    <td>{{ order.orderReference }}</td>
+                </tr>
+
+                <tr>
+                    <th>Item Name:</th>
+                    <td>{{ order.item }}</td>
+                </tr>
+
+
+                <tr>
+                    <th>Total Price:</th>
+                    <td>{{ order.totalPrice }}</td>
+                </tr>
+
+                <tr>
+                    <th>Quantity:</th>
+                    <td>{{ order.quantity }}</td>
+                </tr>
+
+                <tr>
+                    <th>Unit Price:</th>
+                    <td>{{ order.price }}</td>
+                </tr>
+
+
+                <tr>
+                    <th>Date:</th>
+                    <td>{{ order.createdAt | date }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status:</th>
+                    {% set lastOrderStatusHistory = order.orderStatusHistory.last %}
+
+                    {% if lastOrderStatusHistory is not null %}
+                        <td class="{{ lastOrderStatusHistory.status.name }}">{{ lastOrderStatusHistory.status.name }}</td>
+                    {% else %}
+                        <td>No order status history</td>
+                    {% endif %}
+                </tr>
+            </table>
+
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% if orderBoolean is defined  and orderBoolean %}
+
+        <h2 class="w-fit m-auto">No Orders To Display</h2>
+
+    {% endif %}
+
+{% endblock %}

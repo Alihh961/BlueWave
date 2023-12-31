@@ -1,19 +1,47 @@
 @import "checkout";
 @import "home";
 @import "partials/header";
+@import "user-orders";
+@import "show-user-info";
+@import "add-balance";
+@import "my-orders";
+@import "registration-form";
+@import "login";
+@import "edit-profile";
+@import "edit-password";
 @import "~bootstrap/scss/bootstrap";
 
-body{
-  background-color: #3f8a93!important;
+
+//body{
+//  background-color: #222529!important;
+//}
+
+html {
+  min-height: 100%;
+}
+body {
+  margin:0;
+  padding:0;
+  font-family: sans-serif;
+  background: linear-gradient(#141e30, #243b55);
 }
 
 .w-fit{
   width: fit-content!important;
 }
 
-*{
+body , *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family:math;
+
+}
+
+.form-errors{
+  ul{
+    margin: 0!important;
+
+  }
 }
 

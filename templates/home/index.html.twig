@@ -2,13 +2,16 @@
 
 
 {% block body %}
+
+
     <div class="m-auto w-fit">
         {{ form_start(form, {
             "attr" : {"class" : "searchForm-homePage"}
         }) }}
-
-        {{ form_label(form.gameName, 'Game Name :', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.gameName , {"attr" : {"class": "form-control"}}) }}
+        <div class="d-flex gap-3 search-div align-items-center">
+            {{ form_label(form.gameName, 'Game Name :', {'label_attr': {'class': ''}}) }}
+            {{ form_widget(form.gameName , {"attr" : {"class": ""}}) }}
+        </div>
         <div class="col-12 text-center mt-2">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
@@ -16,6 +19,7 @@
     </div>
     <section class="products">
 
+    {% if categories %}
 
         {% for category in categories %}
 
@@ -32,11 +36,14 @@
 
         {% endfor %}
 
-    </section>
+        </section>
 
-    <div class="navigation m-auto w-fit">
-        {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
-    </div>
+        <div class="navigation m-auto w-fit">
+            {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+        </div>
 
+    {% else %}
+        <h2 class="w-fit m-auto">No items to display</h2>
 
+    {% endif %}
 {% endblock %}

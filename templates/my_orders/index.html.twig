@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {%  if orders %}
+    <h4 class="w-fit mx-auto mb-3 text-white">Total orders : {{ orders|length }}</h4>
+
+        <div class="navigation m-auto w-fit">
+            {{ knp_pagination_render(orders, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+        </div>
+
+
+    <div class="row m-0">
+        {% for order in orders|reverse %}
+            <table class="col-7 mb-3 table-my-orders">
+
+                <tr>
+                    <th>Order Ref:</th>
+                    <td>{{ order.orderReference }}</td>
+                </tr>
+
+                <tr>
+                    <th>Item Name:</th>
+                    <td>{{ order.item }}</td>
+                </tr>
+
+
+                <tr>
+                    <th>Total Price:</th>
+                    <td>{{ order.totalPrice }}</td>
+                </tr>
+
+                <tr>
+                    <th>Quantity:</th>
+                    <td>{{ order.quantity }}</td>
+                </tr>
+
+                <tr>
+                    <th>Unit Price:</th>
+                    <td>{{ order.price }}</td>
+                </tr>
+
+
+                <tr>
+                    <th>Date:</th>
+                    <td>{{ order.createdAt | date }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status:</th>
+                    {% set lastOrderStatusHistory = order.orderStatusHistory.last %}
+
+                    {% if lastOrderStatusHistory is not null %}
+                        <td class="{{ lastOrderStatusHistory.status.name }}">{{ lastOrderStatusHistory.status.name }}</td>
+                    {% else %}
+                        <td>No order status history</td>
+                    {% endif %}
+                </tr>
+            </table>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    {% else %}
+    <h2 class="w-fit m-auto">No orders to display</h2>
+        <a href="/" class="btn btn-warning mx-auto mt-2 d-block w-fit">Back To Home Page</a>
+
+    {% endif %}
+
+
+
+{% endblock %}

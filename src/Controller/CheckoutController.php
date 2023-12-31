@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
 use App\Entity\Params;
 use App\Entity\Status;
+use App\Entity\Transaction;
 use App\Form\PackageFormType;
 use App\Repository\OrderStatusHistoryRepository;
 use App\Repository\StatusRepository;
@@ -25,8 +26,8 @@ class CheckoutController extends AbstractController
 {
 
 
-    #[Route("checkout")]
-    public function index(Request $request, HttpClientInterface $httpClient,EntityManagerInterface $entityManager,
+    #[Route("/checkout")]
+    public function index(Request                      $request, HttpClientInterface $httpClient, EntityManagerInterface $entityManager,
                           OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository, VisionItemRepository $visionItemRepository)
     {
 
@@ -71,84 +72,103 @@ class CheckoutController extends AbstractController
                 "price" => $price
             ]);
 
-            try{
+            try {
+
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $user = $this->getUser();
+
+
+                    if ($user) {
+
+                        $data = $form->getData();
+
+
+                        $productType = $visionItem->getItemType()->getName();
+
+                        $quantity = $data['quantity'] ?? 1;
+
+                        $totalPrice = $price * $quantity;
+                        $userBalance = $user->getCurrentBalance();
+                        if($totalPrice > $userBalance){
+                            flash()->addFlash("error" , "You must recharge your account" , "Insufficient Funds");
+                            return $this->redirect($request->getUri());
+                        }
+
+
+                        $paramsEntered = "";
+                        foreach ($paramsInput as $paramInput) {
+                            $paramInput = str_replace(" ", "", $paramInput);
+                            if ($data[$paramInput]) {
+
+                                $paramsEntered .= $paramInput . " => " . $data[$paramInput] . ";";
+
+
+                            } else {
+                                throw new \Exception('Params Error');
+                            }
+                        }
 
 
 
-            $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+                        $beirutTimeZone = new \DateTimeZone("Asia/Beirut");
+                        $dateTimeInBeirut = new \DateTime("now", $beirutTimeZone);
 
-                $data = $form->getData();
-                $productType = $visionItem->getItemType()->getName();
+                        $currentStatus = $statusRepository->findOneBy(['name' => 'pending']);
 
-                // if the product of type package then set quantity to 1
-                // if the product isn't of type package then get the quantity from the form
-                if ($productType == 'package') {
-                    $quantity = 1;
-                } else {
-                    $quantity = $data['quantity'];
-                    if (!$quantity) {
-                        throw new \Exception("Quantity Error");
+
+                        $namespace = Uuid::v4();
+                        $uuid = Uuid::v5($namespace, $visionItem->getCategory()->getName());
+                        $orderNumber = $uuid->toRfc4122();
+
+
+                        $order = new Order();
+                        $order->setOrderReference($orderNumber);
+                        $order->setPrice($price);
+                        $order->setTotalPrice($totalPrice);
+                        $order->setParamsEntered($paramsEntered);
+                        $order->setUser($user);
+                        $order->setCreatedAt($dateTimeInBeirut);
+                        $order->setItem($visionItem->getName());
+                        $order->setQuantity($quantity);
+
+                        $orderStatusHistory = new OrderStatusHistory();
+                        $orderStatusHistory->setOrder($order);
+                        $orderStatusHistory->setStatus($currentStatus);
+                        $orderStatusHistory->setStatusUpdateDate($dateTimeInBeirut);
+
+                        $order->addOrderStatusHistory($orderStatusHistory);
+
+                        $transaction = new Transaction();
+                        $transaction->setUser($user);
+                        $transaction->setTransactionDate($dateTimeInBeirut);
+                        $transaction->setAmount($totalPrice);
+                        $transaction->setIsCredit(false);
+
+                        $newBalance = $userBalance - $totalPrice;
+                        $user->setCurrentBalance($newBalance);
+
+
+                        $entityManager->persist($transaction);
+                        $entityManager->persist($order);
+                        $entityManager->flush();
+
+
+                        flash()->addFlash('info', "Your order has been placed! It will be confirmed soon.", 'Pending');
+
+                        $url = $this->generateUrl('app_home');
+
+                        return $this->redirect($url);
                     }
+                    flash()->addInfo("You need to sign in first" , 'Not Signed In' );
+
+
+
                 }
-
-                $paramsEntered = "";
-                foreach ($paramsInput as $paramInput) {
-                    $paramInput = str_replace(" ", "", $paramInput);
-                    if ($data[$paramInput]) {
-
-                        $paramsEntered .= $paramInput . " => " . $data[$paramInput] . ";";
-
-
-                    } else {
-                        throw new \Exception('Params Error');
-                    }
-                }
-
-
-                $totalPrice = $price * $quantity;
-
-                $user = $this->getUser();
-
-                $beirutTimeZone = new \DateTimeZone("Asia/Beirut");
-                $dateTimeInBeirut = new \DateTime("now", $beirutTimeZone);
-
-                $currentStatus = $statusRepository->findOneBy(['name' => 'pending']);
-
-
-                $namespace = Uuid::v4();
-                $uuid = Uuid::v5($namespace, $visionItem->getCategory()->getName());
-                $orderNumber = $uuid->toRfc4122();
-
-
-                $order = new Order();
-                $order->setOrderReference($orderNumber);
-                $order->setPrice($price);
-                $order->setTotalPrice($totalPrice);
-                $order->setParamsEntered($paramsEntered);
-                $order->setUser($user);
-                $order->setCreatedAt($dateTimeInBeirut);
-                $order->setItem($visionItem->getName());
-                $order->setQuantity($quantity);
-
-                $orderStatusHistory = new OrderStatusHistory();
-                $orderStatusHistory->setOrder($order);
-                $orderStatusHistory->setStatus($currentStatus);
-                $orderStatusHistory->setStatusUpdateDate($dateTimeInBeirut);
-
-                $order->addOrderStatusHistory($orderStatusHistory);
-
-
-                $entityManager->persist($order);
-                $entityManager->flush();
-
-                return $this->json("data added with success");
-
-
-            };
-            }
-            catch(\Exception $exception){
+            } catch (\Exception $exception) {
                 throw new \Exception($exception);
             }
 

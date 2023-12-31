@@ -1,0 +1,13 @@
+form {
+  select {
+    option[value = '1'] {
+      background-color: #70fb70 !important;
+
+    }
+
+    option[value='0'] {
+      background-color: #ff6767 !important;
+
+    }
+  }
+}

@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if user %}
+        <div class="mb-3 container bootstrap snippets bootdey">
+            <div class="panel-body inf-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img alt="" style="width:600px;" title="" class="img-circle img-thumbnail isTooltip"
+                             src="https://bootdey.com/img/Content/avatar/avatar7.png" data-original-title="Usuario">
+                    </div>
+                    <div class="col-md-6 m-auto">
+                        <strong class="mx-auto w-fit d-block text-white">Informations</strong><br>
+                        <div class="table-responsive">
+                            <table class="table table-user-information">
+                                <tbody>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            First Name
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.firstName|upper }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Last Name
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.lastName|upper }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Email
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.email }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Phone Number
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.phoneNumber }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Current Balance
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.currentBalance }} $
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Total Orders
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.orders|length }}
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <h2 class="mx-auto w-fit text-white mt-3 ">Transactions table</h2>
+        {% if user.transaction %}
+            <div class="transaction-div col-7 my-3 mx-auto">
+            <table class="col-12 transaction-tables">
+
+                <tr>
+                    <th>
+                        Created At
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+
+
+                </tr>
+
+                {% for transaction in user.transaction|reverse %}
+
+                    {% set class = "isCredit" %}
+                    {% if  not transaction.isCredit %}
+                        {% set class = "isDebit" %}
+
+                    {% endif %}
+
+                    <tr class="{{ class }}">
+                        <td>
+                            {{ transaction.transactionDate|date }}
+                        </td>
+                        <td>
+                            {{ transaction.amount }}
+                        </td>
+                    </tr>
+
+
+                {% endfor %}
+
+            </table>
+
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
+

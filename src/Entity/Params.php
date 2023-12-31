@@ -18,7 +18,7 @@ class Params
     #[ORM\ManyToMany(targetEntity: VisionItem::class, mappedBy: 'params')]
     private Collection $items;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     public function __construct()

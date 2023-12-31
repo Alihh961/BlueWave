@@ -16,7 +16,7 @@ class VisionItem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -40,7 +40,7 @@ class VisionItem
     #[ORM\JoinColumn(nullable: false)]
     private ?ItemType $itemType = null;
 
-    #[ORM\Column]
+    #[ORM\Column(unique: true)]
     private ?int $visionId = null;
 
     public function __construct()

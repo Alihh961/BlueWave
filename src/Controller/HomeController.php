@@ -34,7 +34,6 @@ class HomeController extends AbstractController
     {
 
         $qb = $categoryRepository->getQbAll();
-
         $form = $this->createForm(SearchTypeFormType::class);
         $form->handleRequest($request);
 
@@ -58,7 +57,8 @@ class HomeController extends AbstractController
         return $this->render(
             'home/index.html.twig',[
                 "categories" => $pagination,
-                "form" => $form->createView()
+                "form" => $form->createView(),
+                "success" => true
             ]
         );
 

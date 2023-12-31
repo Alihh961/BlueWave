@@ -38,6 +38,12 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v6.3.0"
     },
+    "php-flasher/flasher-sweetalert-symfony": {
+        "version": "v1.15.8"
+    },
+    "php-flasher/flasher-symfony": {
+        "version": "v1.15.8"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
