@@ -71,6 +71,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl("Orders Confirmation" , 'fas fa-shopping-cart' , 'admin/orders-confirmation')
             ->setCssClass('bg-primary p-2 border-radius mb-2');
 
+        yield MenuItem::linkToUrl("Diff Prices /Missed Items" , 'fas fa-shopping-cart' , 'admin/comparing-price')
+            ->setCssClass('bg-primary p-2 border-radius mb-2');
+
         yield MenuItem::subMenu("Users", 'fa fa-user')
             ->setCssClass("p-2 ")
             ->setSubItems([

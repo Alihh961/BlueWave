@@ -47,6 +47,12 @@ class HomeController extends AbstractController
 
         }
 
+        $results = true;
+
+        if(!$qb->getQuery()->getResult()){
+            $results = false;
+        }
+
         $pagination = $this->paginator->paginate(
             $qb ,
             $request->query->get("page" ,1),
@@ -58,7 +64,8 @@ class HomeController extends AbstractController
             'home/index.html.twig',[
                 "categories" => $pagination,
                 "form" => $form->createView(),
-                "success" => true
+                "success" => true,
+                'booleanResults' => $results
             ]
         );
 

@@ -17,9 +17,9 @@
         </div>
         {{ form_end(form) }}
     </div>
-    <section class="products">
+    <section class="products flex-row">
 
-    {% if categories %}
+    {% if categories and booleanResults %}
 
         {% for category in categories %}
 
@@ -43,7 +43,7 @@
         </div>
 
     {% else %}
-        <h2 class="w-fit m-auto">No items to display</h2>
+        <h2 class="w-fit mx-auto text-white">No items for this search</h2>
 
     {% endif %}
 {% endblock %}

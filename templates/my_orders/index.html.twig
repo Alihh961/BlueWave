@@ -50,7 +50,7 @@
                     {% set lastOrderStatusHistory = order.orderStatusHistory.last %}
 
                     {% if lastOrderStatusHistory is not null %}
-                        <td class="{{ lastOrderStatusHistory.status.name }}">{{ lastOrderStatusHistory.status.name }}</td>
+                        <td class="{{ lastOrderStatusHistory.status.name }} fw-bolder">{{ lastOrderStatusHistory.status.name }}</td>
                     {% else %}
                         <td>No order status history</td>
                     {% endif %}

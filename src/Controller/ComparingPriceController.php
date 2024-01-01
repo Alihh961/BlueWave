@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Repository\VisionItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -11,24 +14,134 @@ use Symfony\Component\Routing\Annotation\Route;
 class ComparingPriceController extends AbstractController
 {
     #[Route('admin/comparing-price', name: 'app_comparing_price')]
-    public function index(HttpClientInterface $httpClient): Response
+    public function index(HttpClientInterface $httpClient, VisionItemRepository $visionItemRepository): Response
     {
 
         $apiExt = $_ENV['API_EXTERNAL_URL'];
         $token = $_ENV['TOKEN_API_FLASH'];
 
 
-            $response = $httpClient->request("GET" ,$apiExt . '/products' , [
-                'headers' => [
-                    "api-token" => $token
-                ]
-            ] );
-            $data = json_decode($response->getContent());
+        $response = $httpClient->request("GET", $apiExt . '/products', [
+            'headers' => [
+                "api-token" => $token
+            ]
+        ]);
+        $visionItems = json_decode($response->getContent(), true);
 
+        $ourItems = $visionItemRepository->findAll();
+        $ourItemsVisionId = [];
+
+
+        // here we want to check if all ids of the api exist in our database, if no then there is either new items
+        // first we select the ids of vision item in our database then we check if all vision items exists(35->48);
+        foreach ($ourItems as $item) {
+            $ourItemsVisionId[] = $item->getVisionId();
+        }
+
+        $missedItems = [];
+        $itemsOfDifferentPrices = [];
+
+        foreach ($visionItems as $visionItem) {
+
+            if (!in_array($visionItem['id'], $ourItemsVisionId)) {
+                $missedItems[] = $visionItem;
+            }
+
+        }
+
+
+        //here we want to check if there is a difference of price
+        foreach ($ourItems as $item) {
+
+            $itemPrice = $item->getPrice();
+            $min = $item->getAttributes()->getMinAndMax()[0] ?? 1;
+
+            if (is_array($min)) {
+                $min = $min[0];
+            }
+
+
+            if ($itemPrice * $min >= 2.3) {
+
+                $initialPrice = ($itemPrice * $min) - 0.3;
+                $initialPrice /= $min;
+
+            } else {
+                $initialPrice = ($itemPrice * $min) - 0.1;
+                $initialPrice /= $min;
+                if ($item->getVisionId() == 189) {
+                    $toto = $initialPrice;
+                }
+
+
+            }
+
+            $visionId = $item->getVisionId();
+
+//            dd($visionId);
+
+            foreach ($visionItems as $visionItem) {
+
+                if ($visionItem['id'] == $visionId) {
+
+                    if (round($initialPrice, 2) != round($visionItem['price'], 2)) {
+                        $itemsOfDifferentPrices[] = $visionItem;
+
+                    }
+                }
+            }
+
+        }
+//        $itemsOfDifferentPrices = [];
 
 
         return $this->render('comparing_price/index.html.twig', [
-            'controller_name' => 'ComparingPriceController',
+            'itemsDiffPrice' => $itemsOfDifferentPrices,
+            'missedItems' => $missedItems,
+            'ourItems' => $ourItems
         ]);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    #[Route('admin/update-price', name: 'app_update_price')]
+    public function updatePrice(Request $request, VisionItemRepository $visionItemRepository, EntityManagerInterface $entityManager)
+    {
+
+        $id = $request->query->get('id');
+        $newPrice = $request->query->get('newPrice');
+
+        $item = $visionItemRepository->find($id);
+        $min = $item->getAttributes()->getMinAndMax()[0] ?? 1;
+
+
+        if (is_array($min)) {
+            $min = $min[0];
+        }
+
+        $newPrice *= $min;
+
+        if ($newPrice >= 2) {
+            $newPrice += 0.3;
+        } else {
+            $newPrice += 0.1;
+        }
+        $newPrice /= $min;
+
+        $item->setPrice($newPrice);
+
+
+        try{
+            $entityManager->persist($item);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_comparing_price');
+        }
+
+        catch(\Exception $exception){
+            throw new \Exception($exception);
+        }
+
     }
 }

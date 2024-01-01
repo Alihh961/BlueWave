@@ -1,3 +1,35 @@
-.border-radius{
-  border-radius: 5px!important;
+.border-radius {
+  border-radius: 5px !important;
+}
+
+#main-menu {
+
+  .menu {
+
+    .menu-item {
+
+      a {
+        font-weight: 700;
+        background-image: linear-gradient(#42A1EC, #0070C9);
+        border: 1px solid #0077CC;
+        color: white;
+
+        i::before {
+          color: white;
+        }
+      }
+
+
+      &.has-submenu{
+        a.submenu-toggle{
+
+        background-color: #36A9AE;
+        background-image: linear-gradient(#37ADB2, #329CA0);
+        border: 1px solid #2A8387;
+
+        }
+
+      }
+    }
+  }
 }
