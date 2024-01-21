@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,13 @@ class MyOrdersController extends AbstractController
         $user = $this->getUser();
         $orders = $user->getOrders()->toArray();
 
+
+        $totalOrders = count($orders);
+
         $qb = $orderRepository->createQueryBuilder('o')
+            ->where('o.user = :user')
+            ->setParameter('user' , $user)
+            ->orderBy('o.createdAt' , 'DESC')
             ->getQuery()
             ->getResult();
 
@@ -30,8 +37,10 @@ class MyOrdersController extends AbstractController
 
         if($orders){
 
+
             return $this->render('my_orders/index.html.twig', [
-                'orders' => $pagination
+                'orders' => $pagination,
+                'totalOrders' =>$totalOrders
             ]);
         }else{
             return $this->render('my_orders/index.html.twig', [

@@ -99,6 +99,9 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
+    label{
+      color: black!important;
+    }
 
     input {
       width: fit-content;

@@ -2,7 +2,7 @@
 .checkout-section {
 
   width: 50%;
-  min-width: 300px;
+  min-width: 250px;
   margin: auto;
   background: #023e61;
   border-radius: 5px;
@@ -23,6 +23,11 @@
     gap: 40px;
     padding: 25px 0px;
     width: 100%;
+
+    .alert-danger ul{
+      margin: 0!important;
+      padding-right: 5px;
+    }
 
     .range {
       color: white ;

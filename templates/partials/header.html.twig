@@ -2,12 +2,21 @@
 
     <div class="header-container">
         <img src="" alt="logo">
+
+        <div class="menu-container">
+            <div class="menu-btn">
+                <div class="menu-btn__burger">
+                </div>
+            </div>
+            <script src="main.js"></script>
+        </div>
+
         {% if not app.user %}
 
-        <nav class="justify-content-evenly">
+        <nav class="justify-content-evenly nav-header">
 
             {% else %}
-            <nav>
+            <nav class="nav-header">
                 {% endif %}
 
                 <a href="{{ path('app_home') }}">Home</a>
@@ -28,6 +37,15 @@
                         <a href="/admin">Administration</a>
                     {% endif %}
 
+                    <a href="{{ path('app_user_profile') }}" class="element-1">Your profile</a>
+                    <a href="{{ path('app_user_profile_edit')  }}" class="element-2">Edit your profile</a>
+                    <a href="{{ path('app_logout') }}" class="element-3">logout</a>
+                    <div class="responsive-user-div w-100 d-block d-lg-none p-1 overflow-hidden" style="max-width: 300px">
+                        <span class="currentBalance text-white me-1" >{{ app.user.currentBalance }}$</span>
+                        <span
+                                class="userName">{{ app.user.firstName }} {{ app.user.lastName }}</span>
+                    </div>
+
                     <div class="container-dropDown">
                         <div class="drop">
                             <input id="toggle" type="checkbox" checked>
@@ -36,9 +54,9 @@
                                         class="userName">{{ app.user.firstName }} {{ app.user.lastName }}</span><span
                                         class="arrow"></span></h5>
                             <ul id="dropList">
-                                <li><a href="{{ path('app_user_profile') }}">Your profile</a></li>
-                                <li><a href="{{ path('app_user_profile_edit') }}">Edit your profile</a></li>
-                                <li><a href="{{ path('app_logout') }}">logout</a></li>
+                                <li><a href="{{ path('app_user_profile') }}" class="">Your profile</a></li>
+                                <li><a href="{{ path('app_user_profile_edit')  }}" class="">Edit your profile</a></li>
+                                <li><a href="{{ path('app_logout') }}" class="">logout</a></li>
 
                             </ul>
                         </div>
@@ -52,6 +70,8 @@
 
 
     </div>
+
+
 
 
 

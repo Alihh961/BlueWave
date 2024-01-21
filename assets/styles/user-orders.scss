@@ -4,6 +4,7 @@ table {
   border-spacing: 0;
   margin: auto;
   border: 1px solid #ddd;
+  font-size: 14px;
 
   tr:nth-child(even) {
     background-color: #c9c9c9
@@ -14,6 +15,10 @@ table {
   th {
     text-align: left;
     padding: 8px;
+
+    @media (max-width: 992px){
+      padding: 0 8px;
+    }
   }
 
   tr{

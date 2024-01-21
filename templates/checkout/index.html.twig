@@ -1,18 +1,34 @@
 {% extends 'base.html.twig' %}
 
-
+{% block title %}Checkout{% endblock %}
 {% block body %}
 
     {% if item %}
-        <div class="row">
+        <div class="row w-100 mx-auto">
 
             <section class="checkout-section w-50 p-0">
-                <h3 class="col-12 m-0">{{ item.name }}</h3>
+                <h3 class="col-12 m-0 text-center">{{ item.name }}</h3>
 
 
                 {{ form_start(form ,{
                     "attr" : {"class" : "package-checkout-form"}
                 }) }}
+
+                {% if not form.vars.valid %}
+                    <div class="alert alert-danger m-0 p-0">
+                        {{ form_errors(form) }}
+                        {% for children in form.children %}
+                            {% if not children.vars.valid %}
+                                {{ form_errors(children) }}
+                            {% endif %}
+                            {% for child in children %}
+                                {% if not child.vars.valid %}
+                                    {{ form_errors(child) }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
                 {% if min and max %}
 
@@ -26,21 +42,31 @@
                             <b>Max</b>: {{ max }}
                         </div>
                     {% endif %}
+
+
                 {% endif %}
 
+                {% for flashMessage in app.flashes('error') %}
+                    <div class="alert alert-danger">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
                 <div class="inputs-div">
 
                     {% for param in params %}
                         {% set paramWithoutSpaces = param.name|replace({' ': ''}) %}
-
-                        {{ form_row(form[paramWithoutSpaces]) }}
-
+<div>
+                        {{ form_label(form[paramWithoutSpaces]) }}
+                        {{ form_widget(form[paramWithoutSpaces]) }}
+</div>
 
                     {% endfor %}
 
                     {% if min and max and min != max and max != 1 %}
-                        {{ form_row(form.quantity) }}
-
+                        <div>
+                        {{ form_label(form.quantity) }}
+                        {{ form_widget(form.quantity) }}
+                        </div>
 
                     {% endif %}
                 </div>
@@ -48,8 +74,9 @@
                 <div class=" bottom d-flex flex-column">
                     {% if min and max %}
                         <h5><span class="price">{{ item.price * min }}$</span></h5>
-                    {% else %}
-                        <h5><span class="price">{{ item.price }}$</span></h5>
+
+                        {% else %}
+                            <h5><span class="price">{{ item.price }}$</span></h5>
 
                     {% endif %}
 

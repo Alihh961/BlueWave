@@ -20,7 +20,7 @@
                         {% for ourItem in ourItems %}
                             {% if ourItem.visionId == item.id %}
                                 <p>ID in our database : {{ ourItem.id }}</p>
-                                <p>Our Price : {{ ourItem.price }} $</p>
+                                <p>Our Price with benefits : {{ ourItem.price|removeTrailingZeros }} $</p>
                                 <a class="btn btn-success d-block"
                                    href="{{ path('app_update_price' , { 'id' : ourItem.id , 'newPrice' : item.price}) }}">Update
                                     price</a>
@@ -41,7 +41,7 @@
     <section class="missed-items-section">
 
         {% if missedItems %}
-            <h2 class="w-100 text-center mx-auto text-white bg-info py-2"> Missed Items</h2>
+            <h2 class="w-100 text-center mx-auto text-white bg-info py-2 text-center"> Missed Items</h2>
 
             <div class="missed-items-container d-flex justify-content-center flex-row flex-wrap mx-auto my-2 gap-2 w-100 p-3">
                 {% for item in missedItems %}

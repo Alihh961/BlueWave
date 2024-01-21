@@ -13,15 +13,26 @@ class ViewProductController extends AbstractController
 {
 
     #[Route('view-product')]
-    public function index(Request $request, HttpClientInterface $httpClient,CategoryRepository $categoryRepository)
+    public function index(Request $request, HttpClientInterface $httpClient, CategoryRepository $categoryRepository)
     {
 
         $categoryId = $request->query->get('c');
 
         $categoryEntity = $categoryRepository->find($categoryId);
 
-        $items =$categoryEntity->getItems();
+        $items = $categoryEntity->getItems();
 
+        foreach ($items as $item) {
+            // ensure that min and max aren't equal
+            if ($item->getAttributes()->getMinAndMax() && $item->getAttributes()->getMinAndMax()[0] != $item->getAttributes()->getMinAndMax()[1]) {
+                $min = $item->getAttributes()->getMinAndMax()[0];
+
+
+                $price = $item->getPrice() * $min;
+
+                $item->setPrice($price);
+            }
+        }
 
 
         return $this->render("view-products/index.html.twig", [

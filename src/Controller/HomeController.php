@@ -29,51 +29,90 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(HttpClientInterface $httpClient , VisionItemRepository $visionItemRepository
-    , CategoryRepository $categoryRepository, Request $request): Response
+    public function index(HttpClientInterface $httpClient, VisionItemRepository $visionItemRepository
+        , CategoryRepository                  $categoryRepository, Request $request): Response
     {
+
+        $flashError = $request->query->get('fe') ?: false;
+
+        if ($flashError) {
+            flash()->addFlash('error', 'Something went wrong, contact us if the problem insists', 'Account not verified');
+        }
 
         $qb = $categoryRepository->getQbAll();
         $form = $this->createForm(SearchTypeFormType::class);
         $form->handleRequest($request);
 
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $data = $form->getData();
             $gameName = $data['gameName'];
 
-            $qb->where("c.name LIKE :name")
-                ->setParameter("name" , "%" . $gameName . "%");
+            if($gameName != null){
+                $qb->where("c.name LIKE :name")
+                    ->setParameter("name", "%" . $gameName . "%")
+                    ->orderBy('c.id');
+            }
 
         }
 
-        $results = true;
-
-        if(!$qb->getQuery()->getResult()){
-            $results = false;
-        }
-
+//        $categories = $qb
+//            ->setMaxResults(15)
+//            ->getQuery()->getResult();
+//
         $pagination = $this->paginator->paginate(
-            $qb ,
-            $request->query->get("page" ,1),
-            10
-        );
-
+            $qb,
+            $request->query->getInt("page", 1),
+            15);
 
         return $this->render(
-            'home/index.html.twig',[
+            'home/index.html.twig', [
                 "categories" => $pagination,
                 "form" => $form->createView(),
-                "success" => true,
-                'booleanResults' => $results
+                "success" => true
             ]
         );
 
     }
 
-//    #[Route('', name: '')]
+    #[Route('/load-more', name: 'app_load_more')]
+    public function load(Request $request, CategoryRepository $categoryRepository)
+    {
+
+        $offset = $request->query->getInt('offset');
+
+
+        $isMax = false;
+
+        $itemsMaxQuantity = count($categoryRepository->findAll());
+
+        if ($offset >= $itemsMaxQuantity) {
+            $isMax = true;
+        }
+        $items = $categoryRepository->createQueryBuilder('c')
+            ->setFirstResult($offset)
+            ->setMaxResults(15)
+            ->getQuery()
+            ->getResult();
+
+
+        return $this->json(['items' => $items, 'max' => $isMax], context: ['groups' => ['categories']]);
+    }
+
+    #[Route('/max-vision-items')]
+    public function max(Request $request, CategoryRepository $categoryRepository)
+    {
+
+
+        $itemsMaxQuantity = count($categoryRepository->findAll());
+
+        return $this->json(['max' => $itemsMaxQuantity]);
+    }
+
+//    #[Route('haha', name: '')]
     public function test(HttpClientInterface  $httpClient, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository,
-                         VisionItemRepository $visionItemRepository, ParamsRepository $paramsRepository,ItemTypeRepository $itemTypeRepository): Response
+                         VisionItemRepository $visionItemRepository, ParamsRepository $paramsRepository, ItemTypeRepository $itemTypeRepository): Response
     {
         $dataArray =
             [
@@ -2875,6 +2914,32 @@ class HomeController extends AbstractController
                 ]
             ];
 
+//        adding categories first
+//
+//        try{
+//            foreach ($dataArray as $toto){
+//                $new = new Category();
+//                $new->setName($toto['category_name']);
+//                $arr [] = $new;
+//
+//                $categoryEntity = $categoryRepository->findOneBy(['name' => $toto['category_name']]);
+//
+//                if(!$categoryEntity){
+//                    $entityManager->persist($new);
+//                    $entityManager->flush();
+//
+//                }
+//
+//
+//
+//            }
+//
+//        }
+//        catch(\Exception $e){
+//            throw new \Exception($e);
+//        }
+
+
         $newItems = [];
         $visionItemEntities = [];
 
@@ -2971,10 +3036,14 @@ class HomeController extends AbstractController
                 $attributeEntity = new Attributes();
 
                 if ($attributes == null) {
-                    $attributeEntity->setMinAndMax([[1] ,[1]]);
+                    $attributeEntity->setMinAndMax([[1], [1]]);
 
                 } else {
                     $attributeEntity->setMinAndMax([$attributes['min'], $attributes['max']]);
+                }
+
+                if (!$categoryEntity) {
+                    dd($categoryEntity);
                 }
 
                 $visionItem->setAttributes($attributeEntity);
@@ -2987,14 +3056,12 @@ class HomeController extends AbstractController
                 $visionItem->setVisionId($item['id']);
 
 
-
             }
-            try{
+            try {
                 $entityManager->persist($visionItem);
                 $entityManager->flush();
 
-            }
-            catch(\Exception $exception){
+            } catch (\Exception $exception) {
                 throw new \Exception($exception);
             }
 

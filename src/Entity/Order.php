@@ -20,7 +20,7 @@ class Order
     #[ORM\Column(length: 255 , unique: true)]
     private ?string $orderReference = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 10)]
     private ?string $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -38,7 +38,7 @@ class Order
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 10)]
     private ?string $totalPrice = null;
 
     #[ORM\Column(length: 255)]

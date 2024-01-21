@@ -55,6 +55,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isAdmin = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?InscriptionVerificationCode $inscriptionVerificationCode = null;
+
     public function __construct()
     {
         $this->transaction = new ArrayCollection();
@@ -264,6 +267,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsAdmin(bool $isAdmin): static
     {
         $this->isAdmin = $isAdmin;
+
+        return $this;
+    }
+
+    public function getInscriptionVerificationCode(): ?InscriptionVerificationCode
+    {
+        return $this->inscriptionVerificationCode;
+    }
+
+    public function setInscriptionVerificationCode(InscriptionVerificationCode $inscriptionVerificationCode): static
+    {
+        // set the owning side of the relation if necessary
+        if ($inscriptionVerificationCode->getUser() !== $this) {
+            $inscriptionVerificationCode->setUser($this);
+        }
+
+        $this->inscriptionVerificationCode = $inscriptionVerificationCode;
 
         return $this;
     }

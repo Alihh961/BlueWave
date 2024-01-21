@@ -16,8 +16,6 @@ class Attributes
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY , nullable: true)]
-    private array $value_ = [];
 
     #[ORM\OneToMany(mappedBy: 'attributes', targetEntity: VisionItem::class)]
     private Collection $items;
@@ -36,19 +34,6 @@ class Attributes
     }
 
 
-
-
-    public function getValue(): array
-    {
-        return $this->value_;
-    }
-
-    public function setValue(array $value_): static
-    {
-        $this->value_ = $value_;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, VisionItem>

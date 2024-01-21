@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Home{% endblock %}
 
 {% block body %}
 
@@ -8,18 +8,18 @@
         {{ form_start(form, {
             "attr" : {"class" : "searchForm-homePage"}
         }) }}
-        <div class="d-flex gap-3 search-div align-items-center">
-            {{ form_label(form.gameName, 'Game Name :', {'label_attr': {'class': ''}}) }}
-            {{ form_widget(form.gameName , {"attr" : {"class": ""}}) }}
+        <div class="d-flex flex-column flex-wrap gap-3 search-div align-items-center">
+            {{ form_label(form.gameName, 'Search by name :', {'label_attr': {'class': 'm-auto'}}) }}
+            {{ form_widget(form.gameName , {"attr" : {"class": "mx-auto"}}) }}
         </div>
         <div class="col-12 text-center mt-2">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
         {{ form_end(form) }}
     </div>
     <section class="products flex-row">
 
-    {% if categories and booleanResults %}
+        {% if categories %}
 
         {% for category in categories %}
 
@@ -27,8 +27,15 @@
 
                 <div class="product">
 
-                    <img class="" src="{{ asset('images/test.png') }}"
-                         alt="{{ category.name }}">
+                    {% if category.url %}
+                        <img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}"
+                             alt="{{ category.name }}">
+
+                    {% else %}
+                        <img class="" src="{{ asset('img.png')}}"
+                             alt="{{ category.name }}">
+
+                    {% endif %}
                     <h6>{{ category.name }}</h6>
 
                 </div>
@@ -36,14 +43,25 @@
 
         {% endfor %}
 
-        </section>
+    </section>
 
-        <div class="navigation m-auto w-fit">
-            {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
-        </div>
+    <div class="navigation m-auto w-fit">
+        {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+    </div>
 
     {% else %}
         <h2 class="w-fit mx-auto text-white">No items for this search</h2>
 
     {% endif %}
+
+    <script>
+
+
+    </script>
+
 {% endblock %}
+
+
+
+
+

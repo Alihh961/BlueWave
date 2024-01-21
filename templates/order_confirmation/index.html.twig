@@ -22,7 +22,7 @@
 
                 <tr>
                     <th>Total Price:</th>
-                    <td>{{ pendingOrder['total_price'] }}</td>
+                    <td>{{ pendingOrder['total_price']|removeTrailingZeros }}</td>
                 </tr>
 
                 <tr>
@@ -41,7 +41,7 @@
 
                 <tr>
                     <th>Unit Price:</th>
-                    <td>{{ pendingOrder['price'] }}</td>
+                    <td>{{ pendingOrder['price']|removeTrailingZeros }}</td>
                 </tr>
 
                 <tr>
@@ -59,7 +59,7 @@
         {% endfor %}
 
     {% else %}
-        <h2 class="w-fit mx-auto mt-2 text-white">No pending orders to display</h2>
+        <h2 class="w-fit mx-auto mt-2 text-white text-center px-2">No pending orders to display</h2>
     {% endif %}
 
 {% endblock %}

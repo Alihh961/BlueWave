@@ -45,7 +45,7 @@ class RegistrationFormType extends AbstractType
                         "message" => "Last name: Only letters"
                     ]),
                     new NotBlank([
-                        "message" => "Last Name required"
+                        "message" => "Last Name required and no white spaces"
                     ])
                 ]
             ])
@@ -84,6 +84,7 @@ class RegistrationFormType extends AbstractType
                         'placeholder'=>'Retype the password'
                     ]
                 ],
+                'invalid_message'=> "Passwords don't match",
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',

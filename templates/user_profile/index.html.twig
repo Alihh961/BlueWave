@@ -2,7 +2,7 @@
 
 
 {% block body %}
-    {{ form_start(form , {'attr' : {"class" : "edit-profile-form w-fit mx-auto mt-3 d-flex flex-column gap-3"}}) }}
+    {{ form_start(form , {'attr' : {"class" : "edit-profile-form align-items-center mx-auto mt-3 d-flex flex-column gap-3"}}) }}
     {% if not form.vars.valid %}
         <div class="alert alert-danger">
             {{ form_errors(form) }}
@@ -24,7 +24,7 @@
 
 
     <button type="submit" class="btn btn-success m-auto d-block mt-3 w-100">Save</button>
-    <a href="../change-password" class="d-block mx-auto btn btn-danger w-100">Change password ?</a>
+    <a href="../change-password" class="d-block mx-auto btn btn-danger w-100 text-center">Change password ?</a>
 
     {{ form_end(form) }}
 

@@ -47,9 +47,24 @@ class CheckoutController extends AbstractController
 
             }
 
-            $minAndMax = $visionItem->getAttributes()->getMinAndMax();
+            // the item can has minmax , values or null as attributes
+            $minAndMax =[];
+            $values = [];
+            if ($visionItem->getAttributes()) {
 
-            $range = [];
+                $minAndMax = $visionItem->getAttributes()->getMinAndMax();
+//                if($visionItem->getAttributes()->getValue()){
+//                    $values = explode(';' , $visionItem->getAttributes()->getValue()[0]);
+//
+//                }
+            }
+
+//            if($values){
+//                $values = array_combine($values, $values);
+//            }
+
+
+
             if ($minAndMax) {
                 $min = $minAndMax[0];
                 $max = $minAndMax[1];
@@ -91,11 +106,17 @@ class CheckoutController extends AbstractController
                         $quantity = $data['quantity'] ?? 1;
 
                         $totalPrice = $price * $quantity;
-                        $userBalance = $user->getCurrentBalance();
-                        if($totalPrice > $userBalance){
-                            flash()->addFlash("error" , "You must recharge your account" , "Insufficient Funds");
+
+                        if($quantity > $max){
+                            flash()->addFlash("error", "You can't buy more than " . $max . " in a time", "Max Error");
                             return $this->redirect($request->getUri());
                         }
+                        $userBalance = $user->getCurrentBalance();
+                        if ($totalPrice > $userBalance) {
+                            flash()->addFlash("error", "You must recharge your account", "Insufficient Funds");
+                            return $this->redirect($request->getUri());
+                        }
+
 
 
                         $paramsEntered = "";
@@ -110,8 +131,6 @@ class CheckoutController extends AbstractController
                                 throw new \Exception('Params Error');
                             }
                         }
-
-
 
 
                         $beirutTimeZone = new \DateTimeZone("Asia/Beirut");
@@ -163,8 +182,7 @@ class CheckoutController extends AbstractController
 
                         return $this->redirect($url);
                     }
-                    flash()->addInfo("You need to sign in first" , 'Not Signed In' );
-
+                    flash()->addInfo("You need to sign in first", 'Not Signed In');
 
 
                 }
@@ -178,7 +196,8 @@ class CheckoutController extends AbstractController
                 "min" => $min,
                 "max" => $max,
                 "form" => $form->createView(),
-                "params" => $params
+                "params" => $params,
+                'values' =>null
             ]);
 
 

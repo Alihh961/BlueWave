@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Attributes;
 use App\Entity\Category;
+use App\Entity\Type;
 use App\Entity\VisionItem;
 use App\Entity\ItemType;
 use App\Entity\Order;
@@ -51,27 +52,29 @@ class DashboardController extends AbstractDashboardController
     public function configureAssets(): Assets
     {
         return parent::configureAssets()
-            ->addWebpackEncoreEntry('easyAdmin');
+            ->addWebpackEncoreEntry('easyAdminJs')
+            ->addWebpackEncoreEntry('easyAdminScss');
     }
+
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToUrl('Go to Home Page', 'fa fa-home', $this->generateUrl('app_home'))
-        ->setCssClass("bg-primary p-2 border-radius mb-2");
+            ->setCssClass("bg-primary p-2 border-radius mb-2");
 
-        yield MenuItem::linkToUrl("Add / Edit Balance" , 'fas fa-dollar-sign' , 'admin/add-balance')
+        yield MenuItem::linkToUrl("Add / Edit Balance", 'fas fa-dollar-sign', 'admin/add-balance')
             ->setCssClass('bg-success p-2 border-radius mb-2');
 
         yield MenuItem::linkToDashboard('Dashboard Page', 'fa-solid fa-cruzeiro-sign')
-        ->setCssClass("bg-secondary p-2 border-radius mb-2 ");
+            ->setCssClass("bg-secondary p-2 border-radius mb-2 ");
 
-        yield MenuItem::linkToUrl("Search Orders By User" , 'fas fa-shopping-cart' , 'admin/orders/search')
+        yield MenuItem::linkToUrl("Search Orders By User", 'fas fa-shopping-cart', 'admin/orders/search')
             ->setCssClass('bg-danger p-2 border-radius mb-2');
 
-        yield MenuItem::linkToUrl("Orders Confirmation" , 'fas fa-shopping-cart' , 'admin/orders-confirmation')
+        yield MenuItem::linkToUrl("Orders Confirmation", 'fas fa-shopping-cart', 'admin/orders-confirmation')
             ->setCssClass('bg-primary p-2 border-radius mb-2');
 
-        yield MenuItem::linkToUrl("Diff Prices /Missed Items" , 'fas fa-shopping-cart' , 'admin/comparing-price')
+        yield MenuItem::linkToUrl("Diff Prices /Missed Items", 'fas fa-shopping-cart', 'admin/comparing-price')
             ->setCssClass('bg-primary p-2 border-radius mb-2');
 
         yield MenuItem::subMenu("Users", 'fa fa-user')
@@ -85,8 +88,6 @@ class DashboardController extends AbstractDashboardController
             ]);
 
 
-
-
         yield MenuItem::subMenu("Vision Items", 'fa fa-user')
             ->setCssClass('p-2')
             ->setSubItems([
@@ -96,12 +97,19 @@ class DashboardController extends AbstractDashboardController
             ]);
 
 
-
         yield MenuItem::subMenu("Items Type", 'fa fa-user')
             ->setCssClass('p-2')
             ->setSubItems([
                 MenuItem::linkToCrud("Create a type", "fa fa-plus", ItemType::class)->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud("All types", "fa fa-eye", ItemType::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
+        yield MenuItem::subMenu("Type", 'fa fa-user')
+            ->setCssClass('p-2')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create a vision Item", "fa fa-plus", Type::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All vision items", "fa fa-eye", Type::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
 
@@ -115,13 +123,11 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::subMenu("Params", 'fa fa-user')
             ->setCssClass('p-2')
-
             ->setSubItems([
                 MenuItem::linkToCrud("Create a param", "fa fa-plus", Params::class)->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud("All params", "fa fa-eye", Params::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
-
 
 
         yield MenuItem::subMenu("Status", 'fa fa-code-compare')
@@ -148,7 +154,6 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::subMenu("Transactions", 'fa-regular fa-newspaper')
             ->setCssClass('p-2')
-
             ->setSubItems([
                 MenuItem::linkToCrud("All transactions", "fa fa-eye", Transaction::class)->setAction(Crud::PAGE_INDEX)
 

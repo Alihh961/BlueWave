@@ -17,7 +17,7 @@
 
                         <img class="unAvailableItem" src="{{ asset('images/test.png') }}"
                              alt="{{ item.category.name }}">
-                        <h6>{{ item.price }}$</h6>
+                        <h6>{{ item.price|removeTrailingZeros }}$</h6>
 
                     </div>
                 </a>
@@ -31,7 +31,7 @@
 
                         <img class="" src="{{ asset('images/test.png') }}"
                              alt="{{ item.category.name }}">
-                        <h6>{{ item.price }}$</h6>
+                        <h6>{{ item.price|removeTrailingZeros }}$</h6>
 
 
                     </div>

@@ -3,11 +3,14 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PackageFormType extends AbstractType
@@ -29,7 +32,17 @@ class PackageFormType extends AbstractType
                     "constraints" => [
                         new NotBlank([
                             "message" => "quantity is required"
-                        ])
+                        ]),
+                        new GreaterThanOrEqual(
+                            $min,
+                            null,
+                            'The min quantity is: ' .$min
+                        ),
+                        new LessThanOrEqual(
+                            $max,
+                            null,
+                            'The max quantity is: ' .$max
+                        )
                     ]
                     ,
                     "attr" => [
@@ -72,7 +85,7 @@ class PackageFormType extends AbstractType
         for ($i = 0; $i < count($params); $i++) {
 
             $builder
-                ->add(str_replace(" " , "" ,$params[$i]), TextType::class, [
+                ->add(str_replace(" ", "", $params[$i]), TextType::class, [
                     "label" => ucwords($params[$i]),
                     "attr" => [
 //                        "placeholder" => ucwords($params[$i]),
@@ -80,7 +93,7 @@ class PackageFormType extends AbstractType
                     ],
                     "constraints" => [
                         new NotBlank([
-                            "message" => ucfirst($params[$i]) ." is required"
+                            "message" => ucfirst($params[$i]) . " is required"
                         ])
                     ]
 

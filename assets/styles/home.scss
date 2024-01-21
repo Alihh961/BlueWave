@@ -8,6 +8,7 @@ form.searchForm-homePage label {
 .search-div {
   label {
     color: white;
+    font-size:14px ;
 
   }
 
@@ -30,7 +31,7 @@ form.searchForm-homePage label {
 
 .product-container {
   display: block;
-  max-width: 200px;
+  max-width: 150px;
   border-radius: 5px;
   overflow: hidden;
   color: white;
@@ -72,6 +73,33 @@ form.searchForm-homePage label {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
   }
+
+}
+
+
+// Pagination Responsive
+.navigation{
+
+  max-width: 98%!important;
+
+@media (max-width : 555px){
+
+    li span , li a {
+      font-size: 14px;
+
+    }
+
+}
+
+  @media (max-width : 395px){
+
+    li span , li a {
+      padding: 3px 8px;
+
+    }
+
+  }
+
 
 }
 

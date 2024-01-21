@@ -16,10 +16,10 @@ class VisionItem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale:10 )]
     private ?string $price = null;
 
     #[ORM\Column]
@@ -33,15 +33,18 @@ class VisionItem
     private Collection $params;
 
     #[ORM\ManyToOne(inversedBy: 'items', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Attributes $attributes = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ItemType $itemType = null;
 
-    #[ORM\Column(unique: true)]
+    #[ORM\Column]
     private ?int $visionId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $url = null;
 
     public function __construct()
     {
@@ -157,6 +160,18 @@ class VisionItem
     public function setVisionId(int $visionId): static
     {
         $this->visionId = $visionId;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }

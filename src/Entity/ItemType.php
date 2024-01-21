@@ -15,7 +15,7 @@ class ItemType
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255 ,unique: true)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'itemType', targetEntity: VisionItem::class)]
@@ -71,5 +71,10 @@ class ItemType
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
