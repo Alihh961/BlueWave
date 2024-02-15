@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    {% if(categories) %}
+
+        {% for category in categories %}
+
+            {% if category.accessories|length %}
+                <h2 class="text-center text-white">{{ category.name }}</h2>
+
+                {% for acc in category.accessories %}
+
+                    <h3>{{ acc.name }}</h3>
+
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+
+        <h2>No accessories to be shown</h2>
+
+    {% endif %}
+
+{% endblock %}

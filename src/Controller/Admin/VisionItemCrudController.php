@@ -88,10 +88,10 @@ class VisionItemCrudController extends AbstractCrudController
                         ])
                     ]
                 ]),
-            ImageField::new('url', 'image')
-                ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')
-                ->setUploadDir("public/assets/images/vision-items")
-                ->setBasePath("assets/images/vision-items"),
+                ImageField::new('url', 'image')
+                    ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')
+                    ->setUploadDir("public/assets/images/vision-items")
+                    ->setBasePath("assets/images/vision-items"),
             AssociationField::new('itemType')
                 ->setFormTypeOptions([
                     "constraints" => [
