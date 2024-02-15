@@ -1,34 +1,25 @@
 console.log('EA JS file works');
+
+// const contentWrapper = document.querySelector('.content-wrapper');
 //
-// const SelectAttribute = document.querySelector('#VisionItem_chooseAttribute');
+// if(contentWrapper){
+//     contentWrapper.classList.add('d-block');
+//     contentWrapper.classList.add('specific-user-content-wrapper');
 //
-// const allLegends = document.querySelectorAll('legend');
-// var legendAttribute = null;
-// allLegends.forEach((legend)=>{
-//     if(legend.innerHTML ='Attributes'){
-//         legendAttribute = legend;
-//     }
-// })
-//
-// legendAttribute.parentNode.style.display = 'none';
-//
-//
-// SelectAttribute.addEventListener('change',(event)=>{
-//     if(event.target.value == 'min-max' || event.target.value == 'values'){
-//         legendAttribute.parentNode.style.display = 'block';
-//
-//     }else{
-//
-//         legendAttribute.parentNode.style.display = 'none';
-//
-//     }
-// });
-//
-// let createButton = document.querySelector('.action-saveAndReturn[form="new-VisionItem-form"]');
-// let form = document.querySelector('form[name="VisionItem"]');
-// let chooseAttributeInput = document.querySelector('#VisionItem_chooseAttribute');
-// let attributes = document.querySelector('#VisionItem_attributes');
-// createButton.onclick = function(){
-//     console.log(attributes);
 // }
-//
+
+const formSpecificUser = document.querySelector('.form-specific-user');
+
+if(formSpecificUser){
+
+    const contentWrapperDiv = formSpecificUser.parentElement;
+    contentWrapperDiv.classList.add('d-block');
+    contentWrapperDiv.classList.add('specific-user-content-wrapper');
+
+    let mainSection = contentWrapperDiv.parentElement;
+
+    mainSection.style.background = 'linear-gradient(#141e30, #243b55)';
+    mainSection.querySelector('.resizer-handler').style.display = 'none';
+}
+
+

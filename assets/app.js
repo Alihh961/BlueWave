@@ -7,9 +7,10 @@ import './bootstrap.js';
  */
 import './styles/app.scss'
 
-import './scripts/header-dropmenu.js'
 import './scripts/home-page.js'
 import './scripts/checkout.js'
+import './scripts/header-dropmenu.js'
+import './scripts/register.js'
 
 
 

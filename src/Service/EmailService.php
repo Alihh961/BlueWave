@@ -55,11 +55,12 @@ class EmailService
     protected function sendEmail($fromName, $fromEmail, $toName, $toEmail, $subject, $htmlContent)
     {
 
+        $brevoApiKey = $_ENV['BREVO_API_KEY'];
 
         $response = $this->httpClient->request('POST', "https://api.brevo.com/v3/smtp/email", [
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => "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",
+                'api-key' => $brevoApiKey,
                 'content-type' => 'application/json'
             ],
             'json' => [

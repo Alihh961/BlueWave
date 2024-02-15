@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\AccCategory;
+use App\Entity\Accessories;
 use App\Entity\Attributes;
 use App\Entity\Category;
 use App\Entity\Type;
@@ -82,8 +84,24 @@ class DashboardController extends AbstractDashboardController
             ->setSubItems([
                 MenuItem::linkToCrud("Create a user", "fa fa-plus", User::class)->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud("All users", "fa fa-eye", User::class)->setAction(Crud::PAGE_INDEX),
-                MenuItem::linkToCrud("Specific User", "fa fa-eye", User::class)->setAction(Crud::PAGE_DETAIL)
+                MenuItem::linkToRoute("Specific User", "fa fa-eye", 'app_user_specific')
 
+
+            ]);
+
+        yield MenuItem::subMenu("Accessories", 'fa fa-user')
+            ->setCssClass('p-2 ')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create an accessory", "fa fa-plus", Accessories::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All accessories", "fa fa-eye", Accessories::class)->setAction(Crud::PAGE_INDEX)
+
+            ]);
+
+        yield MenuItem::subMenu("AccCategory", 'fa fa-user')
+            ->setCssClass('p-2 ')
+            ->setSubItems([
+                MenuItem::linkToCrud("Create an AccCategory", "fa fa-plus", AccCategory::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All accCategories", "fa fa-eye", AccCategory::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
 
@@ -120,6 +138,8 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud("All categories", "fa fa-eye", Category::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
+
+
 
         yield MenuItem::subMenu("Params", 'fa fa-user')
             ->setCssClass('p-2')

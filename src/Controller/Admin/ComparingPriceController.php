@@ -31,7 +31,7 @@ class ComparingPriceController extends AbstractController
         $ourItemsVisionId = [];
 
 
-        // here we want to check if all ids of the api exist in our database, if no then there is either new items
+        // here we want to check if all ids of the api exist in our database, if no then there is new items
         // first we select the ids of vision item in our database then we check if all vision items exists(35->48);
         foreach ($ourItems as $item) {
             $ourItemsVisionId[] = $item->getVisionId();
@@ -51,6 +51,7 @@ class ComparingPriceController extends AbstractController
             }
 
         }
+
 
 
         //here we want to check if there is a difference of price
@@ -76,7 +77,6 @@ class ComparingPriceController extends AbstractController
                     $toto = $initialPrice;
                 }
 
-
             }
 
             $visionId = $item->getVisionId();
@@ -92,6 +92,9 @@ class ComparingPriceController extends AbstractController
                     }
                 }
             }
+
+            // we just modify the price to fetch it in twig
+            $item->setPrice($initialPrice);
 
         }
 
