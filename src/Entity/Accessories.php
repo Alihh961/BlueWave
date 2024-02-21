@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AccessoriesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,17 @@ class Accessories
     #[ORM\ManyToOne(inversedBy: 'accessories')]
     #[ORM\JoinColumn(nullable: false)]
     private ?AccCategory $accCategory = null;
+
+    #[ORM\OneToMany(mappedBy: 'accessory', targetEntity: AccImages::class)]
+    private Collection $accImages;
+
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
+    public function __construct()
+    {
+        $this->accImages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +104,48 @@ class Accessories
     public function setAccCategory(?AccCategory $accCategory): static
     {
         $this->accCategory = $accCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AccImages>
+     */
+    public function getAccImages(): Collection
+    {
+        return $this->accImages;
+    }
+
+    public function addAccImage(AccImages $accImage): static
+    {
+        if (!$this->accImages->contains($accImage)) {
+            $this->accImages->add($accImage);
+            $accImage->setAccessory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccImage(AccImages $accImage): static
+    {
+        if ($this->accImages->removeElement($accImage)) {
+            // set the owning side to null (unless already changed)
+            if ($accImage->getAccessory() === $this) {
+                $accImage->setAccessory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }

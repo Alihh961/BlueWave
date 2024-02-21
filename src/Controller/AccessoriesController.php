@@ -9,7 +9,8 @@ use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AccessoriesController extends AbstractController{
+class AccessoriesController extends AbstractController
+{
 
 
     public function __construct(
@@ -20,17 +21,29 @@ class AccessoriesController extends AbstractController{
     }
 
     #[Route(path: '/accessories', name: 'app_accessories')]
-    public function index(){
+    public function index()
+    {
 
         $accessories = $this->accessoriesRepository->findAll();
 
         $accCategories = $this->accCategoryRepository->findAll();
 
 
-        return $this->render('accessories/index.html.twig',[
+        return $this->render('accessories/index.html.twig', [
             'accessories' => $accessories,
             'categories' => $accCategories
         ]);
+
+    }
+
+    #[Route(path: '/accessories/{id}', name: 'app_accessories_checkout')]
+    public function checkout($id)
+    {
+        $accessory = $this->accessoriesRepository->find($id);
+
+
+
+
 
     }
 

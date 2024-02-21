@@ -11,13 +11,12 @@ use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Middleware\TraceableMiddleware;
 use Symfony\Component\Routing\Annotation\Route;
 
 
 class OrderConfirmationController extends AbstractController
 {
-    #[Route('admin/orders-confirmation', name: 'app_order_confirmation')]
+    #[Route('admin/orders-confirmation', name: 'app_orders_pending')]
     public function index(OrderRepository        $orderRepository, OrderStatusHistoryRepository $orderStatusHistoryRepository,
                           EntityManagerInterface $entityManager): Response
     {

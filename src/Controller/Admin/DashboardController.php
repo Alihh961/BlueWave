@@ -73,7 +73,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl("Search Orders By User", 'fas fa-shopping-cart', 'admin/orders/search')
             ->setCssClass('bg-danger p-2 border-radius mb-2');
 
-        yield MenuItem::linkToUrl("Orders Confirmation", 'fas fa-shopping-cart', 'admin/orders-confirmation')
+        yield MenuItem::linkToUrl("Pending orders", 'fas fa-shopping-cart', 'admin/orders-confirmation')
             ->setCssClass('bg-primary p-2 border-radius mb-2');
 
         yield MenuItem::linkToUrl("Diff Prices /Missed Items", 'fas fa-shopping-cart', 'admin/comparing-price')
@@ -162,7 +162,6 @@ class DashboardController extends AbstractDashboardController
             ->setCssClass('p-2')
             ->setSubItems([
                 MenuItem::linkToCrud("All orders", "fa fa-eye", Order::class)->setAction(Crud::PAGE_INDEX)
-
             ]);
 
         yield MenuItem::subMenu("Orders History", 'fa-solid fa-clock-rotate-left')

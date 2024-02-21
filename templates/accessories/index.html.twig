@@ -5,18 +5,47 @@
 
     {% if(categories) %}
 
+
         {% for category in categories %}
 
-            {% if category.accessories|length %}
-                <h2 class="text-center text-white">{{ category.name }}</h2>
+            <section class="d-flex flex-column px-2 acc-container">
+                {% if category.accessories|length %}
 
-                {% for acc in category.accessories %}
+                    <h2 class="text-center text-white p-2">{{ category.name }}</h2>
 
-                    <h3>{{ acc.name }}</h3>
+                    <div class="d-flex flex-row flex-wrap gap-2 justify-content-center">
 
-                {% endfor %}
 
-            {% endif %}
+                        {% for acc in category.accessories %}
+
+
+                            <a class="product-container" href="accessories-checkout?c={{ acc.id }}">
+
+                                <div class="product">
+                                    <h6>{{ acc.price|removeTrailingZeros }} $</h6>
+
+                                    {% if acc.url %}
+                                        <img class="" src="{{ asset('assets/images/accessories/') }}{{ acc.url }}"
+                                             alt="{{ acc.name }}">
+
+                                    {% else %}
+                                        <img class="" src="{{ asset('img.png') }}"
+                                             alt="{{ acc.name }}">
+
+                                    {% endif %}
+                                    <h6>{{ acc.name }}</h6>
+
+                                </div>
+                            </a>
+
+                        {% endfor %}
+                    </div>
+
+
+
+
+                {% endif %}
+            </section>
         {% endfor %}
 
     {% else %}
