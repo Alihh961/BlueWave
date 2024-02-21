@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AccessoriesRepository::class)]
 class Accessories
@@ -14,18 +15,22 @@ class Accessories
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('accessory')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('accessory')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 2)]
+    #[Groups('accessory')]
     private ?string $price = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('accessory')]
     private ?string $url = null;
 
     #[ORM\ManyToOne(inversedBy: 'accessories')]
@@ -35,8 +40,6 @@ class Accessories
     #[ORM\OneToMany(mappedBy: 'accessory', targetEntity: AccImages::class)]
     private Collection $accImages;
 
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
 
     public function __construct()
     {
@@ -138,15 +141,4 @@ class Accessories
         return $this;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): static
-    {
-        $this->title = $title;
-
-        return $this;
-    }
 }

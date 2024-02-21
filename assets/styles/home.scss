@@ -36,7 +36,7 @@ form.searchForm-homePage label {
   overflow: hidden;
   color: white;
   text-decoration: none;
-
+  position: relative;
 
 }
 
@@ -60,9 +60,8 @@ form.searchForm-homePage label {
 .product h6 {
   text-align: center;
   margin: 0;
-  padding: 5px 0;
+  padding: 5px 2px;
   background-color: #1c7430;
-
   font-size: 13px;
 
   &:nth-child(1) {
@@ -73,6 +72,9 @@ form.searchForm-homePage label {
   &:last-child {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
 }

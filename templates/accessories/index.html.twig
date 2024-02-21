@@ -19,7 +19,7 @@
                         {% for acc in category.accessories %}
 
 
-                            <a class="product-container" href="accessories-checkout?c={{ acc.id }}">
+                            <a class="product-container">
 
                                 <div class="product">
                                     <h6>{{ acc.price|removeTrailingZeros }} $</h6>
@@ -33,7 +33,10 @@
                                              alt="{{ acc.name }}">
 
                                     {% endif %}
+                                    <img class="add-to-shopping-basket" data-id="{{ acc.id }}" src="{{ asset('assets/images/static/addToShoppingBasket.png') }}">
+
                                     <h6>{{ acc.name }}</h6>
+
 
                                 </div>
                             </a>

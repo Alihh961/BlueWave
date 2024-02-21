@@ -7,6 +7,8 @@ use App\Repository\AccCategoryRepository;
 use App\Repository\AccessoriesRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccessoriesController extends AbstractController
@@ -41,9 +43,16 @@ class AccessoriesController extends AbstractController
     {
         $accessory = $this->accessoriesRepository->find($id);
 
-
-
-
+//        dd($accessory);
+        if($accessory){
+            return  $this->json($accessory ,  Response::HTTP_OK, context: ['groups'=> ['accessory']]);
+        }else{
+            return new JsonResponse([
+                'statusCode' => 404 ,
+                'data' => null
+            ],
+            404);
+        }
 
     }
 

@@ -7,11 +7,22 @@ import './bootstrap.js';
  */
 import './styles/app.scss'
 
+const $ = require('jquery')
+
+$.ajax({
+    url : `accessories/1`,
+    type : 'GET',
+    success : function(data){
+        console.log(data);
+    }
+})
+
 import './scripts/home-page.js'
 import './scripts/checkout.js'
 import './scripts/header-dropmenu.js'
 import './scripts/register.js'
 
+import './scripts/addToShoppingBasket.js'
 
 
 

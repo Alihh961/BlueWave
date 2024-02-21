@@ -1,8 +1,38 @@
 .acc-container{
 
+  .product-container{
+
+
+
+
+    img.add-to-shopping-basket{
+      position: absolute;
+      width: 39px;
+      height: 29px;
+      top: 11%;
+      right: 0;
+      background: white;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      cursor: pointer;
+      opacity: 0;
+      transition: 0.5s ease-in-out;
+    }
+
+
+    &:hover{
+      opacity: 1!important;
+
+      img.add-to-shopping-basket{
+        opacity: 1!important;
+      }
+    }
+  }
   h2{
     background-color: tomato;
     border-radius: 5px;
     text-align: center;
   }
+
+
 }

@@ -32,7 +32,7 @@ class AccessoriesCrudController extends AbstractCrudController
                     'required' => true
                 ]),
 
-            TextEditorField::new('description')
+            TextField::new('description')
                 ->setFormTypeOptions([
                     'required' => true
                 ]),
