@@ -18,14 +18,46 @@ if (addToShoppingBasketButton) {
                         let basketItemsString = localStorage.getItem('basket');
                         let basketItems = JSON.parse(basketItemsString);
 
+
+
                         if (!basketItems) {
+                            data.quantity = 1;
+
                             basketItems = {
                                 items: [data]
                             };
+
                         } else {
-                            basketItems.items.push(data);
+
+                            // get basket items name to check if the data item exists already
+                            let basketItemsId = [];
+                            basketItems.items.forEach(item=>{
+
+                                basketItemsId.push(item.id);
+
+                            });
+
+
+                            if(basketItemsId.includes(data.id)){
+
+                                basketItems.items.forEach(item=>{
+                                    if(item.id == data.id){
+                                        item.quantity += 1;
+                                    }
+                                } )
+                                console.log('includes');
+
+                            }else{
+                                console.log(' no includes');
+
+                                data.quantity = 1;
+                                basketItems.items.push(data);
+
+                            }
 
                         }
+
+
 
                         let updatedBasketString = JSON.stringify(basketItems);
 

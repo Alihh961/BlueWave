@@ -36,3 +36,18 @@
 
 
 }
+
+.shopping-basket{
+  height: 50px;
+  border-radius: 50%;
+  /* width: 25px; */
+  position: fixed;
+  top: 50%;
+  cursor: pointer;
+  right: 0;
+  transition: 0.5s ease-in-out;
+
+  &:hover{
+    height: 60px;
+  }
+}

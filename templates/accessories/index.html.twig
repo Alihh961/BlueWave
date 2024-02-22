@@ -4,7 +4,9 @@
 {% block body %}
 
     {% if(categories) %}
-
+    <a href="/shopping-basket">
+        <img class='shopping-basket' src ='{{  asset("assets/images/static/shoppingBasket.png") }}' alt="Shopping Basket Image">
+    </a>
 
         {% for category in categories %}
 
