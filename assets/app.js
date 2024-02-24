@@ -7,15 +7,22 @@ import './bootstrap.js';
  */
 import './styles/app.scss'
 
-const $ = require('jquery')
-
-$.ajax({
-    url : `accessories/1`,
-    type : 'GET',
-    success : function(data){
-        console.log(data);
+Swal.fire({
+    title: "Do you want to save the changes?",
+    showDenyButton: true,
+    showCancelButton: false,
+    confirmButtonText: "Yes,Order now",
+    denyButtonText: `Cancel`
+}).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+        Swal.fire("Saved!", "", "success");
     }
-})
+});
+
+
+const $ = require('jquery');
+
 
 import './scripts/home-page.js'
 import './scripts/checkout.js'
@@ -24,6 +31,7 @@ import './scripts/register.js'
 import './scripts/shoppingBasket.js'
 
 import './scripts/addToShoppingBasket.js'
+import Swal from "sweetalert2";
 
 
 
