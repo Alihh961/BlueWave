@@ -22,17 +22,17 @@ class ViewProductController extends AbstractController
 
         $items = $categoryEntity->getItems();
 
-        foreach ($items as $item) {
-            // ensure that min and max aren't equal
-            if ($item->getAttributes()->getMinAndMax() && $item->getAttributes()->getMinAndMax()[0] != $item->getAttributes()->getMinAndMax()[1]) {
-                $min = $item->getAttributes()->getMinAndMax()[0];
-
-
-                $price = $item->getPrice() * $min;
-
-                $item->setPrice($price);
-            }
-        }
+//        foreach ($items as $item) {
+//            // ensure that min and max aren't equal
+//            if ($item->getAttributes()->getMinAndMax() && $item->getAttributes()->getMinAndMax()[0] != $item->getAttributes()->getMinAndMax()[1]) {
+//                $min = $item->getAttributes()->getMinAndMax()[0];
+//
+//
+//                $price = $item->getPrice() * $min;
+//
+//                $item->setPrice($price);
+//            }
+//        }
 
 
         return $this->render("view-products/index.html.twig", [

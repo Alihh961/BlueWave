@@ -4,11 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\AccCategory;
 use App\Entity\Accessories;
-use App\Entity\Attributes;
 use App\Entity\Category;
 use App\Entity\Type;
-use App\Entity\VisionItem;
-use App\Entity\ItemType;
+use App\Entity\Item;
 use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
 use App\Entity\Params;
@@ -89,45 +87,31 @@ class DashboardController extends AbstractDashboardController
 
             ]);
 
-        yield MenuItem::subMenu("Accessories", 'fa fa-user')
-            ->setCssClass('p-2 ')
-            ->setSubItems([
-                MenuItem::linkToCrud("Create an accessory", "fa fa-plus", Accessories::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud("All accessories", "fa fa-eye", Accessories::class)->setAction(Crud::PAGE_INDEX)
-
-            ]);
-
-        yield MenuItem::subMenu("AccCategory", 'fa fa-user')
-            ->setCssClass('p-2 ')
-            ->setSubItems([
-                MenuItem::linkToCrud("Create an AccCategory", "fa fa-plus", AccCategory::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud("All accCategories", "fa fa-eye", AccCategory::class)->setAction(Crud::PAGE_INDEX)
-
-            ]);
+//        yield MenuItem::subMenu("Accessories", 'fa fa-user')
+//            ->setCssClass('p-2 ')
+//            ->setSubItems([
+//                MenuItem::linkToCrud("Create an accessory", "fa fa-plus", Accessories::class)->setAction(Crud::PAGE_NEW),
+//                MenuItem::linkToCrud("All accessories", "fa fa-eye", Accessories::class)->setAction(Crud::PAGE_INDEX)
+//
+//            ]);
 
 
-        yield MenuItem::subMenu("Vision Items", 'fa fa-user')
+
+        yield MenuItem::subMenu("Items", 'fa fa-user')
             ->setCssClass('p-2')
             ->setSubItems([
-                MenuItem::linkToCrud("Create a vision Item", "fa fa-plus", VisionItem::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud("All vision items", "fa fa-eye", VisionItem::class)->setAction(Crud::PAGE_INDEX)
+                MenuItem::linkToCrud("Create an Item", "fa fa-plus", Item::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All items", "fa fa-eye", Item::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
 
 
-        yield MenuItem::subMenu("Items Type", 'fa fa-user')
-            ->setCssClass('p-2')
-            ->setSubItems([
-                MenuItem::linkToCrud("Create a type", "fa fa-plus", ItemType::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud("All types", "fa fa-eye", ItemType::class)->setAction(Crud::PAGE_INDEX)
-
-            ]);
 
         yield MenuItem::subMenu("Type", 'fa fa-user')
             ->setCssClass('p-2')
             ->setSubItems([
-                MenuItem::linkToCrud("Create a vision Item", "fa fa-plus", Type::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud("All vision items", "fa fa-eye", Type::class)->setAction(Crud::PAGE_INDEX)
+                MenuItem::linkToCrud("Create a type", "fa fa-plus", Type::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud("All types", "fa fa-eye", Type::class)->setAction(Crud::PAGE_INDEX)
 
             ]);
 

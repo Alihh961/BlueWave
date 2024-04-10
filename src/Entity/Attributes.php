@@ -17,11 +17,14 @@ class Attributes
     private ?int $id = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'attributes', targetEntity: VisionItem::class)]
+    #[ORM\OneToMany(mappedBy: 'attributes', targetEntity: Item::class)]
     private Collection $items;
 
     #[ORM\Column(type: Types::ARRAY , nullable: true)]
     private array $minAndMax = [];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $quantityValues = null;
 
     public function __construct()
     {
@@ -36,14 +39,14 @@ class Attributes
 
 
     /**
-     * @return Collection<int, VisionItem>
+     * @return Collection<int, Item>
      */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
-    public function addItem(VisionItem $item): static
+    public function addItem(Item $item): static
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
@@ -53,7 +56,7 @@ class Attributes
         return $this;
     }
 
-    public function removeItem(VisionItem $item): static
+    public function removeItem(Item $item): static
     {
         if ($this->items->removeElement($item)) {
             // set the owning side to null (unless already changed)
@@ -75,6 +78,23 @@ class Attributes
         $this->minAndMax = $minAndMax;
 
         return $this;
+    }
+
+    public function getQuantityValues(): ?string
+    {
+        return $this->quantityValues;
+    }
+
+    public function setQuantityValues(?string $quantityValues): static
+    {
+        $this->quantityValues = $quantityValues;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 
 

@@ -69,11 +69,33 @@
   }
 
   .checkout-div{
-    align-self: flex-end;
-    width: 35%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     background-color: #776b6b3b;
     padding: 5px;
     border-radius: 5px;
+
+    h6{
+      align-self: end;
+      font-weight: bold;
+    }
+
+    div{
+
+      align-self: end;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      a{
+        max-width: 150px;
+        min-width: 110px;
+
+      }
+    }
+
+
   }
 
 }

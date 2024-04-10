@@ -21,9 +21,13 @@ class Type
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Category::class)]
     private Collection $categories;
 
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Item::class)]
+    private Collection $items;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,5 +75,40 @@ class Type
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Item>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): static
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getType() === $this) {
+                $item->setType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

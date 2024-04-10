@@ -127,7 +127,7 @@ class OrderConfirmationController extends AbstractController
 
             flash()->addFlash("success", "Order was rejected", "Order Rejected");
 
-            return $this->redirectToRoute('app_order_confirmation');
+            return $this->redirectToRoute('app_orders_pending');
 
         } catch (\Exception $exception) {
             throw new \Exception($exception);

@@ -1,4 +1,7 @@
+import Swal from "sweetalert2";
+
 let shoppingBasketContainer = document.querySelector('.shopping-basket-container');
+const $ = require('jquery');
 
 
 if (shoppingBasketContainer) {
@@ -13,17 +16,17 @@ if (shoppingBasketContainer) {
 
         basketItems.forEach(item => {
 
-            itemDiv = document.createElement('div');
+            let itemDiv = document.createElement('div');
 
 
             itemDiv.classList.add('shopping-basket-item');
 
-            itemNameSpan = document.createElement('span');
-            itemImageSpan = document.createElement('img');
-            itemQuantityInput = document.createElement('input');
-            itemTotalPriceSpan = document.createElement('span');
-            qtyAndPriceContainer = document.createElement('div');
-            removeButton = document.createElement('button');
+            let itemNameSpan = document.createElement('span');
+            let itemImageSpan = document.createElement('img');
+            let itemQuantityInput = document.createElement('input');
+            let itemTotalPriceSpan = document.createElement('span');
+            let qtyAndPriceContainer = document.createElement('div');
+            let removeButton = document.createElement('button');
 
 
             itemNameSpan.innerHTML = item.name;
@@ -62,36 +65,40 @@ if (shoppingBasketContainer) {
             shoppingBasketContainer.append(itemDiv);
 
         })
-        checkoutDiv = document.createElement('div');
+        let checkoutDiv = document.createElement('div');
         checkoutDiv.classList.add('checkout-div');
 
         let totalPriceCheckout = document.createElement('h6');
         let totalPricesArray = document.querySelectorAll('.unit-price-total');
         let totalPricesNumber = 0;
 
-        totalPricesArray.forEach(price=>{
-            totalPricesNumber += +price.innerHTML.slice(0 ,-1);
+        totalPricesArray.forEach(price => {
+            totalPricesNumber += +price.innerHTML.slice(0, -1);
         })
 
 
         totalPriceCheckout.innerHTML = `The total price : ${totalPricesNumber}$`;
 
 
-        orderButton = document.createElement('a');
-        orderButton.innerHTML = "Order";
-        orderButton.setAttribute('href' , '/order-accessories');
-        orderButton.setAttribute('class' , 'btn btn-success d-block');
-        orderButton.style.marginTop ='5px';
+        let orderButton = document.createElement('a');
+        orderButton.innerHTML = "Order now";
+        orderButton.setAttribute('class', 'btn btn-success d-block');
 
-        emptyBasketButton = document.createElement('a');
+        let emptyBasketButton = document.createElement('a');
         emptyBasketButton.innerHTML = 'Empty Carte';
-        emptyBasketButton.setAttribute('class' , 'btn btn-danger d-block');
+        emptyBasketButton.setAttribute('class', 'btn btn-danger d-block');
+
+
+        let buttonContainer = document.createElement('div');
+
+        buttonContainer.append(emptyBasketButton);
+        buttonContainer.append(orderButton);
+
 
         checkoutDiv.append(totalPriceCheckout);
-        checkoutDiv.append(emptyBasketButton);
-        checkoutDiv.append(orderButton);
+        checkoutDiv.append(buttonContainer);
 
-        emptyBasketButton.addEventListener('click' , ()=>{
+        emptyBasketButton.addEventListener('click', () => {
             console.log('removed');
             localStorage.removeItem('basket');
             location.reload();
@@ -99,6 +106,147 @@ if (shoppingBasketContainer) {
 
         shoppingBasketContainer.append(checkoutDiv);
 
+        function getTotalPrice() {
+
+            let pricesElement = document.querySelectorAll('.unit-price-total');
+
+            let prices = 0;
+
+            pricesElement.forEach(priceElement => {
+                prices += +priceElement.innerHTML.slice(0, -1);
+
+
+            });
+
+            return prices;
+        }
+
+
+        function updateTotalPrice() {
+
+            let totalPrice = getTotalPrice();
+
+            let message = document.querySelector('.checkout-div h6');
+
+            message.innerHTML = `The total price : ${totalPrice}$`;
+
+
+        }
+
+        let qtyInputs = shoppingBasketContainer.querySelectorAll('input');
+
+        qtyInputs.forEach(input => {
+
+            input.addEventListener('change', (event) => {
+                let newValue = event.target.value;
+                const id = event.target.getAttribute('data-id');
+                let items = JSON.parse(localStorage.getItem('basket')).items;
+
+                if (newValue <= 0) {
+                    newValue = 1;
+                    event.target.value = 1;
+                }
+
+                items.forEach(item => {
+                    if (item.id == id) {
+                        item.quantity = +newValue;
+                    }
+                });
+
+
+                localStorage.setItem('basket', JSON.stringify({
+                    items: items
+                }));
+
+                let totalPriceElement = document.querySelector(`span[data-id="${id}"]`);
+                let unitPrice = event.target.getAttribute('data-price');
+                totalPriceElement.innerHTML = (newValue * unitPrice).toFixed(2) + "$";
+                updateTotalPrice();
+
+            })
+        });
+
+        let removeButtons = shoppingBasketContainer.querySelectorAll(`button[data-role="remove"]`);
+
+        removeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                let id = button.getAttribute('data-id');
+
+                let items = JSON.parse(localStorage.getItem('basket')).items;
+
+
+                items = items.filter(item => item.id != id);
+
+                if (items.length > 0) {
+                    localStorage.setItem('basket', JSON.stringify({
+                        items:
+                        items
+
+                    }));
+                } else {
+                    localStorage.removeItem('basket');
+                }
+
+                document.location.reload();
+
+
+            })
+        });
+
+
+        function orderNow() {
+
+            let totalPrice = getTotalPrice();
+
+            Swal.fire({
+                title: `Do you want to order now and pay ${totalPrice}$ ?`,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Yes,Order now",
+                denyButtonText: `Cancel`
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
+
+                    const items = JSON.parse(localStorage.getItem('basket')).items;
+
+                    console.log(JSON.stringify(items));
+                    $.ajax({
+                        type: 'POST',
+                        url: 'order-accessories',
+                        data: JSON.stringify(items),
+                        success: function (data) {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "info"
+                            }).then(() => {
+                                localStorage.removeItem('basket');
+                                    location.reload();
+
+                                }
+                            )
+                        },
+                        error: function (xhr) {
+
+                            var error = xhr.responseJSON;
+                           
+                            Swal.fire({
+                                title: error.title,
+                                text: error.message,
+                                icon: "error"
+                            });
+                        }
+
+                    })
+                }
+            });
+        }
+
+        orderButton.addEventListener('click', () => {
+            orderNow();
+        });
 
 
     } else {
@@ -107,86 +255,6 @@ if (shoppingBasketContainer) {
         noItemsMessage.innerHTML = 'No items added to the basket';
 
         shoppingBasketContainer.append(noItemsMessage);
-    }
-
-    let qtyInputs = shoppingBasketContainer.querySelectorAll('input');
-
-    qtyInputs.forEach(input => {
-
-        input.addEventListener('change', (event) => {
-            let newValue = event.target.value;
-            const id = event.target.getAttribute('data-id');
-            let items = JSON.parse(localStorage.getItem('basket')).items;
-
-            if (newValue <= 0) {
-                newValue = 1;
-                event.target.value = 1;
-            }
-
-            items.forEach(item => {
-                if (item.id == id) {
-                    item.quantity = +newValue;
-                }
-            });
-
-
-            localStorage.setItem('basket', JSON.stringify({
-                items: items
-            }));
-
-            let totalPriceElement = document.querySelector(`span[data-id="${id}"]`);
-            let unitPrice = event.target.getAttribute('data-price');
-            totalPriceElement.innerHTML = (newValue * unitPrice).toFixed(2) + "$";
-            updateTotalPrice();
-
-        })
-    });
-
-    let removeButtons = shoppingBasketContainer.querySelectorAll(`button[data-role="remove"]`);
-
-    removeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            let id = button.getAttribute('data-id');
-
-            let items = JSON.parse(localStorage.getItem('basket')).items;
-
-
-            items = items.filter(item => item.id != id);
-
-            if(items.length>0){
-                localStorage.setItem('basket', JSON.stringify({
-                    items:
-                    items
-
-                }));
-            }else{
-                localStorage.removeItem('basket');
-            }
-
-            document.location.reload();
-
-
-        })
-    });
-
-
-    function updateTotalPrice() {
-
-        let pricesElement = document.querySelectorAll('.unit-price-total');
-
-        let prices = 0;
-
-        pricesElement.forEach(priceElement=>{
-            prices += +priceElement.innerHTML.slice( 0,-1);
-            console.log(priceElement.innerHTML);
-
-        });
-
-        let message = document.querySelector('.checkout-div h6');
-
-        message.innerHTML = `The total price : ${prices}$`;
-
-
     }
 
 

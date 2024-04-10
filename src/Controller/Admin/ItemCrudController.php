@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Attributes;
 use App\Entity\Category;
-use App\Entity\VisionItem;
+use App\Entity\Item;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -22,11 +22,11 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class VisionItemCrudController extends AbstractCrudController
+class ItemCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return VisionItem::class;
+        return Item::class;
     }
 
 
@@ -72,38 +72,23 @@ class VisionItemCrudController extends AbstractCrudController
                     ]
                 ]),
             BooleanField::new('available'),
-            IntegerField::new('visionId')
-                ->setFormTypeOptions([
-                    "invalid_message" => "Only integers",
-                    "constraints" => [
+            ImageField::new('url', 'image')
+                ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')
+                ->setUploadDir("public/assets/images/vision-items")
+                ->setBasePath("assets/images/vision-items"),
 
-                        new GreaterThan(
-                            0,
-                            null,
-                            "Taille doit être positive."
-                        )
-                        ,
-                        new NotBlank([
-                            'message' => " Can't be empty"
-                        ])
-                    ]
-                ]),
-                ImageField::new('url', 'image')
-                    ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')
-                    ->setUploadDir("public/assets/images/vision-items")
-                    ->setBasePath("assets/images/vision-items"),
-            AssociationField::new('itemType')
-                ->setFormTypeOptions([
-                    "constraints" => [
-                        new NotBlank([
-                            'message' => " Can't be empty"
-                        ])
-                    ]
-                ]),
+
             AssociationField::new('params'),
-            TextField::new('attribute', 'Min-Max , example => m:10,20 or n if there is no Min-Max')
+            AssociationField::new('type'),
+
+            AssociationField::new('attributes')
+            ->hideOnForm(),
+//            TextField::new('attribute', 'Min-Max (example => m:10/20) or Values ( example => v:10=x/20=y/30=z ) or n if there is no Min-Max')
 //                ->hideWhenUpdating()
+            TextField::new('attribute', 'Min-Max (example => m:10/20)')
+
                 ->setHelp($emptyHelpMessage)
+                ->hideOnIndex()
                 ->setFormTypeOptions([
                     'mapped' => false,
 
@@ -119,28 +104,68 @@ class VisionItemCrudController extends AbstractCrudController
     {
 
         $request = $this->getContext()->getRequest();
-        $visionItemParameters = $request->request->all();
+        $itemParameters = $request->request->all();
 
-        // attribute received must be in format m:10,20
-        $attribute = $visionItemParameters['VisionItem']['attribute'];
-
-        $attributeArray = explode(':', $attribute);
         $attributeEntity = new Attributes();
 
-        switch ($attributeArray[0]) {
-            case 'm' :
 
-                $minMaxArray = explode(',', $attributeArray[1]);
+        // attribute received must be in format m:10/20
+        $attribute = $itemParameters['Item']['attribute'];
 
-                $attributeEntity->setMinAndMax($minMaxArray);
-                $entityInstance->setAttributes($attributeEntity);
 
-                break;
+        // if the attribute field is null
+        if ($attribute) {
 
-            default :
-                $entityInstance->setAttributes(null);
-                break;
+            $attributeArray = explode(':', $attribute);
+
+            // used to know if values or min-max
+            $key = $attributeArray[0];
+
+
+            switch ($key) {
+                case 'm' :
+
+                    $minMaxArray = explode('/', $attributeArray[1]);
+
+                    $attributeEntity->setMinAndMax($minMaxArray);
+                    $entityInstance->setAttributes($attributeEntity);
+
+                    break;
+
+                case 'v' :
+
+                    $valuesString = $attributeArray[1];
+
+                    $quantityValuesArray = explode('/', $valuesString);
+
+                    $attributeEntity->setQuantityValues($valuesString);
+
+                    $entityInstance->setAttributes($attributeEntity);
+
+                    break;
+
+
+                default :
+
+                    $defaultMinMaxArray = [1, 100];
+
+                    $attributeEntity->setMinAndMax($defaultMinMaxArray);
+
+                    $entityInstance->setAttributes($attributeEntity);
+
+                    break;
+            }
+
+        } else {
+            $defaultMinMaxArray = [1, 1000];
+
+            $attributeEntity->setMinAndMax($defaultMinMaxArray);
+
+            $entityInstance->setAttributes($attributeEntity);
+
         }
+
+
 
 
         parent::persistEntity($entityManager, $entityInstance); // TODO: Change the autogenerated stub

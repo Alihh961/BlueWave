@@ -5,9 +5,9 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Params;
-use App\Entity\VisionItem;
+use App\Entity\Item;
 use App\Repository\CategoryRepository;
-use App\Repository\VisionItemRepository;
+use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestController extends AbstractController
 {
 
-    public function toto(VisionItemRepository $itemRepository, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
+    public function toto(ItemRepository $itemRepository, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
     {
         $dataArray =
             [
@@ -2822,7 +2822,7 @@ class TestController extends AbstractController
         $newArraydata = [];
         $categories = [];
         foreach ($dataArray as $data) {
-            $item = new VisionItem();
+            $item = new Item();
 
             $itemName = $data['name'];
 

@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Entity\Attributes;
 use App\Entity\Category;
 use App\Entity\Params;
-use App\Entity\VisionItem;
+use App\Entity\Item;
 use App\Form\SearchTypeFormType;
 use App\Repository\CategoryRepository;
 use App\Repository\ItemTypeRepository;
 use App\Repository\ParamsRepository;
-use App\Repository\VisionItemRepository;
+use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +29,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(HttpClientInterface $httpClient, VisionItemRepository $visionItemRepository
+    public function index(HttpClientInterface $httpClient, ItemRepository $visionItemRepository
         , CategoryRepository                  $categoryRepository, Request $request): Response
     {
 
@@ -111,8 +111,8 @@ class HomeController extends AbstractController
     }
 
 //    #[Route('haha', name: '')]
-    public function test(HttpClientInterface  $httpClient, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository,
-                         VisionItemRepository $visionItemRepository, ParamsRepository $paramsRepository, ItemTypeRepository $itemTypeRepository): Response
+    public function test(HttpClientInterface $httpClient, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository,
+                         ItemRepository      $visionItemRepository, ParamsRepository $paramsRepository, ItemTypeRepository $itemTypeRepository): Response
     {
         $dataArray =
             [
@@ -2972,7 +2972,7 @@ class HomeController extends AbstractController
                 $item['price'] = $newPrice;
 
 
-                $visionItem = new VisionItem();
+                $visionItem = new Item();
 
 
                 // get item name

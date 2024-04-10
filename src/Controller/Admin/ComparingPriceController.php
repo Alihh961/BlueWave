@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Repository\VisionItemRepository;
+use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ComparingPriceController extends AbstractController
 {
     #[Route('admin/comparing-price', name: 'app_comparing_price')]
-    public function index(HttpClientInterface $httpClient, VisionItemRepository $visionItemRepository): Response
+    public function index(HttpClientInterface $httpClient, ItemRepository $visionItemRepository): Response
     {
 
         $apiExt = $_ENV['API_EXTERNAL_URL'];
@@ -111,7 +111,7 @@ class ComparingPriceController extends AbstractController
      * @throws \Exception
      */
     #[Route('admin/update-price', name: 'app_update_price')]
-    public function updatePrice(Request $request, VisionItemRepository $visionItemRepository, EntityManagerInterface $entityManager)
+    public function updatePrice(Request $request, ItemRepository $visionItemRepository, EntityManagerInterface $entityManager)
     {
 
         $id = $request->query->get('id');

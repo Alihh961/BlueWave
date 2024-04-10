@@ -11,7 +11,7 @@ use App\Entity\Transaction;
 use App\Form\PackageFormType;
 use App\Repository\OrderStatusHistoryRepository;
 use App\Repository\StatusRepository;
-use App\Repository\VisionItemRepository;
+use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,18 +28,18 @@ class CheckoutController extends AbstractController
 
     #[Route("/checkout")]
     public function index(Request                      $request, HttpClientInterface $httpClient, EntityManagerInterface $entityManager,
-                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository, VisionItemRepository $visionItemRepository)
+                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository, ItemRepository $visionItemRepository)
     {
 
         $itemId = $request->query->get('i');
-        $visionItem = $visionItemRepository->find($itemId);
+        $item = $visionItemRepository->find($itemId);
 
-        if ($visionItem) {
+        if ($item) {
 
-            $categoryName = $visionItem->getCategory()->getName();
-            $price = $visionItem->getPrice();
+            $categoryName = $item->getCategory()->getName();
+            $price = $item->getPrice();
 
-            $params = $visionItem->getParams();
+            $params = $item->getParams();
 
             $paramsInput = [];
             foreach ($params as $param) {
@@ -47,36 +47,11 @@ class CheckoutController extends AbstractController
 
             }
 
-            // the item can has minmax , values or null as attributes
-            $minAndMax =[];
-            $values = [];
-            if ($visionItem->getAttributes()) {
-
-                $minAndMax = $visionItem->getAttributes()->getMinAndMax();
-//                if($visionItem->getAttributes()->getValue()){
-//                    $values = explode(';' , $visionItem->getAttributes()->getValue()[0]);
-//
-//                }
-            }
-
-//            if($values){
-//                $values = array_combine($values, $values);
-//            }
+            $min = $item->getAttributes()->getMinAndMax()[0];
+            $max = $item->getAttributes()->getMinAndMax()[1];
 
 
 
-            if ($minAndMax) {
-                $min = $minAndMax[0];
-                $max = $minAndMax[1];
-
-                if (is_array($min) || is_array($max)) {
-                    $min = $min[0];
-                    $max = $max[0];
-                }
-
-            } else {
-                $min = $max = null;
-            }
 
 
             $form = $this->createForm(PackageFormType::class, null, [
@@ -101,7 +76,7 @@ class CheckoutController extends AbstractController
                         $data = $form->getData();
 
 
-                        $productType = $visionItem->getItemType()->getName();
+//                        $productType = $item->getItemType()->getName();
 
                         $quantity = $data['quantity'] ?? 1;
 
@@ -140,7 +115,7 @@ class CheckoutController extends AbstractController
 
 
                         $namespace = Uuid::v4();
-                        $uuid = Uuid::v5($namespace, $visionItem->getCategory()->getName());
+                        $uuid = Uuid::v5($namespace, $item->getCategory()->getName());
                         $orderNumber = $uuid->toRfc4122();
 
 
@@ -151,7 +126,7 @@ class CheckoutController extends AbstractController
                         $order->setParamsEntered($paramsEntered);
                         $order->setUser($user);
                         $order->setCreatedAt($dateTimeInBeirut);
-                        $order->setItem($visionItem->getName());
+                        $order->setItem($item->getName());
                         $order->setQuantity($quantity);
 
                         $orderStatusHistory = new OrderStatusHistory();
@@ -192,7 +167,7 @@ class CheckoutController extends AbstractController
 
 
             return $this->render("checkout/index.html.twig", [
-                "item" => $visionItem,
+                "item" => $item,
                 "min" => $min,
                 "max" => $max,
                 "form" => $form->createView(),

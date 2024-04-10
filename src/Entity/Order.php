@@ -44,6 +44,8 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $paramsEntered = null;
 
+
+
     public function __construct()
     {
         $this->orderStatusHistory = new ArrayCollection();
@@ -180,6 +182,8 @@ class Order
 
         return $this;
     }
+
+
 
 
 }

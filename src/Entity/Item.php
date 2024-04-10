@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\VisionItemRepository;
+use App\Repository\ItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VisionItemRepository::class)]
-class VisionItem
+#[ORM\Entity(repositoryClass: ItemRepository::class)]
+class Item
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,15 +36,13 @@ class VisionItem
     #[ORM\JoinColumn(nullable: true)]
     private ?Attributes $attributes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'items')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?ItemType $itemType = null;
-
-    #[ORM\Column]
-    private ?int $visionId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
+
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Type $type = null;
 
     public function __construct()
     {
@@ -140,29 +138,6 @@ class VisionItem
         return $this;
     }
 
-    public function getItemType(): ?ItemType
-    {
-        return $this->itemType;
-    }
-
-    public function setItemType(?ItemType $itemType): static
-    {
-        $this->itemType = $itemType;
-
-        return $this;
-    }
-
-    public function getVisionId(): ?int
-    {
-        return $this->visionId;
-    }
-
-    public function setVisionId(int $visionId): static
-    {
-        $this->visionId = $visionId;
-
-        return $this;
-    }
 
     public function getUrl(): ?string
     {
@@ -172,6 +147,18 @@ class VisionItem
     public function setUrl(?string $url): static
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

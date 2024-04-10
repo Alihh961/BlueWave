@@ -21,16 +21,12 @@ class Category
     #[Groups('categories')]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: VisionItem::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Item::class)]
     private Collection $items;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups('categories')]
     private ?string $url = null;
-
-    #[ORM\ManyToOne(inversedBy: 'categories')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Type $type = null;
 
 
     public function __construct()
@@ -56,14 +52,14 @@ class Category
     }
 
     /**
-     * @return Collection<int, VisionItem>
+     * @return Collection<int, Item>
      */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
-    public function addItem(VisionItem $item): static
+    public function addItem(Item $item): static
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
@@ -73,7 +69,7 @@ class Category
         return $this;
     }
 
-    public function removeItem(VisionItem $item): static
+    public function removeItem(Item $item): static
     {
         if ($this->items->removeElement($item)) {
             // set the owning side to null (unless already changed)
@@ -102,17 +98,7 @@ class Category
        return $this->name;
     }
 
-    public function getType(): ?Type
-    {
-        return $this->type;
-    }
 
-    public function setType(?Type $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
 
 
 }
