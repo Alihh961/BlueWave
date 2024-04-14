@@ -50,8 +50,11 @@ class CheckoutController extends AbstractController
 
             }
 
+
             $minAndMaxString = $item->getAttributes()->getMinAndMax()[0];
-            $minAndMaxArray = explode(',', $minAndMaxString);
+            $minAndMaxArray = explode('/', $minAndMaxString);
+
+
 
             $min = $minAndMaxArray[0];
             $max = $minAndMaxArray[1];
