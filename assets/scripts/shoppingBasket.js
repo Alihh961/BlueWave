@@ -211,10 +211,9 @@ if (shoppingBasketContainer) {
 
                     const items = JSON.parse(localStorage.getItem('basket')).items;
 
-                    console.log(JSON.stringify(items));
                     $.ajax({
                         type: 'POST',
-                        url: 'order-accessories',
+                        url: 'order-items',
                         data: JSON.stringify(items),
                         success: function (data) {
                             Swal.fire({
@@ -228,15 +227,22 @@ if (shoppingBasketContainer) {
                                 }
                             )
                         },
-                        error: function (xhr) {
+                        error: function (error) {
 
-                            var error = xhr.responseJSON;
-                           
-                            Swal.fire({
-                                title: error.title,
-                                text: error.message,
-                                icon: "error"
-                            });
+
+                            console.log(error);
+
+                            // Swal.fire({
+                            //     confirmButtonText : 'Reload the page' ,
+                            //     title: "An error occurred!",
+                            //     text: 'If the problem persists, please contact us.',
+                            //     icon: "error"
+                            //
+                            // }).then(()=> {
+                            //     window.location.reload()
+                            //
+                            // });
+
                         }
 
                     })

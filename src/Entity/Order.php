@@ -44,11 +44,15 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $paramsEntered = null;
 
+    #[ORM\ManyToMany(targetEntity: Item::class, inversedBy: 'orders')]
+    private Collection $items;
+
 
 
     public function __construct()
     {
         $this->orderStatusHistory = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
 
@@ -179,6 +183,30 @@ class Order
     public function setParamsEntered(string $paramsEntered): static
     {
         $this->paramsEntered = $paramsEntered;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Item>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): static
+    {
+        $this->items->removeElement($item);
 
         return $this;
     }

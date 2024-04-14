@@ -1,8 +1,14 @@
 let addToShoppingBasketButton = document.querySelectorAll('.add-to-shopping-basket');
-const $ = require('jquery')
+const $ = require('jquery');
+import Swal from "sweetalert2";
+
+
+
 
 
 if (addToShoppingBasketButton) {
+
+
 
     addToShoppingBasketButton.forEach((button) => {
         button.addEventListener('click', () => {
@@ -13,6 +19,7 @@ if (addToShoppingBasketButton) {
                 url: `accessories/${id}`,
                 type: 'GET',
                 success: function (data) {
+
 
                     try{
                         let basketItemsString = localStorage.getItem('basket');
@@ -45,10 +52,8 @@ if (addToShoppingBasketButton) {
                                         item.quantity += 1;
                                     }
                                 } )
-                                console.log('includes');
 
                             }else{
-                                console.log(' no includes');
 
                                 data.quantity = 1;
                                 basketItems.items.push(data);
@@ -64,33 +69,23 @@ if (addToShoppingBasketButton) {
 
                         localStorage.setItem('basket', updatedBasketString);
 
-                        var div = document.createElement('div');
+
+                        Swal.fire({
+                            title: 'Added',
+                            text: 'You can modify the quantity in the basket',
+                            showDenyButton: true,
+                            showCancelButton: false,
+                            confirmButtonText: "Go to basket",
+                            denyButtonText: `Continue`,
+                            icon: "success"
+
+                        }).then((result) => {
+                            if(result.isConfirmed){
+                                window.location.href ='shopping-basket';
+                            }
+                        });
 
 
-                        div.style.width = '100%';
-                        div.style.minHeight = '100vh';
-                        div.style.position = 'absolute';
-                        div.style.zIndex = '999';
-                        div.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-                        div.style.top = '0';
-                        div.style.left = '0';
-
-                        var message = document.createElement('div');
-
-                        message.style.width = "320px";
-                        message.style.height = '300px';
-                        message.style.position = 'absolute';
-                        message.style.top = '50%';
-                        message.style.left = '50%';
-                        message.style.transform = 'translate(-50%, -50%)';
-                        message.style.backgroundColor = 'red';
-
-                        document.body.style.overflow = 'hidden';
-
-                        div.append(message);
-
-
-                        document.body.append(div);
                     }
                     catch (e) {
                         console.log(e);

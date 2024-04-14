@@ -6,7 +6,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
 use App\Entity\Transaction;
-use App\Repository\AccessoriesRepository;
+use App\Repository\ItemRepository;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
@@ -28,8 +28,8 @@ class ShoppingBasketController extends AbstractController
 
     }
 
-    #[Route('/order-accessories', methods: ['POST'])]
-    public function orderAccessory(Request                $request, AccessoriesRepository $accessoriesRepository, StatusRepository $statusRepository,
+    #[Route('/order-items', methods: ['POST'])]
+    public function orderAccessory(Request                $request, ItemRepository $itemRepository, StatusRepository $statusRepository,
                                    EntityManagerInterface $entityManager)
     {
 
@@ -41,29 +41,39 @@ class ShoppingBasketController extends AbstractController
         $itemsData = json_decode($request->getContent(),true);
 
 
-
         $totalPrice = 0;
-        $totalQuantity = 0;
+        $totalQuantity = 0; // number of total items in the order
         $items = [];
         $order = new Order();
+
         try {
 
-            foreach ($itemsData as $index => $item) {
+            foreach ($itemsData as $index => $oneItem) {
 
 
-                $accessory = $accessoriesRepository->find($item['id']);
-                $quantity = $item['quantity'];
+                $item = $itemRepository->find($oneItem['id']);
+
+                $quantity = $oneItem['quantity'];
+
                 $totalQuantity += $quantity;
 
-                $items[] = ['id'=> $item['id'] , 'quantity' => $item['quantity']];
+                $items[] = ['name'=> $item->getName() , 'quantity' => $oneItem['quantity']];
 
                 for ($i = 0; $i < $quantity; $i++) {
-                    $order->addAccessory($accessory);
-                    $totalPrice += $accessory->getPrice();
+                    $order->addItem($item);
+                    $totalPrice += $item->getPrice();
                 }
 
 
             }
+
+            $itemsString = '';
+
+            foreach ($items as $item){
+
+                $itemsString .= $item['name'] . '}' . $item['quantity'] . '; ';
+            }
+
 
         // convert dim array into string and store it in the item name then
             // fetch the items and its quantity in the order table
@@ -84,13 +94,16 @@ class ShoppingBasketController extends AbstractController
             $order->setTotalPrice($totalPrice);
 
 
-            $itemsString = implode('+' ,$items);
-            $order->setParamsEntered($itemsString);
+
+
+
+            $order->setParamsEntered('');
+
 
             $order->setUser($user);
             $order->setCreatedAt($dateTimeInBeirut);
 
-            $order->setItem('Accessory');
+            $order->setItem($itemsString);
 
             $order->setQuantity($totalQuantity);
 
@@ -112,6 +125,7 @@ class ShoppingBasketController extends AbstractController
             $newBalance = $userBalance - $totalPrice;
             $user->setCurrentBalance($newBalance);
 
+
             if ($totalPrice > $userBalance) {
                 return new JsonResponse([
                         'title' => 'Insufficient Funds',
@@ -126,21 +140,18 @@ class ShoppingBasketController extends AbstractController
             $entityManager->flush();
             return new JsonResponse([
                 'title' => 'Pending',
-                'message'=> 'Your order has been placed! It will be confirmed soon.'
+                'message'=> 'Your order has been placed! It will be treated soon.'
 
             ],
             200);
 
         } catch (\Exception $e) {
-            dd($e);
-            return new JsonResponse(null, 400);
+            return new JsonResponse($e->getMessage() , 500);
         }
 
 
 
 
-
-        return $this->json([$ids]);
     }
 
 }

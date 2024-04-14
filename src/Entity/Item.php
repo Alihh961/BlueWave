@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 class Item
@@ -14,15 +15,19 @@ class Item
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('add-accessory-to-carte')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('add-accessory-to-carte')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 20, scale:10 )]
+    #[Groups('add-accessory-to-carte')]
     private ?string $price = null;
 
     #[ORM\Column]
+    #[Groups('add-accessory-to-carte')]
     private ?bool $available = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
@@ -38,15 +43,20 @@ class Item
 
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('add-accessory-to-carte')]
     private ?string $url = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $type = null;
 
+    #[ORM\ManyToMany(targetEntity: Order::class, mappedBy: 'items')]
+    private Collection $orders;
+
     public function __construct()
     {
         $this->params = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +169,33 @@ class Item
     public function setType(?Type $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): static
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): static
+    {
+        if ($this->orders->removeElement($order)) {
+            $order->removeItem($this);
+        }
 
         return $this;
     }

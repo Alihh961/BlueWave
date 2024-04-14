@@ -28,29 +28,33 @@ class CheckoutController extends AbstractController
 
     #[Route("/checkout")]
     public function index(Request                      $request, HttpClientInterface $httpClient, EntityManagerInterface $entityManager,
-                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository, ItemRepository $visionItemRepository)
+                          OrderStatusHistoryRepository $orderStatusHistoryRepository, StatusRepository $statusRepository, ItemRepository $itemRepository)
     {
 
         $itemId = $request->query->get('i');
-        $item = $visionItemRepository->find($itemId);
+        $item = $itemRepository->find($itemId);
+
 
         if ($item) {
 
             $categoryName = $item->getCategory()->getName();
+
             $price = $item->getPrice();
 
             $params = $item->getParams();
 
             $paramsInput = [];
+
             foreach ($params as $param) {
                 $paramsInput [] = $param->getName();
 
             }
 
-            $min = $item->getAttributes()->getMinAndMax()[0];
-            $max = $item->getAttributes()->getMinAndMax()[1];
+            $minAndMaxString = $item->getAttributes()->getMinAndMax()[0];
+            $minAndMaxArray = explode(',', $minAndMaxString);
 
-
+            $min = $minAndMaxArray[0];
+            $max = $minAndMaxArray[1];
 
 
 
@@ -76,22 +80,27 @@ class CheckoutController extends AbstractController
                         $data = $form->getData();
 
 
-//                        $productType = $item->getItemType()->getName();
 
                         $quantity = $data['quantity'] ?? 1;
 
                         $totalPrice = $price * $quantity;
 
-                        if($quantity > $max){
+                        if ($quantity > $max) {
                             flash()->addFlash("error", "You can't buy more than " . $max . " in a time", "Max Error");
                             return $this->redirect($request->getUri());
                         }
+
+                        if ($quantity < $min) {
+                            flash()->addFlash("error", "You can't buy less than " . $min , "Min Error");
+                            return $this->redirect($request->getUri());
+                        }
+
                         $userBalance = $user->getCurrentBalance();
+
                         if ($totalPrice > $userBalance) {
                             flash()->addFlash("error", "You must recharge your account", "Insufficient Funds");
                             return $this->redirect($request->getUri());
                         }
-
 
 
                         $paramsEntered = "";
@@ -105,6 +114,7 @@ class CheckoutController extends AbstractController
                             } else {
                                 throw new \Exception('Params Error');
                             }
+
                         }
 
 
@@ -172,7 +182,7 @@ class CheckoutController extends AbstractController
                 "max" => $max,
                 "form" => $form->createView(),
                 "params" => $params,
-                'values' =>null
+                'values' => null
             ]);
 
 

@@ -71,7 +71,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl("Search Orders By User", 'fas fa-shopping-cart', 'admin/orders/search')
             ->setCssClass('bg-danger p-2 border-radius mb-2');
 
-        yield MenuItem::linkToUrl("Pending orders", 'fas fa-shopping-cart', 'admin/orders-confirmation')
+        yield MenuItem::linkToUrl("Pending orders", 'fas fa-shopping-cart', 'admin/orders-pending')
             ->setCssClass('bg-primary p-2 border-radius mb-2');
 
         yield MenuItem::linkToUrl("Diff Prices /Missed Items", 'fas fa-shopping-cart', 'admin/comparing-price')

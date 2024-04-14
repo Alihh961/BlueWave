@@ -11,33 +11,33 @@
         {% for category in categories %}
 
             <section class="d-flex flex-column px-2 acc-container">
-                {% if category.accessories|length %}
+                {% if category.items|length %}
 
                     <h2 class="text-center text-white p-2">{{ category.name }}</h2>
 
                     <div class="d-flex flex-row flex-wrap gap-2 justify-content-center">
 
 
-                        {% for acc in category.accessories %}
+                        {% for item in category.items %}
 
 
                             <a class="product-container">
 
                                 <div class="product">
-                                    <h6>{{ acc.price|removeTrailingZeros }} $</h6>
+                                    <h6>{{ item.price|removeTrailingZeros }} $</h6>
 
-                                    {% if acc.url %}
-                                        <img class="" src="{{ asset('assets/images/accessories/') }}{{ acc.url }}"
-                                             alt="{{ acc.name }}">
+                                    {% if item.url %}
+                                        <img class="" src="{{ asset('assets/images/accessories/') }}{{ item.url }}"
+                                             alt="{{ item.name }}">
 
                                     {% else %}
                                         <img class="" src="{{ asset('img.png') }}"
-                                             alt="{{ acc.name }}">
+                                             alt="{{ item.name }}">
 
                                     {% endif %}
-                                    <img class="add-to-shopping-basket" data-id="{{ acc.id }}" src="{{ asset('assets/images/static/addToShoppingBasket.png') }}">
+                                    <img class="add-to-shopping-basket" data-id="{{ item.id }}" src="{{ asset('assets/images/static/addToShoppingBasket.png') }}">
 
-                                    <h6>{{ acc.name }}</h6>
+                                    <h6>{{ item.name }}</h6>
 
 
                                 </div>
@@ -58,5 +58,6 @@
         <h2>No accessories to be shown</h2>
 
     {% endif %}
+
 
 {% endblock %}

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OrderConfirmationController extends AbstractController
 {
-    #[Route('admin/orders-confirmation', name: 'app_orders_pending')]
+    #[Route('admin/orders-pending', name: 'app_orders_pending')]
     public function index(OrderRepository        $orderRepository, OrderStatusHistoryRepository $orderStatusHistoryRepository,
                           EntityManagerInterface $entityManager): Response
     {
@@ -43,6 +43,15 @@ class OrderConfirmationController extends AbstractController
             $stmt->execute();
 //I used FETCH_COLUMN because I only needed one Column.
             $pendingOrders = $stmt->executeQuery()->fetchAll();
+
+
+            foreach ($pendingOrders as $key => $order) {
+
+                $itemsStringName = $order['item'];
+                $pendingOrders[$key]['item'] = str_replace('}', '=>', $itemsStringName);
+
+            }
+
 
 
 
@@ -89,7 +98,7 @@ class OrderConfirmationController extends AbstractController
     }
 
     #[Route('admin/order-rejected/{id}', name: 'app_order_confirmation_rejected')]
-    public function rejectOrder($id,Order $order ,  EntityManagerInterface $entityManager, StatusRepository $statusRepository)
+    public function rejectOrder($id, Order $order, EntityManagerInterface $entityManager, StatusRepository $statusRepository)
     {
 
         try {

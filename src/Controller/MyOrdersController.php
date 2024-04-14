@@ -35,7 +35,14 @@ class MyOrdersController extends AbstractController
             10
         );
 
+
+
         if($orders){
+
+            foreach ($orders as $order){
+                $itemsName = $order->getItem();
+                $order->setItem(str_replace('}' , '=>' , $itemsName));
+            }
 
 
             return $this->render('my_orders/index.html.twig', [
