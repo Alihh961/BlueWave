@@ -39,7 +39,12 @@ class HomeController extends AbstractController
             flash()->addFlash('error', 'Something went wrong, contact us if the problem insists', 'Account not verified');
         }
 
-        $qb = $categoryRepository->getQbAll();
+        $qb = $categoryRepository->createQueryBuilder('c')
+            ->join('c.items' , 'i')
+            ->join('i.type' , 't')
+            ->where('t.name = :toto')
+            ->setParameter('toto' , 'E-charges');
+
         $form = $this->createForm(SearchTypeFormType::class);
         $form->handleRequest($request);
 
@@ -49,18 +54,15 @@ class HomeController extends AbstractController
             $data = $form->getData();
             $gameName = $data['gameName'];
 
-            if($gameName != null){
-                $qb->where("c.name LIKE :name")
+            if ($gameName != null) {
+                $qb->andWhere("c.name LIKE :name")
                     ->setParameter("name", "%" . $gameName . "%")
                     ->orderBy('c.id');
             }
 
         }
 
-//        $categories = $qb
-//            ->setMaxResults(15)
-//            ->getQuery()->getResult();
-//
+
         $pagination = $this->paginator->paginate(
             $qb,
             $request->query->getInt("page", 1),

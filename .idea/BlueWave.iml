@@ -146,6 +146,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-flasher/flasher-sweetalert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-flasher/flasher-sweetalert-symfony" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-flasher/flasher-symfony" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/brevo-mailer" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

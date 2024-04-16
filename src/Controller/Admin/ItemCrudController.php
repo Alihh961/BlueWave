@@ -74,8 +74,8 @@ class ItemCrudController extends AbstractCrudController
             BooleanField::new('available'),
             ImageField::new('url', 'image')
                 ->setUploadedFileNamePattern('[slug]-[contenthash].[extension]')
-                ->setUploadDir("public/assets/images/vision-items")
-                ->setBasePath("assets/images/vision-items"),
+                ->setUploadDir("public/assets/images/items")
+                ->setBasePath("assets/images/items"),
 
 
             AssociationField::new('params'),

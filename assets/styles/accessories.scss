@@ -12,7 +12,6 @@
     position: absolute;
     width: 39px;
     height: 29px;
-
     opacity: 0;
     padding: 4px;
     top: 19%;
@@ -54,7 +53,7 @@ h2 {
 .shopping-basket {
   height: 50px;
   border-radius: 50%;
-  /* width: 25px; */
+  z-index:15;
   position: fixed;
   top: 50%;
   cursor: pointer;

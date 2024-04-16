@@ -3,10 +3,14 @@
 
 {% block body %}
 
-    {% if(categories) %}
+
     <a href="/shopping-basket">
-        <img class='shopping-basket' src ='{{  asset("assets/images/static/shoppingBasket.png") }}' alt="Shopping Basket Image">
+        <img class='shopping-basket' src='{{ asset("assets/images/static/shoppingBasket.png") }}'
+             alt="Shopping Basket Image">
     </a>
+
+    {% if(categories) %}
+
 
         {% for category in categories %}
 
@@ -15,10 +19,12 @@
 
                     <h2 class="text-center text-white p-2">{{ category.name }}</h2>
 
+
                     <div class="d-flex flex-row flex-wrap gap-2 justify-content-center">
 
 
                         {% for item in category.items %}
+
 
 
                             <a class="product-container">
@@ -27,7 +33,7 @@
                                     <h6>{{ item.price|removeTrailingZeros }} $</h6>
 
                                     {% if item.url %}
-                                        <img class="" src="{{ asset('assets/images/accessories/') }}{{ item.url }}"
+                                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
                                              alt="{{ item.name }}">
 
                                     {% else %}
@@ -35,7 +41,8 @@
                                              alt="{{ item.name }}">
 
                                     {% endif %}
-                                    <img class="add-to-shopping-basket" data-id="{{ item.id }}" src="{{ asset('assets/images/static/addToShoppingBasket.png') }}">
+                                    <img class="add-to-shopping-basket" data-id="{{ item.id }}"
+                                         src="{{ asset('assets/images/static/addToShoppingBasket.png') }}">
 
                                     <h6>{{ item.name }}</h6>
 
@@ -43,9 +50,9 @@
                                 </div>
                             </a>
 
+
                         {% endfor %}
                     </div>
-
 
 
 
