@@ -57,19 +57,6 @@ class EmailService
         }
 
 
-//        $this->sendEmail(
-//            'BlueWave',
-//            $blueWaveEmail,
-//            $userName,
-//            $userEmail,
-//            'Verification Email',
-//            "
-//                        <p> Hello <span style='font-weight: bolder'>$userName</span> ,Click in the button bellow to verify your account</p>
-//                        <a href=\"$verificationUrl\" style ='padding: 5px 10px;background-color: #1c7430;text-decoration: none;color:white;border-radius:5px;display:inline-block'>Click here </a>
-//                        "
-//        );
-
-
         $verificationEntity = new InscriptionVerificationCode();
         $verificationEntity->setVerificationCode($verificationCode);
 
