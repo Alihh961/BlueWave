@@ -10,11 +10,87 @@ use App\Repository\CategoryRepository;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[Route("testddd", name: "app_test")]
+//#[Route("test", name: "app_test")]
 class TestController extends AbstractController
 {
+
+    public function __construct(
+        private HttpClientInterface $httpClient,
+    )
+    {
+    }
+
+    #[Route("/")]
+
+    public function sendEmail(MailerInterface $mailer)
+    {
+
+        try{
+            $email = (new Email())
+                ->from('hello@example.com')
+                ->to('hajhassan.ali@outlook.com')
+                //->cc('cc@example.com')
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->subject('Time for Symfony Mailer!')
+                ->text('Sending emails is fun again!')
+                ->html('<p>See Twig integration for better HTML integration!</p>');
+
+            $mailer->send($email);
+        }
+
+        catch(err){
+            return $this->json('error');
+        }
+
+
+        return new JsonResponse('success');
+
+
+    }
+
+
+    #[Route("sendemail")]
+
+    public function e()
+    {
+
+        $brevoApiKey = $_ENV['BREVO_API_KEY'];
+
+        $response = $this->httpClient->request('POST', "https://api.brevo.com/v3/smtp/email", [
+            'headers' => [
+                'accept' => 'application/json',
+                'api-key' => $brevoApiKey,
+                'content-type' => 'application/json'
+            ],
+            'json' => [
+                "sender" => [
+                    'name' => 'toto',
+                    'email' => 'hajhassan.ali92@gmail.com'
+                ],
+                "to" => [
+                    [
+                        'email' => 'hajhassan.ali@outlook.com',
+                        'name' => 'totorr'
+                    ],
+
+                ],
+                "subject" => 'jkerkjghjklerhglkerhgerg',
+                "htmlContent" => 'kjherkjghlkerhjglkmher'
+            ]
+        ]);
+
+        return $this->json('success');
+    }
+
 
     public function toto(ItemRepository $itemRepository, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
     {

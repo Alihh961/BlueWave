@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class EmailService
@@ -42,7 +43,6 @@ class EmailService
                 ->from($blueWaveEmail)
                 ->to($userEmail)
                 ->subject("Verification Email")
-//            ->text('This is a test email sent from Symfony using Brévo SMTP.')
                 ->html("
                         <p> Hello <span style='font-weight: bolder'>$userName</span> ,Click in the button bellow to verify your account</p>
                         <a href=\"$verificationUrl\" style ='padding: 5px 10px;background-color: #1c7430;text-decoration: none;color:white;border-radius:5px;display:inline-block'>Click here </a>
@@ -65,6 +65,7 @@ class EmailService
 
     }
 
+    #[Route("sendemail")]
 
     protected function sendEmail($fromName, $fromEmail, $toName, $toEmail, $subject, $htmlContent)
     {
@@ -79,20 +80,22 @@ class EmailService
             ],
             'json' => [
                 "sender" => [
-                    'name' => $fromName,
-                    'email' => $fromEmail
+                    'name' => 'toto',
+                    'email' => 'hajhassan.ali92@gmail.com'
                 ],
                 "to" => [
                     [
-                        'email' => $toEmail,
-                        'name' => $toName
+                        'email' => 'hajhassan.ali@outlook.com',
+                        'name' => 'totorr'
                     ],
 
                 ],
-                "subject" => $subject,
-                "htmlContent" => $htmlContent
+                "subject" => 'jkerkjghjklerhglkerhgerg',
+                "htmlContent" => 'kjherkjghlkerhjglkmher'
             ]
         ]);
+
+        return $this->json('success');
     }
 
 
