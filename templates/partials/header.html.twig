@@ -1,20 +1,29 @@
 {% block body %}
 
     <div class="header-container">
-        <img src="{{ asset('img.png') }}" alt="logo" class="header-logo" style="width: 50px; height: 20px">
 
-        <div class="menu-container">
-            <div class="menu-btn">
-                <div class="menu-btn__burger">
-                </div>
-            </div>
+        <div class="header-left-side">
+            <img src="{{ asset('img.png') }}" alt="logo" class="header-logo" style="width: 50px; height: 20px">
+            <h1>Blue Wave</h1>
         </div>
+
 
         {% if not app.user %}
 
+            <div class="header-right-side">
 
-                {% endif %}
+                <a href='{{ path('app_login') }}' class="user-icon">
+                    <i class="fa-regular fa-user"></i>
+                </a>
 
+                <a class="burger-icon">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+
+            </div>
+
+        {% else %}
+        {% endif %}
 
 
     </div>

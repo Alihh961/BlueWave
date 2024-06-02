@@ -14,9 +14,10 @@ const $ = require('jquery');
 
 import './scripts/home-page.js'
 import './scripts/checkout.js'
-import './scripts/header-dropmenu.js'
+import './scripts/header.js'
 import './scripts/register.js'
 import './scripts/shoppingBasket.js'
+import './scripts/aside'
 
 import './scripts/addToShoppingBasket.js'
 
