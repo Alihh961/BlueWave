@@ -1,0 +1,37 @@
+<div class="aside">
+
+    {% if not app.user %}
+        <div class="aside-login">
+
+            <h3>Login</h3>
+            <h4>Login to get access to our online store</h4>
+            <a href="{{ path('app_login') }}">Login</a>
+
+        </div>
+
+    {% else %}
+
+    {% endif %}
+
+    <hr style="width: 100%">
+
+    <div class="nav">
+
+        <a href="/" class="home"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href="/about-us" class="about-us"><i class="fa-solid fa-user-gear"></i> <span> About Us</span></a>
+
+    </div>
+
+
+    <hr style="width: 100%">
+
+
+    <div class="contact-apps-container">
+
+        <a class="whatsapp-link" href="https://wa.me/96176686498/?text=Hello Blue Wave Team!"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="tiktok-link" href="https://www.tiktok.com/@blue.wave.tecno.center"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="insta-link" href="https://www.instagram.com/bluewave_techno_center"><i class="fa-brands fa-instagram"></i></a>
+
+
+    </div>
+</div>

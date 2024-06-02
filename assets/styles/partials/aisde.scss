@@ -1,0 +1,140 @@
+.aside{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 250px;
+  padding: 10px;
+  border-left-width: 2px;
+  border-left-color: #645f5f;
+  border-left-style: solid;
+  position: absolute;
+  top: 0;
+  right: -270px;
+  background-color: transparent;
+  transition: right 0.3s;
+  color: white;
+
+  &.aside-opened{
+    right: 0;
+  }
+
+
+  .aside-login{
+
+    height: fit-content;
+    padding: 16px;
+    background: #4969b5;
+    border-radius: 25px;
+
+    h3{
+      font-size: medium;
+    }
+
+    h4{
+      font-size: larger;
+    }
+
+    a{
+      display: inline-block;
+      border-radius: 25px;
+      text-decoration: none;
+      width: 95%;
+      color: white;
+      font-size: 14px;
+      background-color: #1c7430;
+      padding: 2px 0;
+      text-align: center;
+    }
+  }
+
+  .nav{
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+
+    a{
+      display: block;
+      width: 100%;
+      text-align: start;
+      text-decoration: none;
+      color: white;
+      padding: 7px 7px 7px 14px;
+      border-radius: 13px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      //background: #7ba2c3;
+
+      &:hover{
+        background: #7ba2c3;
+      }
+
+      i{
+        margin-right: 25px;
+      }
+
+      &.home{
+
+        i{
+          color: lawngreen;
+        }
+      }
+
+      &.about-us{
+
+        i{
+          color: #e7374e;
+
+        }
+      }
+    }
+
+
+
+
+  }
+
+  .contact-apps-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+
+    i{
+      font-weight: 500;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .whatsapp-link{
+
+      i{
+        color: #4caf50;
+
+      }
+    }
+
+    .tiktok-link{
+      i{
+
+        color: black;
+      }
+    }
+
+    .insta-link{
+      i{
+        color: #E1306C;
+      }
+    }
+  }
+}
