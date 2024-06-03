@@ -6,7 +6,8 @@
 
 
     <swiper-container class="mySwiper" pagination-clickable="true" navigation="false" space-between="30"
-                      centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false" pagination="false">
+                      centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
+                      pagination="false">
         <swiper-slide>Slide 1</swiper-slide>
         <swiper-slide>Slide 2</swiper-slide>
         <swiper-slide>Slide 3</swiper-slide>
@@ -42,7 +43,7 @@
     </div>
     <section class="products flex-row">
 
-    {% if categories %}
+        {% if categories %}
 
         {% for category in categories %}
 
@@ -66,11 +67,11 @@
 
         {% endfor %}
 
-        </section>
+    </section>
 
-        <div class="navigation m-auto w-fit">
-            {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
-        </div>
+    <div class="navigation m-auto w-fit">
+        {{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+    </div>
 
     {% else %}
         <h2 class="w-fit mx-auto text-white">No items for this search</h2>
@@ -78,8 +79,29 @@
     {% endif %}
 
 
-    <!--
+
     <div class="services-slider">
+
+        <div class="trace">
+            <div class="slide">
+                <img src="{{ asset('assets/images/services/alfa.jpg') }}" height="100" width="250" alt=""/>
+            </div>
+
+            <div class="slide">
+                <img src="{{ asset('assets/images/services/whish.png') }}" height="100" width="250" alt=""/>
+            </div>
+
+            <div class="slide">
+                <img src="{{ asset('assets/images/services/mtc.png') }}" height="100" width="250" alt=""/>
+            </div>
+
+            <div class="slide">
+                <img src="{{ asset('assets/images/services/western.jpg') }}" height="100" width="250" alt=""/>
+            </div>
+
+            <div class="slide">
+                <img src="{{ asset('assets/images/services/maleye.jpg') }}" height="100" width="250" alt=""/>
+            </div>
 
 
             <div class="slide">
@@ -103,9 +125,12 @@
             </div>
 
 
+        </div>
+
+
     </div>
 
--->
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 {% endblock %}
 

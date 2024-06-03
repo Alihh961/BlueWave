@@ -14,15 +14,11 @@
   right: -270px;
   background-color: transparent;
   transition:  0.3s;
-  transition-property: transform , right ,width;
-  transform-origin: left;
+  transition-property: right ,width;
   color: white;
-  transform: scale(0);
 
   &.aside-opened{
     right: 0;
-    transform: scale(1);
-    transform-origin: left;
     width: 250px;
   }
 

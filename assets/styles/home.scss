@@ -216,13 +216,15 @@ $animationSpeed: 5s;
 
 // Styling
 .services-slider {
+
+  --container-slider-width:1000px;
+
+
   background: white;
   box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
   height: 100px;
-  margin: auto;
   overflow: hidden;
-  position: relative;
-  width: 800px;
+  width: var( --container-slider-width);
 
   display: flex;
   flex-direction: row;
@@ -230,6 +232,42 @@ $animationSpeed: 5s;
   justify-content: start;
   gap: 0;
   align-items: center;
+  position: relative;
+  margin: 0px auto 25px;
+
+  .trace{
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+    position: absolute;
+    left: 0;
+    animation: animate1 20s linear infinite;
+
+
+
+    @keyframes animate1 {
+
+      0%{
+        left: 0;
+
+      }
+      50%{
+        left: calc((250px * -10) + var(--container-slider-width));
+
+      }
+      100%{
+        left: 0;
+
+      }
+    }
+
+
+  }
 
   &::before,
   &::after {
@@ -252,62 +290,11 @@ $animationSpeed: 5s;
     top: 0;
   }
 
-  //.slide-track {
-  //  animation: scroll $animationSpeed linear infinite;
-  //  display: flex;
-  //  width: calc(250px * 14);
-  //}
+
 
   .slide {
     height: 100px;
     width: 250px;
-    //transition: transform 20s;
-    //transform: translateX(0);
-    position: absolute;
-    animation: animate 20s infinite;
-
-    &:nth-of-type(1) {
-      --offset: 0;
-      left: var(--offset);
-    }
-
-    &:nth-of-type(2) {
-      --offset: 250px;
-      left: var(--offset);
-
-    }
-
-    &:nth-of-type(3) {
-      --offset: 500px;
-      left: var(--offset);
-
-    }
-
-    &:nth-of-type(4) {
-      --offset: 750px;
-      left: var(--offset);
-
-    }
-
-    &:nth-of-type(5) {
-      --offset: 1000px;
-      left: var(--offset);
-
-    }
-
-    @keyframes animate {
-      99.99% {
-        left: -250px;
-      }
-      100% {
-        left: calc(var(--offset + 1000px));
-
-      }
-    }
-
-    &.animate {
-      transform: translateX(calc(-250px * 5));
-    }
 
 
     img {
