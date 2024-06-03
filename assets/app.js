@@ -17,7 +17,7 @@ import './scripts/checkout.js'
 import './scripts/header.js'
 import './scripts/register.js'
 import './scripts/shoppingBasket.js'
-import './scripts/aside'
+import './scripts/aside.js'
 
 import './scripts/addToShoppingBasket.js'
 
