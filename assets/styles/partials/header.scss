@@ -11,7 +11,7 @@
 
 
   > div {
-    flex: 1;
+
     height: 100%;
   }
 
@@ -22,6 +22,18 @@
     justify-content: start;
     align-items: center;
     gap: 15px;
+    background: transparent;
+    width: fit-content;
+    padding: 0 10px;
+    border-radius: 5px;
+    transition: 0.3s ;
+    cursor: pointer;
+
+    &:hover{
+
+      background: #6c8eb2;
+
+    }
 
     h1 {
       color: white;
@@ -36,6 +48,7 @@
     justify-content: end;
     align-items: center;
     gap: 15px;
+    flex: 1;
 
     a {
 
@@ -61,6 +74,34 @@
       i{
         color: white;
         font-size: 20px;
+      }
+    }
+
+    >span{
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      color: white;
+      font-size: 14px;
+
+      i:nth-of-type(1){
+        background: green;
+        width: 20px;
+        color: black!important;
+        text-align: center;
+        border-radius: 50%;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      i:nth-of-type(2){
+        color: #2ca890;
+        font-size: 12px;
       }
     }
   }

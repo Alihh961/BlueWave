@@ -11,6 +11,31 @@
 
     {% else %}
 
+        <div class="aside-user-info">
+
+            <span class="user-first-letter">{{ app.user.firstName|slice(0, 1)|capitalize }}</span>
+            <span class="user-full-name">{{ app.user.firstName|capitalize }} {{ app.user.lastName|title }}</span>
+
+            <span class="balance">{{ app.user.currentBalance }} <i
+                        class="fa-solid fa-dollar-sign"></i></span>
+
+            <div class="user-more">
+
+                <a href='{{ path('app_user_profile') }}' class="user-profile">
+
+                    <i class="fa-regular fa-user"></i>
+
+                </a>
+                <a href='{{ path('app_logout') }}' class="logout">
+
+                    <i class="fas fa-sign-out-alt"></i>
+
+                </a>
+            </div>
+        </div>
+
+
+
     {% endif %}
 
     <hr style="width: 100%">

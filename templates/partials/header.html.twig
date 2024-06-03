@@ -3,7 +3,8 @@
     <div class="header-container">
 
         <div class="header-left-side">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="header-logo" style="width: 50px; height: 20px">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="header-logo"
+                 style="width: 50px; height: 20px">
             <h1>Blue Wave</h1>
         </div>
 
@@ -23,6 +24,23 @@
             </div>
 
         {% else %}
+            <div class="header-right-side">
+
+                {% if app.user.isPro is defined and app.user.isPro %}
+
+
+                {% else %}
+
+                {% endif %}
+
+                <span class="balance"><i class="fa-solid fa-plus add-balance"></i>{{ app.user.currentBalance }} <i
+                            class="fa-solid fa-dollar-sign"></i></span>
+
+                <a class="burger-icon">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+            </div>
+
         {% endif %}
 
 
