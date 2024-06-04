@@ -3,7 +3,219 @@
 
 {% block body %}
 
+<style>
+    .searchForm-homePage {
+        width: 800px;
+    }
+    .search-div {
+        position: relative;
+        margin-top: 20px;
+    }
+    .search-div label {
+        font-weight: 900;
+        margin-right: 10px;
+        color: black;
+        font-size: 16px;
+        position: absolute;
+        left: 35px;
+        top: 12.5px;
+        transition: 0.5s;
+    }
+    .search-div input {
+        border-radius: 25px;
+        padding: 0 15px;
+        outline: none;
+        width: 100%;
+        height: 45px;
+        background-color: #a0a2b1;
+        border: none;
+    }
+    .search-div input:focus + label {
+        left: 17px;
+        top: 5.5px;
+        font-size: 13px;
+        color: blue;
+    }
+    .products {
+        display: flex;
+        width: 90%;
+        flex-wrap: wrap;
+        margin: 50px auto 0 auto;
+        gap: 25px;
+        justify-content: center;
+    }
+    .product-container {
+        display: block;
+        max-width: 150px;
+        border-radius: 5px;
+        overflow: hidden;
+        color: white;
+        text-decoration: none;
+        position: relative;
+    }
+    .product-container:hover {
+        opacity: 0.5;
+    }
+    .product {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 25px;
+    }
+    .product img {
+        width: 100%;
+        height: 150px;
+    }
+    .product h6 {
+        text-align: center;
+        margin: 0;
+        padding: 5px 2px;
+        background-color: #1c7430;
+        font-size: 13px;
+    }
+    .product h6:nth-child(1) {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .product h6:last-child {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .navigation {
+        max-width:98%!important;
+    }
+    @media (max-width: 555px) {
+        .navigation li span, .navigation li a {
+            font-size: 14px;
+        }
+    }
+    @media (max-width: 395px) {
+        .navigation li span, .navigation li a {
+            padding: 3px 8px;
+        }
+    }
+    swiper-container {
+        width: 800px;
+        height: 250px;
+        margin: 30px auto;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .info-container {
+        width: 800px;
+        height: 50px;
+        padding: 10px;
+        position: relative;
+        border-radius: 10px;
+        margin: auto;
+        background-color: #39689d;
+        display: flex;
+        align-items: center;
+        overflow-x: hidden;
+    }
+    .info-container p {
+        font-size: 16px;
+        margin: 0;
+        transform: translateX(800px);
+        animation: translateParagraph 30s infinite ease-in-out;
+    }
+    @keyframes translateParagraph {
+        50% {
+            transform: translateX(-200px);
+        }
+        100% {
+            transform: translateX(590px);
+        }
+    }
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-250px * 7));
+        }
+    }
+    .services-slider {
+        background: white;
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
+        height: 100px;
+        overflow: hidden;
+        width:1000px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 0;
+        align-items: center;
+        position: relative;
+        margin: 0 auto 25px;
+    }
+    .services-slider .trace {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        width: fit-content;
+        position: absolute;
+        left: 0;
+        animation: animate1 20s linear infinite;
+    }
+    @keyframes animate1 {
+        0% {
+            left: 0;
+        }
+        50% {
+            left: calc((250px * -10) + 1000px );
+        }
+        100% {
+            left: 0;
+        }
+    }
+    .services-slider::before, .services-slider::after {
+        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        content: "";
+        height: 100px;
+        position: absolute;
+        width: 200px;
+        z-index: 2;
+    }
+    .services-slider::after {
+        right: 0;
+        top: 0;
+        transform: rotateZ(180deg);
+    }
+    .services-slider::before {
+        left: 0;
+        top: 0;
+    }
+    .services-slider .slide {
+        height: 100px;
+        width: 250px;
+    }
+    .services-slider .slide img {
+        border-right: 0.5px solid gray;
+    }
 
+</style>
 
     <swiper-container class="mySwiper" pagination-clickable="true" navigation="false" space-between="30"
                       centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"

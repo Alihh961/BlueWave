@@ -30,14 +30,16 @@ class EmailService
      */
     public function sendVerificationEmailcode($userEmail, $userName): InscriptionVerificationCode
     {
+        $baseUrl = $_ENV['PROJECT_URL'];
+
+        $verificationCode = uniqid();
+        $brevoApiKey = $_ENV['BREVO_API_KEY'];
+
 
         try {
-            $baseUrl = $_ENV['PROJECT_URL'];
-            $brevoApiKey = $_ENV['BREVO_API_KEY'];
 
             $verificationCode = uniqid();
-            $verificationUrl = $baseUrl . "/verify-email?vc=" . $verificationCode . "&e=" . $userEmail;
-
+            $verificationUrl = $baseUrl . "/verify-email?vc=" . $verificationCode . "&e=" . urlencode($userEmail);
 
             $response = $this->httpClient->request('POST', "https://api.brevo.com/v3/smtp/email", [
                 'headers' => [
@@ -55,19 +57,21 @@ class EmailService
                             'email' => $userEmail,
                             'name' => $userName
                         ],
-
                     ],
                     "subject" => 'Verification email',
                     "htmlContent" => "
-                        <p> Hello <span style='font-weight: bolder'>$userName</span> ,Click in the button bellow to verify your account</p>
-                        <a href=\"$verificationUrl\" style ='padding: 5px 10px;background-color: #1c7430;text-decoration: none;color:white;border-radius:5px;display:inline-block'>Click here </a>
-                        "
+            <p>Hello <span style='font-weight: bolder'>$userName</span>, click the button below to verify your account</p>
+            <a href=\"$verificationUrl\" style='padding: 5px 10px; background-color: #1c7430; text-decoration: none; color: white; border-radius: 5px; display: inline-block'>Click here</a>
+        "
                 ]
             ]);
 
 
-        } catch (\Exception $e) {
-            throw new \Exception($e);
+
+
+        } catch (\Exception$e) {
+
+            return $this->json($e->getMessage());
         }
 
 
@@ -82,6 +86,10 @@ class EmailService
     #[Route("sendemail")]
     protected function sendEmail($fromName, $fromEmail, $toName, $toEmail, $subject, $htmlContent)
     {
+        $baseUrl = $this->container->get('router')->getContext()->getBaseUrl();
+
+        return $this->json($baseUrl);
+
 
         $brevoApiKey = $_ENV['BREVO_API_KEY'];
 

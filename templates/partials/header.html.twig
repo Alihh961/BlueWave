@@ -1,5 +1,198 @@
 {% block body %}
 
+    <!-- App scss -->
+    <style>
+        html {
+            min-height: 100%;
+        }
+        body {
+            margin:0;
+            padding:0;
+            font-family: sans-serif;
+            background: linear-gradient(#244580, #2c619e);
+            width: 100%;
+            overflow-x: hidden;
+            transition: width 0.3s ease-in-out ;
+
+        &.smaller{
+             width: calc(100% - 250px );
+         }
+        }
+
+        .w-fit{
+            width: fit-content!important;
+        }
+
+        body , *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family:math;
+
+        }
+
+        .form-errors{
+        ul{
+            margin: 0!important;
+
+        }
+        }
+
+
+
+        table{
+        td{
+            vertical-align: middle;
+        }
+        }
+
+
+        @media (max-width: 992px){
+            table,form , button{
+                font-size: 14px!important;
+            }
+
+
+        }
+
+
+        @media (max-width: 662px){
+            table ,form, button{
+                font-size: 12px!important;
+            }
+        }
+
+        input:-webkit-autofill, input:-webkit-autofill:focus {
+            transition: background-color 0s 6000000s, color 0s 600000s;
+        }
+
+
+        .table-responsive{
+            border-radius: 8px;
+        }
+
+        table{
+            min-width: 320px!important;
+        }
+
+        .transaction-div{
+            min-wdith: 320px!important;
+        }
+
+    </style>
+
+    <style>
+        .header-container {
+
+            height: fit-content;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            width: 100%;
+            padding: 15px 25px;
+
+
+        > div {
+
+            height: 100%;
+        }
+
+        .header-left-side {
+
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+            gap: 15px;
+            background: transparent;
+            width: fit-content;
+            padding: 0 10px;
+            border-radius: 5px;
+            transition: 0.3s ;
+            cursor: pointer;
+
+        &:hover{
+
+             background: #6c8eb2;
+
+         }
+
+        h1 {
+            color: white;
+            margin: 0!important;
+            font-size: 30px;
+        }
+        }
+
+        .header-right-side{
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+
+        a {
+
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            background-color: transparent;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: 0.3s ease-in-out;
+            text-decoration: none;
+
+        &:hover{
+             background-color: #6c8eb2;
+         }
+
+        &:visited{
+             color: white;
+         }
+
+        i{
+            color: white;
+            font-size: 20px;
+        }
+        }
+
+        >span{
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            font-size: 14px;
+
+        i:nth-of-type(1){
+            background: green;
+            width: 20px;
+            color: black!important;
+            text-align: center;
+            border-radius: 50%;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        i:nth-of-type(2){
+            color: #2ca890;
+            font-size: 12px;
+        }
+        }
+        }
+        }
+
+    </style>
+
     <div class="header-container">
 
         <div class="header-left-side">
@@ -47,6 +240,39 @@
     </div>
 
 
+
+    <script>
+        const burgerMenu = document.querySelector('.burger-icon');
+        const asideContainer = document.querySelector('.aside');
+
+        const headerLeftSide = document.querySelector('.header-left-side');
+
+        const addBalanceBtn = document.querySelector('.add-balance');
+
+
+
+
+        if (burgerMenu) {
+            burgerMenu.addEventListener('click', function () {
+                document.body.classList.toggle('smaller');
+                asideContainer.classList.toggle('aside-opened');
+            })
+        };
+
+
+        if (headerLeftSide) {
+            headerLeftSide.addEventListener('click', function () {
+                window.location.href = '/';
+            });
+        };
+
+        if(addBalanceBtn){
+
+            addBalanceBtn.addEventListener('click' , function(){
+                window.alert('Service not available yet! ')
+            })
+        };
+    </script>
 
 
 

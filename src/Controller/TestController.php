@@ -27,68 +27,88 @@ class TestController extends AbstractController
     {
     }
 
-    #[Route("/")]
-
-    public function sendEmail(MailerInterface $mailer)
-    {
-
-        try{
-            $email = (new Email())
-                ->from('hello@example.com')
-                ->to('hajhassan.ali@outlook.com')
-                //->cc('cc@example.com')
-                //->bcc('bcc@example.com')
-                //->replyTo('fabien@example.com')
-                //->priority(Email::PRIORITY_HIGH)
-                ->subject('Time for Symfony Mailer!')
-                ->text('Sending emails is fun again!')
-                ->html('<p>See Twig integration for better HTML integration!</p>');
-
-            $mailer->send($email);
-        }
-
-        catch(err){
-            return $this->json('error');
-        }
-
-
-        return new JsonResponse('success');
-
-
-    }
+//    #[Route("/")]
+//
+//    public function sendEmail(MailerInterface $mailer)
+//    {
+//
+//        try{
+//            $email = (new Email())
+//                ->from('hello@example.com')
+//                ->to('hajhassan.ali@outlook.com')
+//                //->cc('cc@example.com')
+//                //->bcc('bcc@example.com')
+//                //->replyTo('fabien@example.com')
+//                //->priority(Email::PRIORITY_HIGH)
+//                ->subject('Time for Symfony Mailer!')
+//                ->text('Sending emails is fun again!')
+//                ->html('<p>See Twig integration for better HTML integration!</p>');
+//
+//            $mailer->send($email);
+//        }
+//
+//        catch(err){
+//            return $this->json('error');
+//        }
+//
+//
+//        return new JsonResponse('success');
+//
+//
+//    }
 
 
     #[Route("sendemail")]
-
     public function e()
     {
+        $baseUrl = $_ENV['PROJECT_URL'];
+
+        $userEmail = 'hajhassan.ali@outlook.com'; // Use a proper email format
+        $userName = 'username';
 
         $brevoApiKey = $_ENV['BREVO_API_KEY'];
 
-        $response = $this->httpClient->request('POST', "https://api.brevo.com/v3/smtp/email", [
-            'headers' => [
-                'accept' => 'application/json',
-                'api-key' => $brevoApiKey,
-                'content-type' => 'application/json'
-            ],
-            'json' => [
-                "sender" => [
-                    'name' => 'toto',
-                    'email' => 'hajhassan.ali92@gmail.com'
+
+        try {
+
+            $verificationCode = uniqid();
+            $verificationUrl = $baseUrl . "/verify-email?vc=" . $verificationCode . "&e=" . urlencode($userEmail);
+
+            $response = $this->httpClient->request('POST', "https://api.brevo.com/v3/smtp/email", [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'api-key' => $brevoApiKey,
+                    'content-type' => 'application/json'
                 ],
-                "to" => [
-                    [
-                        'email' => 'hajhassan.ali@outlook.com',
-                        'name' => 'totorr'
+                'json' => [
+                    "sender" => [
+                        'name' => 'Blue Wave Mobiles',
+                        'email' => 'no-reply@bluewavemobiles.com'
                     ],
+                    "to" => [
+                        [
+                            'email' => $userEmail,
+                            'name' => $userName
+                        ],
+                    ],
+                    "subject" => 'Verification email',
+                    "htmlContent" => "
+            <p>Hello <span style='font-weight: bolder'>$userName</span>, click the button below to verify your account</p>
+            <a href=\"$verificationUrl\" style='padding: 5px 10px; background-color: #1c7430; text-decoration: none; color: white; border-radius: 5px; display: inline-block'>Click here</a>
+        "
+                ]
+            ]);
 
-                ],
-                "subject" => 'jkerkjghjklerhglkerhgerg',
-                "htmlContent" => 'kjherkjghlkerhjglkmher'
-            ]
-        ]);
 
-        return $this->json('success');
+            return $this->json('Email sent successfully.');
+
+
+        } catch (\Exception$e) {
+
+            return $this->json($e->getMessage());
+        }
+
+
     }
 
 
