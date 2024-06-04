@@ -26,16 +26,15 @@
                 <input type="password" name="password" required="" autocomplete="current-password">
                 <label>Password</label>
             </div>
+            <a href="{{ path('app_register') }}">Sign up</a>
+            <br>
+            <a href="">Forgot password?</a>
 
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}"
             >
 
             <button type="submit">
-{#                <span></span>#}
-{#                <span></span>#}
-{#                <span></span>#}
-{#                <span></span>#}
                 Submit
             </button>
         </form>
