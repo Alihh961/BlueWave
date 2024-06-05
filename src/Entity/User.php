@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?InscriptionVerificationCode $inscriptionVerificationCode = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?ResetPasswordRequest $resetPasswordRequest = null;
+
     public function __construct()
     {
         $this->transaction = new ArrayCollection();
@@ -284,6 +287,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->inscriptionVerificationCode = $inscriptionVerificationCode;
+
+        return $this;
+    }
+
+    public function getResetPasswordRequest(): ?ResetPasswordRequest
+    {
+        return $this->resetPasswordRequest;
+    }
+
+    public function setResetPasswordRequest(ResetPasswordRequest $resetPasswordRequest): static
+    {
+        // set the owning side of the relation if necessary
+        if ($resetPasswordRequest->getUser() !== $this) {
+            $resetPasswordRequest->setUser($this);
+        }
+
+        $this->resetPasswordRequest = $resetPasswordRequest;
 
         return $this;
     }

@@ -34,6 +34,11 @@ class HomeController extends AbstractController
     {
 
         $flashError = $request->query->get('fe') ?: false;
+        $flashErrorResetCode = $request->query->get('rce') ?: false;
+
+        if($flashErrorResetCode){
+            flash()->addFlash('error', 'Something went wrong', 'Error');
+        }
 
         if ($flashError) {
             flash()->addFlash('error', 'Something went wrong, contact us if the problem insists', 'Account not verified');
