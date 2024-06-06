@@ -4,7 +4,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         width: 0px;
         padding: 15px 10px;
         border-left-width: 2px;
@@ -17,23 +17,44 @@
         transition: 0.3s;
         transition-property: right, width;
         color: white;
+        z-index: 999;
+        background-color: #152d41;
+
     }
+
+
+
     .aside.aside-opened {
         right: 0;
         width: 250px;
     }
+
+    /*.aside.aside-opened::before {*/
+    /*    content: "";*/
+    /*    min-width: 100vw;*/
+    /*    min-height:100vh ;*/
+    /*    background-color: red;*/
+    /*    position: absolute;*/
+    /*    transform:translate(-50% , -50%);*/
+    /*    top: 50%;*/
+    /*    left: 50%;*/
+    /*}*/
+
     .aside .aside-login {
         height: fit-content;
         padding: 16px;
         background: #4969b5;
         border-radius: 25px;
     }
+
     .aside .aside-login h3 {
         font-size: medium;
     }
+
     .aside .aside-login h4 {
         font-size: larger;
     }
+
     .aside .aside-login a {
         display: inline-block;
         border-radius: 25px;
@@ -45,6 +66,7 @@
         padding: 2px 0;
         text-align: center;
     }
+
     .aside .aside-user-info {
         display: flex;
         flex-direction: column;
@@ -52,6 +74,7 @@
         align-items: center;
         justify-content: space-evenly;
     }
+
     .aside .aside-user-info .user-first-letter {
         width: 50px;
         height: 50px;
@@ -63,6 +86,7 @@
         font-weight: 900;
         background-color: #da59d7;
     }
+
     .aside .aside-user-info .balance {
         font-size: medium;
         display: flex;
@@ -72,9 +96,11 @@
         width: fit-content;
         gap: 5px;
     }
+
     .aside .aside-user-info .balance i {
         font-size: x-small;
     }
+
     .aside .aside-user-info .user-more {
         width: 100%;
         display: flex;
@@ -82,6 +108,7 @@
         flex-wrap: nowrap;
         justify-content: space-evenly;
     }
+
     .aside .aside-user-info .user-more a {
         text-decoration: none;
         color: white;
@@ -96,9 +123,11 @@
         align-items: center;
         transition: 0.3s;
     }
+
     .aside .aside-user-info .user-more a:hover {
         background-color: #6c8eb2;
     }
+
     .aside .nav {
         width: 100%;
         display: flex;
@@ -109,6 +138,7 @@
         gap: 10px;
         padding: 10px;
     }
+
     .aside .nav a {
         display: block;
         width: 100%;
@@ -120,18 +150,23 @@
         letter-spacing: 2px;
         font-weight: 600;
     }
+
     .aside .nav a:hover {
         background: #7ba2c3;
     }
+
     .aside .nav a i {
         margin-right: 25px;
     }
+
     .aside .nav a.home i {
         color: lawngreen;
     }
+
     .aside .nav a.about-us i {
         color: #e7374e;
     }
+
     .aside .contact-apps-container {
         width: 100%;
         display: flex;
@@ -141,17 +176,21 @@
         gap: 10px;
         padding: 10px;
     }
+
     .aside .contact-apps-container i {
         font-weight: 500;
         font-size: 24px;
         cursor: pointer;
     }
+
     .aside .contact-apps-container .whatsapp-link i {
         color: #4caf50;
     }
+
     .aside .contact-apps-container .tiktok-link i {
         color: black;
     }
+
     .aside .contact-apps-container .insta-link i {
         color: #e1306c;
     }
@@ -160,6 +199,8 @@
 <div class="aside">
 
     {% if not app.user %}
+        <i class="fa-regular fa-circle-xmark d-block close-menu"
+           style="font-size: 24px;color: red;margin-bottom: 15px"></i>
         <div class="aside-login">
 
             <h3>Login</h3>
@@ -169,6 +210,7 @@
         </div>
 
     {% else %}
+        <i class="fa-regular fa-circle-xmark d-block close-menu" style="font-size: 24px;color: red"></i>
 
         <div class="aside-user-info">
 
@@ -212,26 +254,31 @@
 
     <div class="contact-apps-container">
 
-        <a class="whatsapp-link" href="https://wa.me/96176686498/?text=Hello Blue Wave Team!"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="whatsapp-link" href="https://wa.me/96176686498/?text=Hello Blue Wave Team!"><i
+                    class="fa-brands fa-whatsapp"></i></a>
         <a class="tiktok-link" href="https://www.tiktok.com/@blue.wave.tecno.center"><i class="fa-brands fa-tiktok"></i></a>
-        <a class="insta-link" href="https://www.instagram.com/bluewave_techno_center"><i class="fa-brands fa-instagram"></i></a>
+        <a class="insta-link" href="https://www.instagram.com/bluewave_techno_center"><i
+                    class="fa-brands fa-instagram"></i></a>
 
 
     </div>
+
 </div>
 
 <script>
-    const links = document.querySelectorAll([ 'a.home' , 'a.about-us']);
+    const links = document.querySelectorAll(['a.home', 'a.about-us']);
     let pageTitle = document.querySelector('title').innerHTML;
 
-    if(pageTitle === 'Home'){
+    if (pageTitle === 'Home') {
         links[0].style.backgroundColor = 'rgb(90 121 147)';
-    }else{
+    } else {
         links[0].style.backgroundColor = 'transparent';
 
-    };
+    }
+    ;
 
     const burgerMenu = document.querySelector('.burger-icon');
+    const closeMenu = document.querySelector('.close-menu');
     const asideContainer = document.querySelector('.aside');
 
     const headerLeftSide = document.querySelector('.header-left-side');
@@ -239,27 +286,35 @@
     const addBalanceBtn = document.querySelector('.add-balance');
 
 
-
-
     if (burgerMenu) {
         burgerMenu.addEventListener('click', function () {
             document.body.classList.toggle('smaller');
             asideContainer.classList.toggle('aside-opened');
         })
-    };
+    }
+    ;
+
+    if (closeMenu) {
+        closeMenu.addEventListener('click', function () {
+            document.body.classList.toggle('smaller');
+            asideContainer.classList.toggle('aside-opened');
+        })
+    }
 
 
     if (headerLeftSide) {
         headerLeftSide.addEventListener('click', function () {
             window.location.href = '/';
         });
-    };
+    }
+    ;
 
-    if(addBalanceBtn){
+    if (addBalanceBtn) {
 
-        addBalanceBtn.addEventListener('click' , function(){
+        addBalanceBtn.addEventListener('click', function () {
             window.alert('Service not available yet! ')
         })
-    };
+    }
+    ;
 
 </script>

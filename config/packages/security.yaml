@@ -39,6 +39,9 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/user, roles: ROLE_USER }
+         - { path: ^/reset-password , allow_if: "!is_authenticated()"}
+         - { path: ^/reset-code , allow_if: "!is_authenticated()"}
+
 
 
 

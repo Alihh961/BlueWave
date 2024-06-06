@@ -12,10 +12,13 @@
             background: linear-gradient(#244580, #2c619e);
             width: 100%;
             overflow-x: hidden;
-            transition: width 0.3s ease-in-out ;
+            transition: width 0.3s ease-in-out;
 
         &.smaller{
+            @media (max-width=992px){
+
              width: calc(100% - 250px );
+            }
          }
         }
 

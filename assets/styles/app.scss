@@ -34,7 +34,10 @@ body {
   transition: width 0.3s ease-in-out ;
 
   &.smaller{
-    width: calc(100% - 250px );
+    @media (max-width=992px){
+
+      width: calc(100% - 250px );
+    }
   }
 }
 

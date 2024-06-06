@@ -5,7 +5,7 @@
 
 <style>
     .searchForm-homePage {
-        width: 800px;
+        width: 100%;
     }
     .search-div {
         position: relative;
@@ -98,7 +98,8 @@
         }
     }
     swiper-container {
-        width: 800px;
+        width: 90%;
+        max-width: 600px;
         height: 250px;
         margin: 30px auto;
         border-radius: 10px;
@@ -119,7 +120,8 @@
         object-fit: cover;
     }
     .info-container {
-        width: 800px;
+        width: 90%;
+        max-width: 600px;
         height: 50px;
         padding: 10px;
         position: relative;
@@ -158,6 +160,7 @@
         height: 100px;
         overflow: hidden;
         width:1000px;
+        max-width: 90%;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -167,6 +170,38 @@
         position: relative;
         margin: 0 auto 25px;
     }
+
+    @media (max-width:992px) {
+
+        .services-slider{
+            display: none!important;
+        }
+        /*.services-slider  {*/
+        /*    height: 90px!important;*/
+        /*}*/
+
+        /*.services-slider::before{*/
+        /*    height: 90px!important;*/
+        /*}*/
+
+        /*.services-slider .trace{*/
+        /*    height: 90px!important;*/
+        /*}*/
+
+        /*.services-slider .trace:after{*/
+        /*    height: 90px!important;*/
+        /*}*/
+
+        /*.services-slider .slide{*/
+        /*    height: 90px!important;*/
+        /*}*/
+
+        /*.services-slider .slide img{*/
+        /*    height: 90px!important;*/
+        /*}*/
+
+
+    }
     .services-slider .trace {
         display: flex;
         flex-direction: row;
@@ -174,7 +209,8 @@
         gap: 0;
         margin: 0;
         padding: 0;
-        width: fit-content;
+        /*width: fit-content;*/
+        width: 100%;
         position: absolute;
         left: 0;
         animation: animate1 20s linear infinite;
@@ -233,7 +269,7 @@
     </div>
 
 
-    <div class="m-auto w-fit">
+    <div class="m-auto" style="max-width: 600px ;width: 90%">
         {{ form_start(form, {
             "attr" : {"class" : "searchForm-homePage"}
         }) }}

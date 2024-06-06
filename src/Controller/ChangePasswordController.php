@@ -236,7 +236,6 @@ class ChangePasswordController extends AbstractController
 
             $resetPasswordEntity->setHashedToken('123');
 
-//            $this->entityManager->remove($resetPasswordEntity);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
