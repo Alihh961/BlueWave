@@ -5,20 +5,16 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderStatusHistory;
-use App\Entity\Params;
-use App\Entity\Status;
 use App\Entity\Transaction;
 use App\Form\PackageFormType;
 use App\Repository\OrderStatusHistoryRepository;
 use App\Repository\StatusRepository;
 use App\Repository\ItemRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Constraints\Timezone;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -33,6 +29,8 @@ class CheckoutController extends AbstractController
 
         $itemId = $request->query->get('i');
         $item = $itemRepository->find($itemId);
+
+
 
 
         if ($item) {
@@ -51,8 +49,7 @@ class CheckoutController extends AbstractController
             }
 
 
-            $minAndMaxString = $item->getAttributes()->getMinAndMax()[0];
-            $minAndMaxArray = explode('/', $minAndMaxString);
+            $minAndMaxArray = $item->getAttributes()->getMinAndMax();
 
 
 

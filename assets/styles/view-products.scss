@@ -9,14 +9,21 @@
 
 .product-container {
   display: block;
-  max-width: 200px;
+  max-width: 150px;
   border-radius: 5px;
   overflow: hidden;
   color: white;
+  text-decoration: none;
+
+  .unAvailableItem{
+    pointer-events: none;
+
+  }
+
 
 }
 
-.product-container:hover {
+.product-container:not(.unAvailableItem):hover {
   opacity: 0.5;
 }
 
@@ -40,8 +47,7 @@
 
 .unAvailableItem {
   filter: grayscale(1);
+  pointer-events: none;
+
 }
 
-.pointerEventsNone {
-  pointer-events: none;
-}

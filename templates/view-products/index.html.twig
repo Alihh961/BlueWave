@@ -10,12 +10,12 @@
 
             {% if not item.available %}
 
-                <a class="product-container pointerEventsNone" href="checkout?i={{ item.id }}">
+                <a class="product-container unAvailableItem" >
 
                     <div class="product">
                         <h6>{{ item.name }} </h6>
 
-                        <img class="unAvailableItem" src="{{ asset('images/test.png') }}"
+                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
                              alt="{{ item.category.name }}">
                         <h6>{{ item.price|removeTrailingZeros }}$</h6>
 
@@ -29,7 +29,8 @@
                         <h6>{{ item.name }} </h6>
 
 
-                        <img class="" src="{{ asset('images/test.png') }}"
+
+                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
                              alt="{{ item.category.name }}">
                         <h6>{{ item.price|removeTrailingZeros }}$</h6>
 

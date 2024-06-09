@@ -1,206 +1,15 @@
-<style>
-    .aside {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        min-height: 100vh;
-        width: 0px;
-        padding: 15px 10px;
-        border-left-width: 2px;
-        border-left-color: #645f5f;
-        border-left-style: solid;
-        position: fixed;
-        top: 0;
-        right: -270px;
-        background-color: transparent;
-        transition: 0.3s;
-        transition-property: right, width;
-        color: white;
-        z-index: 999;
-        background-color: #152d41;
-
-    }
-
-
-
-    .aside.aside-opened {
-        right: 0;
-        width: 250px;
-    }
-
-    /*.aside.aside-opened::before {*/
-    /*    content: "";*/
-    /*    min-width: 100vw;*/
-    /*    min-height:100vh ;*/
-    /*    background-color: red;*/
-    /*    position: absolute;*/
-    /*    transform:translate(-50% , -50%);*/
-    /*    top: 50%;*/
-    /*    left: 50%;*/
-    /*}*/
-
-    .aside .aside-login {
-        height: fit-content;
-        padding: 16px;
-        background: #4969b5;
-        border-radius: 25px;
-    }
-
-    .aside .aside-login h3 {
-        font-size: medium;
-    }
-
-    .aside .aside-login h4 {
-        font-size: larger;
-    }
-
-    .aside .aside-login a {
-        display: inline-block;
-        border-radius: 25px;
-        text-decoration: none;
-        width: 95%;
-        color: white;
-        font-size: 14px;
-        background-color: #1c7430;
-        padding: 2px 0;
-        text-align: center;
-    }
-
-    .aside .aside-user-info {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-
-    .aside .aside-user-info .user-first-letter {
-        width: 50px;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        font-size: 18px;
-        font-weight: 900;
-        background-color: #da59d7;
-    }
-
-    .aside .aside-user-info .balance {
-        font-size: medium;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-        width: fit-content;
-        gap: 5px;
-    }
-
-    .aside .aside-user-info .balance i {
-        font-size: x-small;
-    }
-
-    .aside .aside-user-info .user-more {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-evenly;
-    }
-
-    .aside .aside-user-info .user-more a {
-        text-decoration: none;
-        color: white;
-        font-size: 16px;
-        font-weight: 700;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        border-radius: 5px;
-        align-items: center;
-        transition: 0.3s;
-    }
-
-    .aside .aside-user-info .user-more a:hover {
-        background-color: #6c8eb2;
-    }
-
-    .aside .nav {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-    }
-
-    .aside .nav a {
-        display: block;
-        width: 100%;
-        text-align: start;
-        text-decoration: none;
-        color: white;
-        padding: 7px 7px 7px 14px;
-        border-radius: 13px;
-        letter-spacing: 2px;
-        font-weight: 600;
-    }
-
-    .aside .nav a:hover {
-        background: #7ba2c3;
-    }
-
-    .aside .nav a i {
-        margin-right: 25px;
-    }
-
-    .aside .nav a.home i {
-        color: lawngreen;
-    }
-
-    .aside .nav a.about-us i {
-        color: #e7374e;
-    }
-
-    .aside .contact-apps-container {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-    }
-
-    .aside .contact-apps-container i {
-        font-weight: 500;
-        font-size: 24px;
-        cursor: pointer;
-    }
-
-    .aside .contact-apps-container .whatsapp-link i {
-        color: #4caf50;
-    }
-
-    .aside .contact-apps-container .tiktok-link i {
-        color: black;
-    }
-
-    .aside .contact-apps-container .insta-link i {
-        color: #e1306c;
-    }
-
-</style>
 <div class="aside">
+    <i class="fa-regular fa-circle-xmark close-menu" style="font-size: 24px;color: red;display: flex !important;
+    height: 50px;
+    width: 50px;
+    margin: 5px auto 25px auto;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;"></i>
 
     {% if not app.user %}
-        <i class="fa-regular fa-circle-xmark d-block close-menu"
-           style="font-size: 24px;color: red;margin-bottom: 15px"></i>
+
         <div class="aside-login">
 
             <h3>Login</h3>
@@ -210,7 +19,7 @@
         </div>
 
     {% else %}
-        <i class="fa-regular fa-circle-xmark d-block close-menu" style="font-size: 24px;color: red"></i>
+
 
         <div class="aside-user-info">
 
@@ -227,6 +36,8 @@
                     <i class="fa-regular fa-user"></i>
 
                 </a>
+
+
                 <a href='{{ path('app_logout') }}' class="logout">
 
                     <i class="fas fa-sign-out-alt"></i>
@@ -243,8 +54,44 @@
 
     <div class="nav">
 
-        <a href="/" class="home"><i class="fa-solid fa-house"></i> <span>Home</span></a>
-        <a href="/about-us" class="about-us"><i class="fa-solid fa-user-gear"></i> <span> About Us</span></a>
+        <a href="/" class="aside-link home"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href='{{ path('app_accessories') }}' class="aside-link accessories">
+
+            <i class="fa-solid fa-hat-wizard" style="color:yellow"></i></i><span>Accessories</span>
+
+        </a>
+
+        <a href='{{ path('app_telecommunication' , { 'cn' : 'Alfa'}) }}' class="aside-link accessories" >
+
+            <i class="fa-solid fa-sim-card" style="color:#e7374e;"></i></i><span>Alfa</span>
+
+        </a>
+
+        <a href='{{ path('app_telecommunication' , { 'cn' : 'Mtc' }     ) }}' class="aside-link accessories" >
+
+            <i class="fa-solid fa-sim-card" style="color:#489cbd;"></i></i><span>Mtc</span>
+
+        </a>
+
+
+
+        {% if is_granted('ROLE_ADMIN') %}
+
+        <a href='{{ path('admin') }}' class="aside-link admin">
+
+            <i class="fa-solid fa-user-tie" style="color:#2dbbe2"></i></i><span>Admin</span>
+
+        </a>
+
+        {% else %}
+        <a href='' class="aside-link admin require-admin">
+
+            <i class="fa-solid fa-user-tie" style="color:#2dbbe2"></i></i><span>Admin</span>
+
+        </a>
+
+        {% endif %}
+        <a style='color: gray;pointer-events: none' class="about-us aside-link"><i style="color: gray" class="fa-solid fa-user-gear"></i> <span>About Us</span></a>
 
     </div>
 
@@ -266,16 +113,17 @@
 </div>
 
 <script>
-    const links = document.querySelectorAll(['a.home', 'a.about-us']);
+    const links = document.querySelectorAll('.aside-link');
     let pageTitle = document.querySelector('title').innerHTML;
 
-    if (pageTitle === 'Home') {
-        links[0].style.backgroundColor = 'rgb(90 121 147)';
-    } else {
-        links[0].style.backgroundColor = 'transparent';
+    links.forEach(function (link) {
+        if (link.classList.contains(pageTitle.toLocaleLowerCase())) {
+            link.style.backgroundColor = 'rgb(90 121 147)';
+        } else {
+            link.style.backgroundColor = 'transparent';
 
-    }
-    ;
+        }
+    });
 
     const burgerMenu = document.querySelector('.burger-icon');
     const closeMenu = document.querySelector('.close-menu');

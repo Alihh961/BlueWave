@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Accessories{% endblock %}
 
 {% block body %}
 
 
-    <a href="/shopping-basket">
-        <img class='shopping-basket' src='{{ asset("assets/images/static/shoppingBasket.png") }}'
-             alt="Shopping Basket Image">
-    </a>
+
 
     {% if(categories) %}
 
@@ -25,32 +23,41 @@
 
                         {% for item in category.items %}
 
+                            {% if item.available %}
 
+                                <div class="pro">
+                                    <div class="pro-container">
 
-                            <a class="product-container">
+                                        {% if item.url %}
+                                            <div class="top" style="
+                                                    background-image: url('{{ asset("assets/images/items/") }}{{ item.url }}');
+                                                    background-position: center center;
+                                                    background-repeat: no-repeat;
+                                                    background-size: 100% 100%;
+                                                    "></div>
+                                        {% else %}
+                                            <div class="top" style="
+                                                    background-image: url('{{ asset("img.png") }}');
+                                                    background-position: center center;
+                                                    background-repeat: no-repeat;
+                                                    background-size: 100% 100%;
+                                                    "></div>
 
-                                <div class="product">
-                                    <h6>{{ item.price|removeTrailingZeros }} $</h6>
+                                        {% endif %}
 
-                                    {% if item.url %}
-                                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
-                                             alt="{{ item.name }}">
+                                        <div class="bottom">
+                                            <div class="info">
+                                                <h6>{{ item.name|capitalize }}</h6>
+                                                <h4>{{ item.price|removeTrailingZeros }} $</h4>
+                                            </div>
 
-                                    {% else %}
-                                        <img class="" src="{{ asset('img.png') }}"
-                                             alt="{{ item.name }}">
+                                            <div class="add-to-shopping-bag" data-id='{{ item.id }}'><i
+                                                        class="fa-solid fa-cart-plus"></i></div>
+                                        </div>
 
-                                    {% endif %}
-                                    <img class="add-to-shopping-basket" data-id="{{ item.id }}"
-                                         src="{{ asset('assets/images/static/addToShoppingBasket.png') }}">
-
-                                    <h6>{{ item.name }}</h6>
-
-
+                                    </div>
                                 </div>
-                            </a>
-
-
+                            {% endif %}
                         {% endfor %}
                     </div>
 
@@ -62,9 +69,14 @@
 
     {% else %}
 
-        <h2>No accessories to be shown</h2>
+        <h2 style="margin: auto;
+    width: fit-content;">No accessories to be shown</h2>
 
     {% endif %}
+
+    <script>
+
+    </script>
 
 
 {% endblock %}

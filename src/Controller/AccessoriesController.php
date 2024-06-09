@@ -7,7 +7,9 @@ use App\Repository\CategoryRepository;
 use App\Repository\ItemRepository;
 use App\Repository\TypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccessoriesController extends AbstractController
@@ -45,11 +47,12 @@ class AccessoriesController extends AbstractController
             if($item){
                 return  $this->json($item ,  Response::HTTP_OK, context: ['groups'=> ['add-accessory-to-carte']]);
             }else{
-                return new JsonResponse([
-                    'statusCode' => 404 ,
-                    'data' => null
-                ],
-                    404);
+                throw new BadRequestHttpException('Error');
+//                return new JsonResponse([
+//                    'statusCode' => 404 ,
+//                    'data' => null
+//                ],
+//                    404);
             }
 
     }

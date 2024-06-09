@@ -1,8 +1,6 @@
-let addToShoppingBasketButton = document.querySelectorAll('.add-to-shopping-basket');
+let addToShoppingBasketButton = document.querySelectorAll('.add-to-shopping-bag');
 const $ = require('jquery');
 import Swal from "sweetalert2";
-
-
 
 
 
@@ -19,6 +17,8 @@ if (addToShoppingBasketButton) {
                 url: `accessories/${id}`,
                 type: 'GET',
                 success: function (data) {
+
+                    console.log(data);
 
 
                     try{
@@ -83,12 +83,13 @@ if (addToShoppingBasketButton) {
                             if(result.isConfirmed){
                                 window.location.href ='shopping-basket';
                             }
+                            updateItemsNumber();
                         });
 
 
                     }
                     catch (e) {
-                        console.log(e);
+                        console.error(e);
                     }
 
 
@@ -99,3 +100,34 @@ if (addToShoppingBasketButton) {
         })
     })
 }
+
+
+
+
+const numberOfItemsInBasket = JSON.parse(localStorage.getItem('basket')) ? getTotalQuantity() : 0 ;
+const shoppingBasketIcon = document.querySelector('.shopping-basket');
+
+
+function getTotalQuantity(){
+    var quantity = 0 ;
+
+    JSON.parse(localStorage.getItem('basket')).items.forEach(item=>{
+        quantity += item.quantity;
+    });
+
+    return quantity;
+}
+
+if(shoppingBasketIcon){
+
+    shoppingBasketIcon.setAttribute('data-after' , numberOfItemsInBasket);
+
+};
+function updateItemsNumber(){
+    const numberOfItemsInBasket = JSON.parse(localStorage.getItem('basket')) ? getTotalQuantity() : 0 ;
+
+    if(shoppingBasketIcon){
+        shoppingBasketIcon.setAttribute('data-after' , numberOfItemsInBasket);
+
+    };
+};

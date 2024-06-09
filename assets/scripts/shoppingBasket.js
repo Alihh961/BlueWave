@@ -36,7 +36,7 @@ if (shoppingBasketContainer) {
             itemTotalPriceSpan.setAttribute('class', 'unit-price-total');
 
 
-            itemImageSpan.src = `assets/images/accessories/${item.url}`;
+            itemImageSpan.src = `assets/images/items/${item.url}`;
 
 
             itemQuantityInput.value = item.quantity;
