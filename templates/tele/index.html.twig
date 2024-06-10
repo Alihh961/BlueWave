@@ -5,7 +5,7 @@
 {% block body %}
 
     <style>
-        .buy-now-div{
+        .buy-now-div {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -15,7 +15,8 @@
             background: #f1f1f1;
             border-left: solid thin rgba(0, 0, 0, 0.1);
         }
-        .buy-now-button{
+
+        .buy-now-button {
             text-decoration: none;
             color: black;
             font-size: 14px;
@@ -23,8 +24,8 @@
             transition: transform 0.5s;
         }
 
-        .buy-now-button:hover{
-    transform:scale(0.8);
+        .buy-now-button:hover {
+            transform: scale(0.8);
         }
     </style>
 
@@ -35,27 +36,17 @@
     </a>
 
 
-    {% if(items[0].category == 'Alfa' ) %}
 
-        <swiper-container class="mySwiper" pagination-clickable="true" navigation="false" space-between="30"
-                          centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
-                          pagination="false">
-            <swiper-slide><img src="{{ asset('assets/images/banner/slide-1.jpeg') }}" alt="slide-1"></swiper-slide>
-            <swiper-slide><img src="{{ asset('assets/images/banner/slide-2.jpeg') }}" alt="slide-2"></swiper-slide>
-            <swiper-slide><img src="{{ asset('assets/images/banner/slide-3.jpeg') }}" alt="slide-3"></swiper-slide>
-        </swiper-container>
 
-    {% elseif(items[0].category == 'Mtc' ) %}
 
-        <swiper-container class="mySwiper" pagination-clickable="true" navigation="false" space-between="30"
-                          centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
-                          pagination="false">
-            <swiper-slide><img src="{{ asset('assets/images/banner/slide-1.jpeg') }}" alt="slide-1"></swiper-slide>
-            <swiper-slide><img src="{{ asset('assets/images/banner/slide-2.jpeg') }}" alt="slide-2"></swiper-slide>
-            <swiper-slide><img src="{{ asset('assets/images/banner/slide-3.jpeg') }}" alt="slide-3"></swiper-slide>
-        </swiper-container>
+    <swiper-container class="mySwiper" pagination-clickable="true" navigation="false" space-between="30"
+                      centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
+                      pagination="false">
+        <swiper-slide><img src="{{ asset('assets/images/banner/slide-1.jpeg') }}" alt="slide-1"></swiper-slide>
+        <swiper-slide><img src="{{ asset('assets/images/banner/slide-2.jpeg') }}" alt="slide-2"></swiper-slide>
+        <swiper-slide><img src="{{ asset('assets/images/banner/slide-3.jpeg') }}" alt="slide-3"></swiper-slide>
+    </swiper-container>
 
-    {% endif %}
 
 
     <section style="padding: 0 25px">

@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    <a href="/shopping-basket">
+
+        <i class="fa-solid fa-basket-shopping shopping-basket"></i>
+    </a>
+
     {%  if orders %}
     <h4 class="w-fit mx-auto mb-3 text-white text-center">Total orders : {{ totalOrders }}</h4>
 

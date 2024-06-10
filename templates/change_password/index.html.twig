@@ -2,6 +2,12 @@
 
 
 {% block body %}
+
+    <a href="/shopping-basket">
+
+        <i class="fa-solid fa-basket-shopping shopping-basket"></i>
+    </a>
+
     {{ form_start(form , {"attr" : { "class" : "edit-password-form w-fit mx-auto text-white d-flex flex-column gap-2 mt-2 p-3"}}) }}
     {% if not form.vars.valid %}
         <div class="alert alert-danger">
