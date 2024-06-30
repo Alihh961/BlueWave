@@ -140,6 +140,16 @@
 
     <script>
         const input = document.querySelector('#search_type_form_gameName');
+
+
+        if(input.value){
+            document.querySelector('#search_type_form_gameName + label').classList.add('translateAndResize');
+
+        }else{
+            document.querySelector('#search_type_form_gameName + label').classList.remove('translateAndResize');
+
+        }
+
         input.addEventListener('blur', function (event) {
             const value = event.target.value;
 

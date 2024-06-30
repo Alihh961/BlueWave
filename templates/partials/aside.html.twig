@@ -31,14 +31,19 @@
 
             <div class="user-more">
 
-                <a href='{{ path('app_user_profile') }}' class="user-profile">
+                <a href='{{ path('app_user_profile') }}' class="user-profile" style="color: #0a53be">
 
-                    <i class="fa-regular fa-user"></i>
+                    <i class="fa-solid fa-user"></i>
+
+                </a>
+                <a href='{{ path('app_user_profile_edit') }}' class="user-profile-edit" style="color: green">
+
+                    <i class="fa-solid fa-user-pen"></i>
 
                 </a>
 
 
-                <a href='{{ path('app_logout') }}' class="logout">
+                <a href='{{ path('app_logout') }}' class="logout" style="color:red">
 
                     <i class="fas fa-sign-out-alt"></i>
 
