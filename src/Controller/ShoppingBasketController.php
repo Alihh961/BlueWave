@@ -24,7 +24,10 @@ class ShoppingBasketController extends AbstractController
     public function index()
     {
 
-        return $this->render('basket/index.html.twig');
+        return $this->render('basket/index.html.twig' , [
+            'user' => $this->getUser()
+
+        ]);
 
     }
 
