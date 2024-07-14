@@ -49,6 +49,20 @@
 
                 </a>
             </div>
+
+            {% if user is defined and user.orders %}
+
+                <a href="{{ path('app_my_orders') }}" style="display: block;
+                margin: auto;
+                width: fit-content;
+                text-decoration: none;
+                color: white;
+                padding: 5px;
+                background-color: forestgreen;
+                border-radius: 5px;">Have a look at my orders</a>
+
+            {% endif %}
+
         </div>
 
 
@@ -123,7 +137,7 @@
     let pageTitle = document.querySelector('title').innerHTML;
 
 
-    switch (pageTitle){
+    switch (pageTitle) {
         case 'Accessories' :
             document.querySelector('.aside-accessories').style.backgroundColor = 'rgb(90 121 147)';
             break;

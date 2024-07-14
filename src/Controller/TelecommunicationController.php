@@ -38,7 +38,8 @@ class TelecommunicationController extends AbstractController{
 
         return $this->render('tele/index.html.twig' , [
             'items' => $items ,
-            'title' => 'Telecommunication-' . $categoryName
+            'title' => 'Telecommunication-' . $categoryName,
+            'user' => $this->getUser()
         ]);
 
     }

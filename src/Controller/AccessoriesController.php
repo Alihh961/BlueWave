@@ -32,6 +32,8 @@ class AccessoriesController extends AbstractController
         return $this->render('accessories/index.html.twig' , [
 
             'categories' => $categories,
+            'user' => $this->getUser()
+
         ]);
 
     }
