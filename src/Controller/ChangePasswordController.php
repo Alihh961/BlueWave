@@ -115,6 +115,7 @@ class ChangePasswordController extends AbstractController
                 $resetPasswordRequest = $user->getResetPasswordRequest();
 
                 if (!$resetPasswordRequest) {
+                    $resetPasswordRequest = new ResetPasswordRequest();
                     $resetPasswordRequest->setUser($user);
 
                 }

@@ -59,44 +59,45 @@
 
     <div class="nav">
 
-        <a href="/" class="aside-link home"><i class="fa-solid fa-house"></i> <span>Home</span></a>
-        <a href='{{ path('app_accessories') }}' class="aside-link accessories">
+        <a href="/" class="aside-link aside-home"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href='{{ path('app_accessories') }}' class="aside-link aside-accessories">
 
             <i class="fa-solid fa-hat-wizard" style="color:yellow"></i></i><span>Accessories</span>
 
         </a>
 
-        <a href='{{ path('app_telecommunication' , { 'cn' : 'Alfa'}) }}' class="aside-link accessories" >
+        <a href='{{ path('app_telecommunication' , { 'cn' : 'Alfa'}) }}' class="aside-link aside-alfa">
 
             <i class="fa-solid fa-sim-card" style="color:#e7374e;"></i></i><span>Alfa</span>
 
         </a>
 
-        <a href='{{ path('app_telecommunication' , { 'cn' : 'Mtc' }     ) }}' class="aside-link accessories" >
+        <a href='{{ path('app_telecommunication' , { 'cn' : 'Mtc' }     ) }}' class="aside-link aside-mtc">
 
             <i class="fa-solid fa-sim-card" style="color:#489cbd;"></i></i><span>Mtc</span>
 
         </a>
 
 
-
         {% if is_granted('ROLE_ADMIN') %}
 
-        <a href='{{ path('admin') }}' class="aside-link admin">
+            <a href='{{ path('admin') }}' class="aside-link admin">
 
-            <i class="fa-solid fa-user-tie" style="color:#2dbbe2"></i></i><span>Admin</span>
+                <i class="fa-solid fa-user-tie" style="color:#2dbbe2"></i></i><span>Admin</span>
 
-        </a>
+            </a>
 
         {% else %}
-        <a href='' class="aside-link admin require-admin">
+            <a href='' class="aside-link admin require-admin">
 
-            <i class="fa-solid fa-user-tie" style="color:#2dbbe2"></i></i><span>Admin</span>
+                <i class="fa-solid fa-user-tie" style="color:#2dbbe2"></i></i><span>Admin</span>
 
-        </a>
+            </a>
 
         {% endif %}
-        <a style='color: gray;pointer-events: none' class="about-us aside-link"><i style="color: gray" class="fa-solid fa-user-gear"></i> <span>About Us</span></a>
+        <a style='color: gray;pointer-events: none' class="about-us aside-link"><i style="color: gray"
+                                                                                   class="fa-solid fa-user-gear"></i>
+            <span>About Us</span></a>
 
     </div>
 
@@ -121,13 +122,42 @@
     const links = document.querySelectorAll('.aside-link');
     let pageTitle = document.querySelector('title').innerHTML;
 
-    links.forEach(function (link) {
-        if (link.classList.contains(pageTitle.toLocaleLowerCase())) {
-            link.style.backgroundColor = 'rgb(90 121 147)';
-        } else {
-            link.style.backgroundColor = 'transparent';
 
-        }
+    switch (pageTitle){
+        case 'Accessories' :
+            document.querySelector('.aside-accessories').style.backgroundColor = 'rgb(90 121 147)';
+            break;
+
+        case 'Home':
+            document.querySelector('.aside-home').style.backgroundColor = 'rgb(90 121 147)';
+            break;
+
+        case 'Telecommunication-Mtc':
+            document.querySelector('.aside-mtc').style.backgroundColor = 'rgb(90 121 147)';
+            break;
+
+        case 'Telecommunication-Alfa':
+            document.querySelector('.aside-alfa').style.backgroundColor = 'rgb(90 121 147)';
+            break;
+
+        case 'About-us' :
+            document.querySelector('.aside-about').style.backgroundColor = 'rgb(90 121 147)';
+
+
+    }
+    links.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            let element = event.currentTarget;
+
+            for (let i = 0; i < links.length; i++) {
+                if (links[i] != element) {
+                    links[i].style.backgroundColor = 'transparent'
+                }
+            }
+
+            element.style.backgroundColor = 'rgb(90 121 147)';
+
+        })
     });
 
     const burgerMenu = document.querySelector('.burger-icon');
@@ -138,6 +168,21 @@
 
     const addBalanceBtn = document.querySelector('.add-balance');
 
+
+    // closing aside container when it is opened and we click outside
+    document.addEventListener('click', function (event) {
+
+        const predectedBurgerIcon = event.target.closest('a');
+        const clickedInsideAside = event.target.closest('.aside');
+
+        if (predectedBurgerIcon != burgerMenu && asideContainer.classList.contains('aside-opened') && !clickedInsideAside) {
+
+            asideContainer.classList.remove('aside-opened');
+            document.body.classList.remove('smaller');
+
+        }
+
+    })
 
     if (burgerMenu) {
         burgerMenu.addEventListener('click', function () {
