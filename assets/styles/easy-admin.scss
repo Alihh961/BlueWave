@@ -1,0 +1,219 @@
+.border-radius {
+  border-radius: 5px !important;
+}
+
+#main-menu {
+
+  .menu {
+
+    .menu-item {
+
+      a {
+        font-weight: 700;
+        background-image: linear-gradient(#42A1EC, #0070C9);
+        border: 1px solid #0077CC;
+        color: white;
+
+
+
+        i::before {
+          color: white;
+        }
+      }
+
+
+      &.has-submenu{
+        a.submenu-toggle{
+
+        background-color: #36A9AE;
+        background-image: linear-gradient(#37ADB2, #329CA0);
+        border: 1px solid #2A8387;
+
+        }
+
+      }
+    }
+  }
+}
+
+.form-help{
+  font-weight: bold!important;
+  color: red!important;
+}
+
+
+
+// Specific user Info
+
+.specific-user-content-wrapper{
+  display: flex;
+  background: linear-gradient(#141e30, #243b55);
+
+  form{
+    display: flex;
+    width: fit-content;
+    min-width: 320px;
+    margin-top: 25px;
+
+    input{
+      outline: none;
+    }
+
+    button{
+      width: fit-content;
+      padding: 7px 10px;
+      background-color: #1c7430;
+      margin: 10px auto;
+      border-radius: 5px;
+      border: 0.5px solid white;
+
+    }
+  }
+
+  .inf-content{
+    border:1px solid #DDDDDD;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
+    color: black;
+
+    img{
+      border-radius: 50%;
+    }
+
+    td{
+      background-color: #fff;
+      color: black;
+      font-family: math;
+    }
+
+    td.text-primary{
+      color: blue!important;
+    }
+  }
+
+  .transaction-div{
+    min-width: 320px!important;
+
+  }
+  .transaction-tables{
+
+    th{
+      text-align: center;
+      background-color: #fff;
+      color: black;
+      font-family: math;
+
+    }
+
+    tr:first-child{
+      position: sticky; /* make the table heads sticky */
+      top: 0px;
+    }
+
+    tr{
+      border-bottom: 1px solid #c7c3c3;
+    }
+
+    tr.isCredit td{
+      background-color: #70fb70 !important;
+      color: black;
+      font-family: math;
+    }
+
+    tr.isDebit td{
+      background-color: #ff6767!important;
+      color: black;
+      font-family: math;
+    }
+  }
+
+  .transaction-div{
+    overflow-y: scroll;
+    max-height: 500px;
+  }
+
+  table {
+    min-width: 320px!important;
+
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: auto;
+    border: 1px solid #ddd;
+    font-size: 14px;
+
+    tr:nth-child(even) {
+      background-color: #c9c9c9
+    }
+    tr:nth-child(odd) {
+      background-color: white
+    }
+    th {
+      text-align: left;
+      padding: 8px;
+
+      @media (max-width: 992px){
+        padding: 0 8px;
+      }
+    }
+
+    tr{
+      text-align: center;
+      padding: 8px;
+      color: black;
+      font-family: math;
+    }
+
+  }
+
+  .pending {
+    background-color: #e8c22c;
+  }
+
+  .rejected {
+    background-color: #bb000f;
+  }
+
+  .received, .confirmed, .confirmed {
+    background-color: #76a84b;
+  }
+
+}
+
+.table-responsive{
+  border-radius: 8px;
+}
+
+
+
+// aside bar
+
+@media (min-width: 992px){
+  .sidebar{
+    position:fixed;
+    left:0;
+  }
+}
+
+.sidebar::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #262626;
+}
+
+.sidebar::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #262626;
+}
+
+.sidebar::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: grey;
+}
+
+

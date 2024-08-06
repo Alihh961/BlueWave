@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+    <style>
+        .buy-now-div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 30%;
+            height: 100%;
+            background: #f1f1f1;
+            border-left: solid thin rgba(0, 0, 0, 0.1);
+        }
+
+        .buy-now-button {
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+
+        .buy-now-button:hover {
+            transform: scale(0.8);
+        }
+    </style>
+
+
+    <a href="/shopping-basket">
+
+        <i class="fa-solid fa-basket-shopping shopping-basket"></i>
+    </a>
+
+
+
+
+
+    <swiper-container class="mySwiper" pagination-clickable="true" navigation="false" space-between="30"
+                      centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
+                      pagination="false">
+        <swiper-slide><img src="{{ asset('assets/images/banner/slide-1.jpeg') }}" alt="slide-1"></swiper-slide>
+        <swiper-slide><img src="{{ asset('assets/images/banner/slide-2.jpeg') }}" alt="slide-2"></swiper-slide>
+        <swiper-slide><img src="{{ asset('assets/images/banner/slide-3.jpeg') }}" alt="slide-3"></swiper-slide>
+    </swiper-container>
+
+
+
+    <section style="padding: 0 25px">
+
+
+        {% if(items) %}
+            <div class="d-flex flex-row flex-wrap gap-2 justify-content-center w-100">
+                {% for item in items %}
+
+                    {% if item.available %}
+
+                        <div class="pro">
+                            <div class="pro-container">
+                                <div class="top" style="
+                                        background-image: url('{{ asset("assets/images/items/") }}{{ item.url }}');
+                                        background-position: center center;
+                                        background-repeat: no-repeat;
+                                        background-size: 100% 100%;
+                                        "></div>
+
+                                <div class="bottom">
+                                    <div class="info">
+                                        <h6>{{ item.name|capitalize }}</h6>
+                                        <h4>{{ item.price|removeTrailingZeros }} $</h4>
+                                    </div>
+
+                                    <div class="add-to-shopping-bag" data-id='{{ item.id }}'><i
+                                                class="fa-solid fa-cart-plus"></i></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+
+
+                {% endfor %}
+            </div>
+        {% else %}
+
+            <h2 style="margin: auto;
+    width: fit-content;">No items to show</h2>
+
+        {% endif %}
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+
+
+{% endblock %}

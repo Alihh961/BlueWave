@@ -1,0 +1,47 @@
+<style>
+    .after-reg-section{
+        width: 50%;
+        min-width: 300px;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-content: center;
+        margin: 50px auto;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .after-reg-section div{
+    }
+
+    .after-reg-section div a{
+        display:block;
+        padding: 5px;
+        background-color: blue;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        margin-bottom: 15px;
+
+    }
+
+    .after-reg-section div .btn-login{
+
+        background-color: #196f29;
+    }
+
+    .after-reg-section div .btn-home{
+        background-color: #19216f;
+    }
+</style>
+
+<section class="after-reg-section">
+    <h1 style="width: fit-content;margin: auto;text-align: center;">Please check your email to validate your account, don't
+        forget to check the Junk</h1>
+    <div style="display: block;margin: auto;width: fit-content; text-align: center">
+        <a href="{{ path("app_login") }}" class="btn-login w-100">Go To Login Page</a>
+        <a href="{{ path("app_home") }}" class="btn-home w-100">Go To Home Page</a>
+    </div>
+</section>
+

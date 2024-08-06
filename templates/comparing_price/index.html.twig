@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+
+    <section class="comparing-price-section">
+
+        {% if itemsDiffPrice %}
+            <h2 class="w-100 text-center mx-auto text-white bg-info py-2"> Items with different prices</h2>
+
+            <div class="diff-price-container d-flex justify-content-center flex-row flex-wrap mx-auto my-2 gap-2 w-100 p-3">
+                {% for item in itemsDiffPrice %}
+
+                    <div class="bg-white p-2">
+                        <p>Vision ID : {{ item.id }}</p>
+                        <p>Game Name : {{ item.category_name }}</p>
+                        <p>Vision Price : {{ item.price }} $</p>
+
+                        {% for ourItem in ourItems %}
+                            {% if ourItem.visionId == item.id %}
+                                <p>ID in our database : {{ ourItem.id }}</p>
+                                <p>Our Price with benefits : {{ ourItem.price|removeTrailingZeros }} $</p>
+                                <a class="btn btn-success d-block"
+                                   href="{{ path('app_update_price' , { 'id' : ourItem.id , 'newPrice' : item.price}) }}">Update
+                                    price</a>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h2 class="w-fit mx-auto  my-2 text-white ">All prices are equal</h2>
+        {% endif %}
+
+    </section>
+
+    <section class="missed-items-section">
+
+        {% if missedItems %}
+            <h2 class="w-100 text-center mx-auto text-white bg-info py-2 text-center"> Missed Items</h2>
+
+            <div class="missed-items-container d-flex justify-content-center flex-row flex-wrap mx-auto my-2 gap-2 w-100 p-3">
+                {% for item in missedItems %}
+
+                    <div class="bg-white p-2">
+
+                        <p>Vision ID : {{ item.id }}</p>
+                        <p>Game Name : {{ item.category_name }}</p>
+                        <p>Vision Price : {{ item.price }} $</p>
+                        <p>Type : {{ item.product_type }}</p>
+
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h2 class="w-fit mx-auto  my-2 text-white">No missed items</h2>
+
+        {% endif %}
+
+    </section>
+
+{% endblock %}

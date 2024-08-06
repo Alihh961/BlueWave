@@ -1,0 +1,229 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+
+
+{% block content %}
+
+
+    {{ form_start(form , { 'attr' : {'class' : 'form-specific-user d-flex flex-column mx-auto '} }) }}
+
+    {{ form_label(form.email) }}
+
+    {{ form_widget(form.email) }}
+
+    {{ form_label(form.phoneNumber) }}
+
+    {{ form_widget(form.phoneNumber) }}
+
+    <button type="submit">Search</button>
+
+    {{ form_end(form) }}
+
+    {% if user %}
+        <div class="mb-3 container bootstrap snippets bootdey">
+            <div class="panel-body inf-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img alt="" style="width:600px;" title="" class="img-circle img-thumbnail isTooltip"
+                             src="https://bootdey.com/img/Content/avatar/avatar7.png" data-original-title="Usuario">
+                    </div>
+                    <div class="col-md-6 m-auto">
+                        <strong class="mx-auto w-fit d-block text-white text-center">Informations</strong><br>
+                        <div class="table-responsive">
+                            <table class="table table-user-information">
+                                <tbody>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            First Name
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.firstName|upper }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Last Name
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.lastName|upper }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Email
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.email }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Phone Number
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.phoneNumber }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Current Balance
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.currentBalance }} $
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Total Orders
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        {{ user.orders|length }}
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <h2 class="mx-auto w-fit text-white mt-3 text-center">Transactions table</h2>
+        {% if user.transaction %}
+            <div class="transaction-div col-7 my-3 mx-auto">
+                <table class="col-12 transaction-tables">
+
+                    <tr>
+                        <th>
+                            Created At
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+
+
+                    </tr>
+
+                    {% for transaction in user.transaction|reverse %}
+
+                        {% set class = "isCredit" %}
+                        {% if  not transaction.isCredit %}
+                            {% set class = "isDebit" %}
+
+                        {% endif %}
+
+                        <tr class="{{ class }}">
+                            <td>
+                                {{ transaction.transactionDate|date }}
+                            </td>
+                            <td>
+                                {{ transaction.amount }}
+                            </td>
+                        </tr>
+
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        {% endif %}
+
+
+        {% if user.orders|length %}
+
+            {% set i=0 %}
+
+            <h2 style="color:white " class="text-center">Last 10 orders Max.</h2>
+
+            {% for order in user.orders|reverse %}
+                {% if i<10 %}
+                <table class="col-7 mb-3 table-my-orders">
+
+                    <tr>
+                        <th>Order Ref:</th>
+                        <td>{{ order.orderReference }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Item Name:</th>
+                        <td>{{ order.item }}</td>
+                    </tr>
+
+
+                    <tr>
+                        <th>Total Price:</th>
+                        <td>{{ order.totalPrice|removeTrailingZeros }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Quantity:</th>
+                        <td>{{ order.quantity }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Unit Price:</th>
+                        <td>{{ order.price|removeTrailingZeros }}</td>
+                    </tr>
+
+
+                    <tr>
+                        <th>Date:</th>
+                        <td>{{ order.createdAt | date }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status:</th>
+                        {% set lastOrderStatusHistory = order.orderStatusHistory.last %}
+
+                        {% if lastOrderStatusHistory is not null %}
+                            <td class="{{ lastOrderStatusHistory.status.name }} fw-bolder">{{ lastOrderStatusHistory.status.name }}</td>
+                        {% else %}
+                            <td>No order status history</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                    {% set i = i + 1 %}
+
+                {% endif %}
+            {% endfor %}
+
+
+        {% else %}
+            <h2 style="color:white ">No Orders</h2>
+
+        {% endif %}
+
+
+    {% endif %}
+
+
+
+{% endblock %}

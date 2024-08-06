@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <a href="/shopping-basket">
+
+        <i class="fa-solid fa-basket-shopping shopping-basket"></i>
+    </a>
+
+
+    <section class="products">
+
+        {% for item in items %}
+
+
+            {% if not item.available %}
+
+                <a class="product-container unAvailableItem" >
+
+                    <div class="product">
+                        <h6>{{ item.name }} </h6>
+
+                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
+                             alt="{{ item.category.name }}">
+                        <h6>{{ item.price|removeTrailingZeros }}$</h6>
+
+                    </div>
+                </a>
+            {% else %}
+
+                <a class="product-container" href="checkout?i={{ item.id }}">
+
+                    <div class="product">
+                        <h6>{{ item.name }} </h6>
+
+
+
+                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
+                             alt="{{ item.category.name }}">
+                        <h6>{{ item.price|removeTrailingZeros }}$</h6>
+
+
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+
+    </section>
+{% endblock %}
+

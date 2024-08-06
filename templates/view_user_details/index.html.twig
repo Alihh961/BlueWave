@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    {% if user %}
+        <table class="col-7 mb-3">
+
+            <tr>
+                <th>Client Name:</th>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+            </tr>
+
+            <tr>
+                <th>Client Email:</th>
+                <td>{{ user.email }}</td>
+            </tr>
+
+            <tr>
+                <th>Client Phone Number:</th>
+                <td>{{ user.phoneNumber }}</td>
+            </tr>
+
+        </table>
+        <div class="m-auto w-fit">
+            <a href="/admin" class="btn btn-success">Go to Dashboard</a>
+            <a href="{{ path('app_order_confirmation') }}" class="btn btn-warning">Back to Order Confirmations</a>
+        </div>
+    {% else %}
+        <a href="/" class="w-fit d-block m-auto text-center" style="color: black">Error ,Go To Home Page</a>
+    {% endif %}
+
+{% endblock %}

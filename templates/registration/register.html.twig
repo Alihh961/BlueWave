@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+
+    <section class="register-section m-auto mb-3">
+        <header>Registration Form</header>
+        {{ form_start(registrationForm , {"attr" : {"class" : "form"}}) }}
+        {% if not registrationForm.vars.valid %}
+            <div class="alert alert-danger">
+                {{ form_errors(registrationForm) }}
+                {% for children in registrationForm.children %}
+                    {% if not children.vars.valid %}
+                        {{ form_errors(children) }}
+                    {% endif %}
+                    {% for child in children %}
+                        {% if not child.vars.valid %}
+                            {{ form_errors(child) }}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="input-box">
+            {{ form_label(registrationForm.firstName) }}
+{#            {{ form_errors(registrationForm.firstName) }}#}
+            {{ form_widget(registrationForm.firstName , {'attr' : {"placeholder" : "Enter first name"}}) }}
+        </div>
+
+        <div class="input-box">
+            {{ form_label(registrationForm.lastName) }}
+{#            {{ form_errors(registrationForm.lastName) }}#}
+            {{ form_widget(registrationForm.lastName , {'attr' : {"placeholder" : "Enter last name"}}) }}
+        </div>
+
+
+        <div class="column">
+            <div class="input-box">
+                {{ form_label(registrationForm.email) }}
+{#                {{ form_errors(registrationForm.email) }}#}
+                {{ form_widget(registrationForm.email , {'attr' : {"placeholder" : "Enter email address"}}) }}
+            </div>
+
+            <div class="input-box">
+                {{ form_label(registrationForm.phoneNumber) }}
+{#                {{ form_errors(registrationForm.phoneNumber) }}#}
+                {{ form_widget(registrationForm.phoneNumber , {'attr' : {"placeholder" : "Enter phone number"}}) }}
+            </div>
+
+        </div>
+        <div class="column">
+
+            {{ form_row(registrationForm.password) }}
+        </div>
+
+        <span class="agreeTerms">
+        {{ form_row(registrationForm.agreeTerms , {'attr' : { 'class' : 'agreeTerms'}}) }}
+        </span>
+
+        <button type="submit">Submit</button>
+        {{ form_end(registrationForm) }}
+
+    </section>
+
+{% endblock %}
