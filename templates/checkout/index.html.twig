@@ -1,98 +1,147 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Checkout{% endblock %}
+{% block title %}Checkout
+{% endblock %}
 {% block body %}
 
-    <a href="/shopping-basket">
+	<a href="/shopping-basket">
 
-        <i class="fa-solid fa-basket-shopping shopping-basket"></i>
-    </a>
+		<i class="fa-solid fa-basket-shopping shopping-basket"></i>
+	</a>
 
-    {% if item %}
-        <div class="row w-100 mx-auto">
+	{% if item %}
+		<div class="row w-100 mx-auto p-2 p-md-4" style='max-width:850px'>
 
-            <section class="checkout-section w-50 p-0">
-                <h3 class="col-12 m-0 text-center">{{ item.name }}</h3>
+			<section class="checkout-section p-0">
+				<h3 class="col-12 m-0 text-center">{{ item.name }}</h3>
 
 
-                {{ form_start(form ,{
+				{{ form_start(form ,{
                     "attr" : {"class" : "package-checkout-form"}
                 }) }}
 
-                {% if not form.vars.valid %}
-                    <div class="alert alert-danger m-0 p-0">
-                        {{ form_errors(form) }}
-                        {% for children in form.children %}
-                            {% if not children.vars.valid %}
-                                {{ form_errors(children) }}
-                            {% endif %}
-                            {% for child in children %}
-                                {% if not child.vars.valid %}
-                                    {{ form_errors(child) }}
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
+				{% if not form.vars.valid %}
+					<div class="alert alert-danger m-0 p-0">
+						{{ form_errors(form) }}
+						{% for children in form.children %}
+							{% if not children.vars.valid %}
+								{{ form_errors(children) }}
+							{% endif %}
+							{% for child in children %}
+								{% if not child.vars.valid %}
+									{{ form_errors(child) }}
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{% endif %}
 
-                {% if min and max %}
+				{% if min and max %}
 
-                    {% if max == 1 %}
-                        <div class="range">
-                            Only one item in a time
-                        </div>
-                    {% else %}
-                        <div class="range">
-                            <b>Min</b> :{{ min }} <span>&#8594;</span>
-                            <b>Max</b>: {{ max }}
-                        </div>
-                    {% endif %}
+					{% if max == 1 %}
+						<div class="range">
+							Only one item in a time
+						</div>
+					{% else %}
+						<div class="range">
+							<b>Min</b>
+							:{{ min }}
+							<span>&#8594;</span>
+							<b>Max</b>:
+							{{ max }}
+						</div>
+					{% endif %}
 
 
-                {% endif %}
+				{% endif %}
 
-                {% for flashMessage in app.flashes('error') %}
-                    <div class="alert alert-danger">
-                        {{ flashMessage }}
-                    </div>
-                {% endfor %}
-                <div class="inputs-div">
+				{% for flashMessage in app.flashes('error') %}
+					<div class="alert alert-danger">
+						{{ flashMessage }}
+					</div>
+				{% endfor %}
+				<div class="inputs-div">
 
-                    {% for param in params %}
-                        {% set paramWithoutSpaces = param.name|replace({' ': ''}) %}
-<div>
-                        {{ form_label(form[paramWithoutSpaces]) }}
-                        {{ form_widget(form[paramWithoutSpaces]) }}
-</div>
+					{% for param in params %}
+						{% set paramWithoutSpaces = param.name|replace({' ': ''}) %}
+						<div>
+							{{ form_label(form[paramWithoutSpaces]) }}
+							{{ form_widget(form[paramWithoutSpaces]) }}
+						</div>
 
-                    {% endfor %}
 
-                    {% if min and max and min != max and max != 1 %}
-                        <div>
-                        {{ form_label(form.quantity) }}
-                        {{ form_widget(form.quantity) }}
-                        </div>
+					{% endfor %}
 
-                    {% endif %}
-                </div>
+					{% if min and max and min != max and max != 1 %}
+						<div>
+							{{ form_label(form.quantity) }}
+							{{ form_widget(form.quantity) }}
+						</div>
 
-                <div class=" bottom d-flex flex-column">
-                    {% if min and max %}
-                        <h5><span class="price">{{ item.price * min }}$</span></h5>
+					{% endif %}
+				</div>
 
-                        {% else %}
-                            <h5><span class="price">{{ item.price }}$</span></h5>
+				<div class=" bottom d-flex flex-column mt-2">
+					{% if min and max %}
+						<h5>
+							<span class="price">{{ item.price * min }}$</span>
+						</h5>
 
-                    {% endif %}
+					{% else %}
+						<h5>
+							<span class="price">{{ item.price }}$</span>
+						</h5>
 
-                    <button type="submit" class="buy">Buy</button>
+					{% endif %}
 
-                    <a class="back" href="/view-product?c={{ item.category.id }}">Back</a>
-                </div>
-                {{ form_end(form) }}
-            </section>
-        </div>
+					<button type="submit" class="buy">Buy</button>
 
-    {% endif %}
+					<a class="back" href="/view-product?c={{ item.category.id }}">Back</a>
+				</div>
+				{{ form_end(form) }}
+			</section>
+		</div>
+
+	{% endif %}
+
+
+	<script>
+
+		let divs = document.querySelectorAll('.inputs-div div');
+
+        divs.forEach(function (div) {
+        let label = div.querySelector('label');
+        let input = div.querySelector('input');
+
+        if (input.value) {
+        label.classList.add('move-with-ani');
+
+        } else {
+        label.classList.remove('move-with-ani');
+
+        } 
+
+        input.addEventListener('focusout', function (event) {
+
+            if (input.value) {
+            label.classList.add('move-with-ani');
+
+            } else {
+            label.classList.remove('move-with-ani');
+
+            }
+
+        })
+
+        input.addEventListener('focusin', function (event) {
+
+            label.classList.add('move-with-ani');
+
+            
+
+        })
+        
+        })
+	</script>
 
 {% endblock %}

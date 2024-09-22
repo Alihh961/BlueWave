@@ -6,7 +6,7 @@
   background: #fff;
   padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 1);
 
 
   header {
@@ -77,6 +77,8 @@
     cursor: pointer;
     transition: all 0.2s ease;
     background: rgb(130, 106, 251);
+    text-transform: uppercase;
+    letter-spacing: 4px;
   }
 
   .form button:hover {

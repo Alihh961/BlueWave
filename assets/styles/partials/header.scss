@@ -1,7 +1,7 @@
 .header-container {
-
   height: fit-content;
-  background: transparent;
+  min-height: 60px;
+  background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,27 +11,28 @@
   position: fixed;
   top: 0;
   max-height: 75px;
-  transition:  padding 0.5s , background 0.5s;
+  transition: padding 0.5s, background 0.5s;
   z-index: 999;
+  border-bottom: 2px solid #ff0000;
 
-  &.scroll{
+  &.scroll {
     padding: 10px 15px;
     background: linear-gradient(#244580, #2c619e);
-
+    
+    .header-right-side .balance{
+      color: white!important;
+    }
   }
 
   @media (max-width: 550px) {
     padding: 10px;
   }
 
-
   > div {
-
     height: 100%;
   }
 
   .header-left-side {
-
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -39,20 +40,20 @@
     gap: 15px;
     background: transparent;
     width: fit-content;
-    padding: 0 10px;
+    padding: 0 0;
     border-radius: 5px;
-    transition: 0.3s ;
+    transition: 0.3s;
     cursor: pointer;
 
-    &:hover{
-
-      background: #6c8eb2;
-
+    &:hover {
+      // background: #6c8eb2;
+      transform: scale(1.05); /* Slightly enlarge on hover */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow */
     }
 
     h1 {
       color: white;
-      margin: 0!important;
+      margin: 0 !important;
       font-size: 30px;
 
       @media (max-width: 550px) {
@@ -65,7 +66,7 @@
     }
   }
 
-  .header-right-side{
+  .header-right-side {
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -74,45 +75,47 @@
     flex: 1;
 
     a {
-
       cursor: pointer;
       width: 45px;
       height: 45px;
       display: flex;
-      background-color: transparent;
+      // background-color: #244580;
       justify-content: center;
       align-items: center;
       border-radius: 50%;
       transition: 0.3s ease-in-out;
       text-decoration: none;
+      background-color: #0a53be;
 
-      &:hover{
-        background-color: #6c8eb2;
+      &:hover {
+        background-color: #ff0000;
       }
 
-      &:visited{
+      &:visited {
         color: white;
       }
 
-      i{
+      i {
         color: white;
         font-size: 20px;
       }
     }
 
-    >span{
-
+    > span {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 5px;
-      color: white;
-      font-size: 14px;
+      color: black;
+      font-size: 16px;
+      font-weight: 900;
+      font-family: none;
+      letter-spacing: 1px;
 
-      i:nth-of-type(1){
+      i:nth-of-type(1) {
         background: green;
         width: 20px;
-        color: black!important;
+        color: black !important;
         text-align: center;
         border-radius: 50%;
         height: 20px;
@@ -120,12 +123,74 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        // font-size: medium;
       }
 
-      i:nth-of-type(2){
+      i:nth-of-type(2) {
         color: #2ca890;
-        font-size: 12px;
+        font-size: medium;
       }
     }
+  }
+}
+
+
+// Whatsapp Button - Header
+
+.whatsapp-button {
+  position: fixed;
+
+  bottom: 20px;
+
+  right: 20px;
+
+  background-color: #25d366;
+
+  color: white;
+
+  padding: 10px 20px;
+
+  font-size: 16px;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  display: flex;
+
+  align-items: center;
+
+  animation: jump 0.5s ease 1;
+
+  z-index: 1000;
+
+  @media screen and (max-width :400px) {
+    font-size: 14px;
+    padding: 8px 12px !important;
+
+    i{
+      margin-right: 0!important;
+    }
+  }
+}
+
+.whatsapp-button:hover {
+  background-color: #075e54;
+
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
   }
 }

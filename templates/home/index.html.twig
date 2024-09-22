@@ -26,210 +26,24 @@
 
 
 	<div class="m-auto" style="max-width: 600px ;width: 90%">
-		{{ form_start(form, {
-            "attr" : {"class" : "searchForm-homePage"}
-        }) }}
 
-		<div class="d-flex flex-column flex-wrap gap-3 search-div align-items-center justify-content-end w-100">
-			{{ form_widget(form.gameName , {"attr" : {"class": "mx-auto"}}) }}
-			{{ form_label(form.gameName, 'Search', {'label_attr': {'class': 'm-auto'}}) }}
+		<div name="search_type_form" class="searchForm-homePage">
 
+			<div class="d-flex flex-column flex-wrap gap-3 search-div align-items-center justify-content-end w-100">
+
+				<input type="text" id="search_type" name="search_type" class="mx-auto">
+				<label class="m-auto" for="search_type_form_gameName">Search</label>
+
+
+			</div>
 
 		</div>
 
-
-		<div class="col-12 text-center mt-2">
-			<button type="submit" class="btn btn-primary">Search</button>
-		</div>
-
-
-		{{ form_end(form) }}
 	</div>
 	<section class="products-home flex-row">
 
-		{% if categories %}
 
-			{% for category in categories %}
-
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-				<a class="product-container-home" href="view-product?c={{ category.id }}">
-
-					<div class="product-home">
-
-						{% if category.url %}
-							<img class="" src="{{ asset('assets/images/categories/') }}{{ category.url }}" alt="{{ category.name }}">
-
-						{% else %}
-							<img class="" src="{{ asset('img.png') }}" alt="{{ category.name }}">
-
-						{% endif %}
-						<h6>{{ category.name }}</h6>
-
-					</div>
-				</a>
-
-			{% endfor %}
-
-		</section>
-
-		<div class="navigation m-auto w-fit">
-			{{ knp_pagination_render(categories, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
-		</div>
-
-	{% else %}
-		<h2 class="w-fit mx-auto text-white">No items for this search</h2>
-
-	{% endif %}
+	</section>
 
 
 	<div class="services-slider">
@@ -286,23 +100,216 @@
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 
 	<script>
-		const input = document.querySelector('#search_type_form_gameName');
-
+const input = document.querySelector("#search_type");
 
 if (input.value) {
-document.querySelector('#search_type_form_gameName + label').classList.add('translateAndResize');
-
+  document
+    .querySelector("#search_type + label")
+    .classList.add("translateAndResize");
 } else {
-document.querySelector('#search_type_form_gameName + label').classList.remove('translateAndResize');
-
-} input.addEventListener('blur', function (event) {
-const value = event.target.value;
-
-if (value) {
-document.querySelector('#search_type_form_gameName + label').classList.add('translateAndResize');
-} else {
-document.querySelector('#search_type_form_gameName + label').classList.remove('translateAndResize');
+  document
+    .querySelector("#search_type + label")
+    .classList.remove("translateAndResize");
 }
-})
+input.addEventListener("blur", function (event) {
+  const value = event.target.value;
+
+  if (value) {
+    document
+      .querySelector("#search_type + label")
+      .classList.add("translateAndResize");
+  } else {
+    document
+      .querySelector("#search_type + label")
+      .classList.remove("translateAndResize");
+  }
+});
+
+// Load more products on scrolling
+
+let container = document.querySelector(".products-home");
+let isFetching = false;
+let hasMore = true;
+let offSet = 0;
+let isLoading = true;
+let isFiltering = false;
+
+async function fetchData(offset, url) {
+  isFetching = true;
+
+  try {
+    let response = await fetch(`/${url}?offset=${offset}`);
+    let data = await response.json();
+
+
+    isFetching = false;
+    isFiltering = false; // / it is true when the user is filtering using search bar
+
+    if (data.max) {
+      hasMore = false;
+      return;
+    }
+
+    removeLoadingSpin();
+
+    for (let category of data.categories) {
+      let a = document.createElement("a");
+      a.classList.add("product-container-home");
+      a.setAttribute("href", `view-product?c=${category.id}`);
+
+      let div = document.createElement("div");
+      div.classList.add("product-home");
+
+      let h6 = document.createElement("h6");
+      h6.innerText = category.name;
+
+      let image = document.createElement("img");
+
+      if (category.url) {
+        image.setAttribute("src", `assets/images/categories/${category.url}`);
+      } else {
+        image.setAttribute("src", `assets/images/logo.png`);
+      }
+      image.setAttribute("alt", category.name);
+
+      div.appendChild(image);
+      div.appendChild(h6);
+      a.appendChild(div);
+
+      container?.appendChild(a);
+    }
+
+    offSet++;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+window.addEventListener("scroll", function () {
+  if (isFetching || isFiltering || isLoading) {
+    return;
+  }
+
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    fetchData(offSet, "load-categories");
+  }
+});
+
+fetchData(offSet, "load-categories"); // fetch some categories when loading
+
+/// Searching for specific category
+{# 
+
+input.addEventListener('focus', () => {
+    console.log('focused');
+
+
+    // Check if the document height is below 950 pixels
+    if (window.innerWidth < 950) {
+        // Scroll to 75 pixels from the top of the viewport
+        input.scrollIntoView({
+            top: 500,
+            behavior: 'smooth' // Optional: Adds a smooth scrolling effect
+        });
+    }
+}); #}
+// the input is declared at the top of the script
+  input.addEventListener("input", async function (event) {
+
+console.log(input.value);
+
+    if(isLoading){
+      input.value= '';
+
+      return;
+    }
+
+    if(isFiltering){
+      if(!input.value){
+      return;
+
+      }
+    }
+
+    offset = 0;
+    hasMore = true;
+    isFiltering = true;
+
+    let value = event.target.value;
+
+    if (value) {
+      console.log("there is a value");
+      try {
+        let response = await fetch("search-categories-by-name?n=" + value);
+        let data = await response.json();
+
+        document.querySelector(".products-home").innerHTML = "";
+        for (let category of data.categories) {
+          let a = document.createElement("a");
+          a.classList.add("product-container-home");
+          a.setAttribute("href", `view-product?c=${category.id}`);
+
+          let div = document.createElement("div");
+          div.classList.add("product-home");
+
+          let h6 = document.createElement("h6");
+          h6.innerText = category.name;
+
+          let image = document.createElement("img");
+
+          if (category.url) {
+            image.setAttribute("src", `assets/images/categories/${category.url}`);
+          } else {
+            image.setAttribute("src", `assets/images/logo.png`);
+          }
+          image.setAttribute("alt", category.name);
+
+          div.appendChild(image);
+          div.appendChild(h6);
+          a.appendChild(div);
+          isFiltering = false;
+          container?.appendChild(a);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+
+      isFiltering = false;
+      document.querySelector(".products-home").innerHTML = "";
+      console.log(document.querySelector(".products-home"));
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    
+}
+
+
+      offSet = 0;
+      fetchData(offset, "load-categories");
+
+    }
+  });
+
+//Loading spin
+function addLoadingSpin() {
+  if (container) {
+    container.innerHTML = `<div class="loader-container">
+					<div class="loader"></div>
+				</div>`;
+    isLoading = true;
+  }
+}
+
+function removeLoadingSpin() {
+  if (container) {
+    let loaderContainer = container.querySelector(".loader-container");
+
+    if (loaderContainer) {
+      loaderContainer.remove();
+    }
+    isLoading = false;
+  }
+}
+addLoadingSpin(); // add the loading spin till we have have categories to display
+
 	</script>
 {% endblock %}

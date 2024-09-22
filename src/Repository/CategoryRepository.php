@@ -26,6 +26,33 @@ class CategoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder("c");
     }
 
+    public function countCategoriesWithItemsOfType(string $typeName): int
+    {
+        return $this->createQueryBuilder('c')
+            ->innerJoin('c.items', 'i')
+            ->innerJoin('i.type', 't') 
+            ->where('t.name = :typeName')
+            ->setParameter('typeName', $typeName)
+            ->select('COUNT(DISTINCT c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function getCategoriesWithItemsOfType(string $typeName , int $offset = 0 , int $maxResults){
+
+        return $this->createQueryBuilder('c')
+                ->innerJoin('c.items' , 'i')
+                ->innerJoin('i.type' , 't')
+                ->where('t.name = :typeName')
+                ->setParameter('typeName' , $typeName)
+                ->select('Distinct c.name , c.id , c.url ')
+                ->setFirstResult($offset)
+                ->setMaxResults($maxResults)
+                ->getQuery()
+                ->getResult();
+    }
+
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */

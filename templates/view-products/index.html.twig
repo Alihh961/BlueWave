@@ -3,49 +3,57 @@
 
 {% block body %}
 
-    <a href="/shopping-basket">
+	<a href="/shopping-basket">
 
-        <i class="fa-solid fa-basket-shopping shopping-basket"></i>
-    </a>
-
-
-    <section class="products">
-
-        {% for item in items %}
+		<i class="fa-solid fa-basket-shopping shopping-basket"></i>
+	</a>
 
 
-            {% if not item.available %}
+	<section class="products">
 
-                <a class="product-container unAvailableItem" >
-
-                    <div class="product">
-                        <h6>{{ item.name }} </h6>
-
-                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
-                             alt="{{ item.category.name }}">
-                        <h6>{{ item.price|removeTrailingZeros }}$</h6>
-
-                    </div>
-                </a>
-            {% else %}
-
-                <a class="product-container" href="checkout?i={{ item.id }}">
-
-                    <div class="product">
-                        <h6>{{ item.name }} </h6>
+		{% for item in items %}
 
 
+			{% if not item.available %}
 
-                        <img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}"
-                             alt="{{ item.category.name }}">
-                        <h6>{{ item.price|removeTrailingZeros }}$</h6>
+				<a class="product-container unAvailableItem">
+
+					<div class="product">
+						<h6>{{ item.name }}
+						</h6>
+
+						{% if item.url %}
+							<img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}" alt="{{ item.category.name }}" style="min-height:150px">
+						{% else %}
+							<img class="" src="{{ asset('assets/images/logo.png') }}" alt="{{ item.category.name }}" style="min-height:150px">
+						{% endif %}
+
+						<h6>{{ item.price|removeTrailingZeros }}$</h6>
+
+					</div>
+				</a>
+			{% else %}
+
+				<a class="product-container" href="checkout?i={{ item.id }}">
+
+					<div class="product">
+						<h6>{{ item.name }}
+						</h6>
 
 
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
+						{% if item.url %}
+							<img class="" src="{{ asset('assets/images/items/') }}{{ item.url }}" alt="{{ item.category.name }}" style="min-height:150px">
+						{% else %}
+							<img class="" src="{{ asset('assets/images/logo.png') }}" alt="{{ item.category.name }}" style="min-height:150px">
+						{% endif %}
 
-    </section>
+						<h6>{{ item.price|removeTrailingZeros }}$</h6>
+
+
+					</div>
+				</a>
+			{% endif %}
+		{% endfor %}
+
+	</section>
 {% endblock %}
-

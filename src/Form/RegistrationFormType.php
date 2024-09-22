@@ -61,10 +61,9 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add("phoneNumber", TextType::class, [
-
                 "constraints" => [
                     new Regex([
-                        "pattern" => "/^0\d*$/",
+                        "pattern" => "/^\d+$/", // Matches one or more digits
                         "message" => "Number Format Error"
                     ])
                 ]

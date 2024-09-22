@@ -14,6 +14,7 @@ use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,36 +78,35 @@ class HomeController extends AbstractController
             'home/index.html.twig', [
                 "categories" => $pagination,
                 "form" => $form->createView(),
-                "success" => true
+                "success" => true,
+                "user" => $this->getUser()
             ]
         );
 
     }
 
-    #[Route('/load-more', name: 'app_load_more')]
+    #[Route('/load-categories', name: 'app_load_more')]
     public function load(Request $request, CategoryRepository $categoryRepository)
     {
 
-        $offset = $request->query->getInt('offset');
+        $offset = $request->query->getInt('offset') * 10;
 
 
         $isMax = false;
 
-        $itemsMaxQuantity = count($categoryRepository->findAll());
+        $categoriesMaxQuantity = $categoryRepository->countCategoriesWithItemsOfType('E-charges');
 
-        if ($offset >= $itemsMaxQuantity) {
+        if ($offset >= $categoriesMaxQuantity) {
             $isMax = true;
         }
-        $items = $categoryRepository->createQueryBuilder('c')
-            ->setFirstResult($offset)
-            ->setMaxResults(15)
-            ->getQuery()
-            ->getResult();
+
+            $categories = $categoryRepository->getCategoriesWithItemsOfType('E-charges' , $offset , 10);
 
 
-        return $this->json(['items' => $items, 'max' => $isMax], context: ['groups' => ['categories']]);
+        return $this->json(['categories' => $categories, 'max' => $isMax , 'offSet' =>$offset /10], context: ['groups' => ['categories']]);
     }
 
+    /// No need for this route, I guess
     #[Route('/max-vision-items')]
     public function max(Request $request, CategoryRepository $categoryRepository)
     {
@@ -116,6 +116,31 @@ class HomeController extends AbstractController
 
         return $this->json(['max' => $itemsMaxQuantity]);
     }
+
+    #[Route('/search-categories-by-name')]
+    public function searchCategoriesByName(Request $request, CategoryRepository $categoryRepository): JsonResponse
+    {
+        $name = $request->query->get('n');
+        $offset = $request->query->get('offset', 0);
+
+        $categories = $categoryRepository->createQueryBuilder('c')
+            ->select('c.name, c.url, c.id, COUNT(i.id) as itemsCount')
+            ->innerJoin('c.items', 'i')
+            ->innerJoin('i.type', 't')                
+            ->where('c.name LIKE :name')              
+            ->andWhere('t.name = :type')       
+            ->setParameter('name', '%' . $name . '%')  
+            ->setParameter('type', 'E-charges')       
+            ->groupBy('c.id')                       
+            ->having('COUNT(i.id) > 0')           
+            ->setFirstResult($offset)       
+            ->setMaxResults(10)                     
+            ->getQuery()
+            ->getResult();
+    
+        return $this->json(['categories' => $categories]);
+    }
+    
 
 
 }

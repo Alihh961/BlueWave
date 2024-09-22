@@ -31,7 +31,7 @@ body {
   box-sizing: border-box;
 
   font-family: sans-serif;
-  background: linear-gradient(#244580, #2c619e);
+  background: linear-gradient(#0A53BE, #2c619e);
   width: 100%;
   overflow-x: hidden;
   transition: width 0.3s ease-in-out;
@@ -90,7 +90,7 @@ table{
 
 @media (max-width: 662px){
   table ,form, button{
-    font-size: 12px!important;
+    font-size: 14px!important;
   }
 }
 

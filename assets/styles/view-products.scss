@@ -14,6 +14,12 @@
   overflow: hidden;
   color: white;
   text-decoration: none;
+  transition: transform 0.4s linear, opacity 0.4s linear;
+
+  &:hover{
+    opacity: 0.8;
+    transform:scale(0.8);
+  }
 
   .unAvailableItem{
     pointer-events: none;
@@ -21,10 +27,6 @@
   }
 
 
-}
-
-.product-container:not(.unAvailableItem):hover {
-  opacity: 0.5;
 }
 
 .product {
@@ -42,7 +44,8 @@
   text-align: center;
   margin: 0;
   padding: 5px 0;
-  background-color: #1c7430;
+  background-color: #ffa500;
+  font-weight: bolder;
 }
 
 .unAvailableItem {

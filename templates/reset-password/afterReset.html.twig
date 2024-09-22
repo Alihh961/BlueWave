@@ -23,8 +23,15 @@
         background: linear-gradient(#244580, #2c619e)
     }
 </style>
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
 <h2 style="margin:20px auto;width: fit-content;text-align: center">{{ message }}</h2>
 <a href="{{ path('app_login') }}" class="btn-login">Login Page</a>
+
+{% endblock %}
 
 
 
