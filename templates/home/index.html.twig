@@ -186,6 +186,9 @@ async function fetchData(offset, url) {
 }
 
 window.addEventListener("scroll", function () {
+  
+  if(input.value) return; // dont fetch data if there is a value inside the search bar
+  
   if (isFetching || isFiltering || isLoading) {
     return;
   }
